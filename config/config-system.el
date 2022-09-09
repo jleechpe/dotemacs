@@ -30,6 +30,10 @@
 (setq recentf-save-file (expand-file-name "recentf" user-cache-dir))
 (recentf-mode 1)
 
+;; ** Abbrevs
+;; Keep abbrevs with config (chemacs)
+(setq abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory))
+
 ;; ** CUA
 ;; Disable CUA editing but keep rectangle
 (setq cua-enable-cua-keys 'nil)

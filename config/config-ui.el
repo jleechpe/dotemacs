@@ -151,7 +151,7 @@
 
 ;; ** Projects
 (elpaca-use-package projectile
-  :config
+  :init
   (setq projectile-mode-line-prefix " Prj"
         projectile-completion-system 'auto
         projectile-globally-ignored-files '(".tfstate" ".gitignore")
@@ -159,7 +159,7 @@
         projectile-cache-file (expand-file-name "projectile.cache" user-cache-dir)
         projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-dir))
   (add-to-list 'projectile-globally-ignored-directories ".terraform")
-  :init (projectile-mode 1)
+  :config (projectile-mode 1)
   :general ("C-c p" #'projectile-command-map))
 
 ;; ** Window Management

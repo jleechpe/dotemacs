@@ -97,8 +97,14 @@
 ;; ** Roam
 (elpaca-use-package org-roam
   :defer t
-  :init (setq org-roam-v2-ack t
-              org-roam-directory user-roam-dir))
+  :init
+  (setq org-roam-v2-ack t
+        org-roam-directory user-roam-dir
+        org-roam-db-location (expand-file-name "db/org-roam.db" user-org-dir))
+  (defun my/org-roam-update-links-on-save ()
+    (add-hook 'before-save-hook 'org-roam-link-replace-all nil 't))
+  :config (org-roam-db-autosync-mode 1)
+  :hook (org-mode . my/org-roam-update-links-on-save))
 
 ;; ** Outlining
 (elpaca-use-package outshine
