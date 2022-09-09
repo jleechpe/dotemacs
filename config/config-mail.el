@@ -117,12 +117,12 @@
 (elpaca-use-package (bbdb ;:files (:defaults "lisp/*")
                      :pre-build (("./autogen.sh")("./configure")("make"))
                      )
-  :init
+  :defer t
+  :config
   (bbdb-initialize 'mu4e 'pgp 'anniv)
   ;; Currently does not auto-initialize..
   (bbdb-mua-auto-update-init 'mu4e)
   (bbdb-insinuate-mu4e)
-  :config
   (setq bbdb-mail-user-agent 'mu4e-user-agent
         mu4e-view-mode-hook 'bbdb-mua-auto-update
         mu4e~view-buffer-name "*Article*"

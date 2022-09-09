@@ -3,3 +3,6 @@
 ;; * EShell
 
 (setq eshell-directory-name (expand-file-name "eshell/" user-cache-dir))
+
+;; * Provide
+(provide 'config-shell)
