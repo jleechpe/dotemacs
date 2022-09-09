@@ -1,6 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 (defcustom user-org-dir "~/org" "Default directory for org files"
-  :type 'list
+  :type 'directory
+  :group 'config-dirs)
+(defcustom user-roam-dir (expand-file-name "roam" user-org-dir)
+  "Directory for OrgRoam"
+  :type 'directory
   :group 'config-dirs)
 
 (defun org-daily-agenda (arg)
@@ -94,7 +98,7 @@
 (elpaca-use-package org-roam
   :defer t
   :init (setq org-roam-v2-ack t
-              org-roam-directory (expand-file-name "roam" user-org-dir)))
+              org-roam-directory user-roam-dir))
 
 ;; ** Outlining
 (elpaca-use-package outshine
