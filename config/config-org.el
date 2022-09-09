@@ -93,7 +93,8 @@
 ;; ** Roam
 (elpaca-use-package org-roam
   :defer t
-  :init (setq org-roam-v2-ack t))
+  :init (setq org-roam-v2-ack t
+              org-roam-directory (expand-file-name "roam" user-org-dir)))
 
 ;; ** Outlining
 (elpaca-use-package outshine
