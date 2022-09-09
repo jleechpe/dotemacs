@@ -5,6 +5,9 @@
 ;; This should only have OotB packages to avoid need for
 ;; elpaca/use-package configuration
 
+;; ** Startup options
+(setq inhibit-startup-screen t)
+
 ;; ** Enable disabled features
 (put 'downcase-region 'disabled nil)
 
@@ -20,7 +23,8 @@
 (setq savehist-file (expand-file-name "history" user-cache-dir))
 (savehist-mode 1)
 
-(setq save-place-forget-unreadable-files t)
+(setq save-place-forget-unreadable-files t
+      save-place-file (expand-file-name "places" user-cache-dir))
 (save-place-mode 1)
 
 (setq recentf-save-file (expand-file-name "recentf" user-cache-dir))

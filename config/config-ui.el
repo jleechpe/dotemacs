@@ -154,7 +154,10 @@
   :config
   (setq projectile-mode-line-prefix " Prj"
         projectile-completion-system 'auto
-        projectile-globally-ignored-files '(".tfstate" ".gitignore"))
+        projectile-globally-ignored-files '(".tfstate" ".gitignore")
+        ;; cache files
+        projectile-cache-file (expand-file-name "projectile.cache" user-cache-dir)
+        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-dir))
   (add-to-list 'projectile-globally-ignored-directories ".terraform")
   :init (projectile-mode 1)
   :general ("C-c p" #'projectile-command-map))
