@@ -13,6 +13,7 @@
 ;; 
 (config-packages '(system
                    server
+                   shell
                    org
                    lisp
                    completion

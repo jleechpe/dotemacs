@@ -120,6 +120,7 @@
                       (vc . t)
                       (packagemanagement . t)
                       (irc . nil)
+                      (shell . t)
                       (os . t)))
 
 ;; * Provide

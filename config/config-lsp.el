@@ -9,7 +9,8 @@
   :defer t
   :commands lsp
   :init
-  (setq lsp-prefer-flymake nil)
+  (setq lsp-prefer-flymake nil
+        lsp-session-file (expand-file-name ".lsp-session-v1" user-cache-dir))
   (defun corfu-lsp-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless)))
