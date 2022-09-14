@@ -20,7 +20,7 @@
   (setq completion-styles '(orderless)))
 
 (elpaca-use-package marginalia
-  :init (marginalia-mode 1)
+  :config (marginalia-mode 1)
   :general
   (minibuffer-mode-map "s-a" #'marginalia-cycle))
 

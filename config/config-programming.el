@@ -18,6 +18,10 @@
 (elpaca-use-package dockerfile-mode
   :defer t)
 
+;; *** Java
+(elpaca-use-package lsp-java
+  :hook (java-mode . lsp))
+
 ;; *** Lisp
 
 (elpaca nil
@@ -45,12 +49,6 @@
     (setq python-shell-interpreter "python2"))
    (t
     (setq python-shell-interpreter "python"))))
-
-(elpaca-use-package dap-mode
-  :defer t
-  :after lsp-mode
-  :config
-  (dap-auto-configure-mode))
 
 (elpaca nil (use-package inferior-python-mode
   :hook (inferior-python-mode . hide-mode-line-mode)))

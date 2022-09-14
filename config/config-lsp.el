@@ -16,6 +16,8 @@
           '(orderless)))
   :config
   (setq lsp-completion-provider :none)
+  (require 'lsp-modeline)
+  (require 'lsp-headerline)
   :hook (((powershell-mode
            yaml-mode
            dockerfile-mode
@@ -47,6 +49,11 @@
   :config
   (lsp-treemacs-sync-mode 1))
 
+(elpaca-use-package dap-mode
+  :defer t
+  :after lsp-mode
+  :config
+  (dap-auto-configure-mode))
 
 ;; * Provide
 (provide 'config-lsp)

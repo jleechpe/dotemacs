@@ -103,8 +103,14 @@
         org-roam-db-location (expand-file-name "db/org-roam.db" user-org-dir))
   (defun my/org-roam-update-links-on-save ()
     (add-hook 'before-save-hook 'org-roam-link-replace-all nil 't))
+  (defun my/org-completion-completers ()
+    (mapc (lambda (x)
+            (add-to-list 'completion-at-point-functions x))
+          org-roam-completion-functions)
+    (add-to-list 'completion-at-point-functions #'cape-abbrev))
   :config (org-roam-db-autosync-mode 1)
-  :hook (org-mode . my/org-roam-update-links-on-save))
+  :hook ((org-mode . my/org-completion-completers)
+         (org-mode . my/org-roam-update-links-on-save)))
 
 ;; ** Outlining
 (elpaca-use-package outshine

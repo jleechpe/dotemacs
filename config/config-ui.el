@@ -45,11 +45,12 @@
   (load-theme emacs-theme t))
 
 ;; ** Modeline
-(elpaca minions (minions-mode 1))
+(elpaca-use-package minions
+  :config (minions-mode 1))
 
 (elpaca-use-package doom-modeline
-  :init (doom-modeline-mode 1)
-  :config
+  :config (doom-modeline-mode 1)
+  :init
   (setq doom-modeline-minor-modes t
         doom-modeline-checker-simple-format t
         doom-modeline-buffer-file-name-style 'truncate-with-project
@@ -126,6 +127,7 @@
   :init
   (setq undo-tree-history-directory-alist
         `((".*" . ,(expand-file-name "undo-tree" user-cache-dir))))
+  :config
   (global-undo-tree-mode 1))
 
 ;; ** SmartParens
@@ -158,14 +160,15 @@
         ;; cache files
         projectile-cache-file (expand-file-name "projectile.cache" user-cache-dir)
         projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-dir))
+  :config
   (add-to-list 'projectile-globally-ignored-directories ".terraform")
-  :config (projectile-mode 1)
+  (projectile-mode 1)
   :general ("C-c p" #'projectile-command-map))
 
 ;; ** Window Management
 (elpaca-use-package ace-window
   :general ("M-o" #'ace-window)
-  :init (ace-window-display-mode 1))
+  :config (ace-window-display-mode 1))
 
 ;; * Provide
 (provide 'config-ui)
