@@ -6,9 +6,6 @@
 (elpaca-use-package terraform-mode
   :hook ((terraform-mode . terraform-format-on-save-mode)))
 
-(elpaca-use-package fsharp-mode
-  :defer t)
-
 (elpaca-use-package powershell
   :defer t)
 
@@ -16,6 +13,13 @@
   :defer t)
 
 (elpaca-use-package dockerfile-mode
+  :defer t)
+
+;; *** DotNet
+(elpaca-use-package csharp-mode
+  :defer t)
+
+(elpaca-use-package fsharp-mode
   :defer t)
 
 ;; *** Java
