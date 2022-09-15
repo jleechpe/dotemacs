@@ -112,6 +112,9 @@
   :hook ((org-mode . my/org-completion-completers)
          (org-mode . my/org-roam-update-links-on-save)))
 
+(elpaca-use-package org-roam-ui
+  :defer t)
+
 ;; ** Outlining
 (elpaca-use-package outshine
   :commands outshine-mode
