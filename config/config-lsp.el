@@ -2,7 +2,7 @@
 
 (elpaca-use-package flycheck
   :defer t
-  ;; :hook ((yaml-mode powershell-mode) . flycheck-mode)
+  :hook ((yaml-mode powershell-mode text-mode) . flycheck-mode)
   )
 
 (elpaca-use-package lsp-mode

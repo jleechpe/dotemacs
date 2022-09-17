@@ -4,9 +4,14 @@
 
 ;; ** Programming language modes
 (elpaca-use-package terraform-mode
-  :hook ((terraform-mode . terraform-format-on-save-mode)))
+  :defer t
+  :mode "\\.tf\\'"
+  )
 
 (elpaca-use-package powershell
+  :defer t)
+
+(elpaca-use-package fish-mode
   :defer t)
 
 (elpaca-use-package puppet-mode
@@ -66,11 +71,6 @@
         lsp-pyright-use-library-code-for-types t)
   :hook ((python-mode . (lambda ()
                           (require 'lsp-pyright) (lsp-deferred)))))
-
-(elpaca-use-package blacken
-  :defer t
-  :after python
-  :hook (python-mode . blacken-mode))
 
 ;; ** Data
 (elpaca-use-package yaml-mode
