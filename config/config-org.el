@@ -40,12 +40,26 @@
       :publishing-directory (expand-file-name "vitae/export" user-repo-dir)
       :publishing-function org-latex-publish-to-pdf))
 
+   ;; Tags
+   org-use-fast-tag-selection t
+   org-tag-persistent-alist
+   '(
+     ;; Org Roam Tags
+     (:startgrouptag)
+     ("#" . "#")
+     (:grouptags)
+     ("#work" . ?W)
+     ("#homelab" . ?H)
+     ("#FRTC". ?F)
+     (:endgrouptag))
    ;; Todo Configs
    org-todo-keywords
    '((sequence "TODO(t)" "PROG(p)" "PEND(n@)" "|" "DONE(d@)")
      (sequence "TODO(t)" "PROG(p)" "BLOCK(b)" "|" "DONE(d@)")
      (type "RISK(r@)" "ISSUE(i@)" "|" "AVRT(a@)")
-     (sequence "|" "CANC(c@)"))
+     (sequence "|" "CANC(c@)")
+     ;; Org Roam Sequences
+     (sequence "LOG(l)" "FUP(f)" "|" "DONE(d@)"))
    org-todo-keyword-faces
         `(("DEPR" . (:foreground  ,(theme-color 'orange) :weight bold))
           ("PROG" . (:foreground  ,(theme-color 'dark-blue) :weight bold))
@@ -53,7 +67,10 @@
           ("BLOCK" . (:foreground  ,(theme-color 'orange) :inverse-video t))
           ("RISK" . (:foreground  ,(theme-color 'red) :weight bold))
           ("ISSUE" . (:foreground  ,(theme-color 'red) :inverse-video t))
-          ("AVRT" . (:foreground  ,(theme-color 'cyan) :weight bold))))
+          ("AVRT" . (:foreground  ,(theme-color 'cyan) :weight bold))
+          ;; Org Roam faces
+          ("LOG" . (:foreground ,(theme-color 'violet) :weight bold))
+          ("FUP" . (:foreground ,(theme-color 'magenta) :weight bold))))
 
   ;; Update statistics
   (defun my/org-statistics-update (n-done n-not-done)
