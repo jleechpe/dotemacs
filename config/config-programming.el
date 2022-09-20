@@ -6,6 +6,8 @@
 (elpaca-use-package terraform-mode
   :defer t
   :mode "\\.tf\\'"
+  :config
+  (setq lsp-terraform-ls-enable-show-reference t)
   )
 
 (elpaca-use-package powershell

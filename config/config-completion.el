@@ -79,7 +79,7 @@
     (let ((completion-at-point-functions
            (list (cape-company-to-capf #'company-tabnine))))
       (completion-at-point)))
-  
+  :demand t
   :general
   ("M-<tab>" #'my/tabnine-capf)
   )

@@ -94,9 +94,13 @@
            "C-t" #'treemacs-find-file
            "M-t" #'treemacs-find-tag))
 
-;; (elpaca-use-package all-the-icons-completion
-;;   :init (all-the-icons-completion-mode)
-;;   :hook (marginalia-mode . #'all-the-icons-completion-marginalia-setup))
+(elpaca-use-package all-the-icons
+  :config
+  (require 'all-the-icons))
+
+(elpaca-use-package all-the-icons-completion
+  :init (all-the-icons-completion-mode)
+  :hook (marginalia-mode . #'all-the-icons-completion-marginalia-setup))
 
 ;; * UX
 ;; ** Defaults
