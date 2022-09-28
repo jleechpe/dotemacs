@@ -2,13 +2,24 @@
 (defcustom user-org-dir "~/org" "Default directory for org files"
   :type 'directory
   :group 'config-dirs)
+
 (defcustom user-roam-dir (expand-file-name "roam" user-org-dir)
   "Directory for OrgRoam"
   :type 'directory
   :group 'config-dirs)
 
+(defgroup config-org nil ""
+  :group 'config-init)
+
+(defcustom default-org-agenda-files user-org-dir
+  ""
+  :type 'list
+  :group 'config-org)
+
+(defconst org-roam-states-not-todo '("LOG" "FUP" "TBR" "RDN"))
+
 (defun org-daily-agenda (arg)
-  (interactive) "P"
+  (interactive "P")
   (org-agenda arg "a"))
 
 (elpaca-use-package org
@@ -59,7 +70,8 @@
      (type "RISK(r@)" "ISSUE(i@)" "|" "AVRT(a@)")
      (sequence "|" "CANC(c@)")
      ;; Org Roam Sequences
-     (sequence "LOG(l)" "FUP(f)" "|" "DONE(d@)"))
+     (sequence "LOG(l)" "FUP(f)" "|" "DONE(d@)")
+     (sequence "TBR(T)" "RDN(R)" "|" "READ(D@)"))
    org-todo-keyword-faces
         `(("DEPR" . (:foreground  ,(theme-color 'orange) :weight bold))
           ("PROG" . (:foreground  ,(theme-color 'dark-blue) :weight bold))
@@ -112,22 +124,77 @@
   ("S-<f5>" #'org-agenda))
 
 ;; ** Roam
+
 (elpaca-use-package org-roam
   :defer t
   :init
   (setq org-roam-v2-ack t
         org-roam-directory user-roam-dir
         org-roam-db-location (expand-file-name "db/org-roam.db" user-org-dir))
+
+  :config
+  (defun my/org-roam-agenda-all-files (&optional arg keys restriction)
+    (interactive)
+    (advice-remove 'org-agenda #'my/org-roam-update-org-agenda-files)
+    (setq org-agenda-files
+          (flatten-tree (list default-org-agenda-files
+                              user-roam-dir
+                              (expand-file-name "daily" user-roam-dir))))
+    (org-agenda arg keys restriction)
+    (advice-add 'org-agenda :before #'my/org-roam-update-org-agenda-files))
+
+  (defun my/org-roam--find-todo-files ()
+    (let ((nodes (seq-filter (lambda (e)
+                               (assoc "HAS_TODO" (org-roam-node-properties e)))
+                             (org-roam-node-list))))
+      (seq-uniq (seq-map #'org-roam-node-file nodes))))
+
+  (defun my/org-roam--todo-p ()
+    (org-element-map
+        (org-element-parse-buffer 'headline)
+        'headline
+      (lambda (h)
+        (and (eq (org-element-property :todo-type h)
+                 'todo)
+             (not (member (org-element-property :todo-keyword h)
+                          org-roam-states-not-todo))))
+      nil 'first-match))
+
+  (defun my/org-roam-update-org-agenda-files (&optional arg keys restriction)
+    (interactive)
+    (setq org-agenda-files
+          (flatten-tree (list default-org-agenda-files
+                              (my/org-roam--find-todo-files)))))
+
+  (defun my/org-roam-update-todo-property ()
+    (interactive)
+    (when (and (not (active-minibuffer-window))
+               (org-roam-file-p))
+      (org-with-point-at 1
+        (let ((is-todo (my/org-roam--todo-p)))
+          (if is-todo
+              (org-roam-property-add "HAS_TODO" "t")
+            (org-roam-property-remove "HAS_TODO" "t"))))))
+
+  (defun my/org-roam-update-todo-on-save ()
+    (add-hook 'before-save-hook #'my/org-roam-update-todo-property nil 't))
+
   (defun my/org-roam-update-links-on-save ()
     (add-hook 'before-save-hook 'org-roam-link-replace-all nil 't))
+
   (defun my/org-completion-completers ()
     (mapc (lambda (x)
             (add-to-list 'completion-at-point-functions x))
           org-roam-completion-functions)
     (add-to-list 'completion-at-point-functions #'cape-abbrev))
-  :config (org-roam-db-autosync-mode 1)
+
+  (org-roam-db-autosync-mode 1)
+  (advice-add 'org-agenda :before #'my/org-roam-update-org-agenda-files)
+  :general ("C-<f5>" #'my/org-roam-agenda-all-files)
   :hook ((org-mode . my/org-completion-completers)
-         (org-mode . my/org-roam-update-links-on-save)))
+         (org-mode . my/org-roam-update-links-on-save)
+         (org-mode . my/org-roam-update-todo-on-save)
+         (org-mode . my/org-roam-update-todo-property)))
 
 (elpaca-use-package org-roam-ui
   :defer t)
