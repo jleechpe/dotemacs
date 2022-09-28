@@ -14,7 +14,7 @@
 ;; ** Backups
 (setq backup-by-copying t
       backup-directory-alist
-      `(("," . , (expand-file-name "backups" user-cache-dir)))
+      `(("." . , (expand-file-name "backups" user-cache-dir)))
       delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2)

@@ -13,7 +13,9 @@
   :general
   ([remap flyspell-auto-correct-word] #'flyspell-correct-wrapper))
 
-(elpaca-use-package flycheck-vale
+(elpaca-use-package (flycheck-vale
+                     :host github.com
+                     :repo "jleechpe/flycheck-vale")
   :config
   (flycheck-vale-setup))
 

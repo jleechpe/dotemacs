@@ -80,6 +80,7 @@
            (list (cape-company-to-capf #'company-tabnine))))
       (completion-at-point)))
   :demand t
+  :commands cape-abbrev
   :general
   ("M-<tab>" #'my/tabnine-capf)
   )
