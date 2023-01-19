@@ -19,6 +19,19 @@
 (column-number-mode 1)
 (show-paren-mode 1)
 
+(elpaca nil
+  (use-package whitespace
+    :init
+    (setq whitespace-line-column 80
+          whitespace-global-modes '(not circe-mode)
+          whitespace-style '(tabs newline tab-mark space-mark
+                                  newline-mark face lines-tail)
+          whitespace-display-mappings '(
+                                        (space-mark nil)
+                                        (newline-mark 10 [172 10])
+                                        (tab-mark 9 [183 9] [92 9])))
+    :config (global-whitespace-mode 1)))
+
 ;; ** Font
 
 (set-fontset-font t nil emoji-font)
@@ -102,13 +115,17 @@
   :init (all-the-icons-completion-mode)
   :hook (marginalia-mode . #'all-the-icons-completion-marginalia-setup))
 
+(elpaca-use-package treemacs-all-the-icons
+  :after (treemacs all-the-icons))
+
 ;; * UX
 ;; ** Defaults
 (setq-default indent-tabs-mode nil)
 (setq require-final-newline t)
 
 ;; ** Keybindings
-(elpaca which-key (which-key-mode 1))
+(elpaca-use-package which-key
+  :config (which-key-mode 1))
 (elpaca nil
   (general-def
   "C-M-i" #'delete-indentation
@@ -120,7 +137,7 @@
 
 ;; ** Search info
 (elpaca-use-package anzu
-  :init (global-anzu-mode 1)
+  :config (global-anzu-mode 1)
   :general
   ([remap query-replace] #'anzu-query-replace)
   ([remap query-replace-regexp] #'anzu-query-replace-regexp))
@@ -168,6 +185,9 @@
   (add-to-list 'projectile-globally-ignored-directories ".terraform")
   (projectile-mode 1)
   :general ("C-c p" #'projectile-command-map))
+
+(elpaca-use-package treemacs-projectile
+  :after (treemacs projectile))
 
 ;; ** Window Management
 (elpaca-use-package ace-window

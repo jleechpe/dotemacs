@@ -5,7 +5,7 @@
 ;; Enhance default completion framework for minibuffers and any other
 ;; expansion systems.  
 (elpaca-use-package (vertico :files (:defaults "extensions/*"))
-  :init
+  :config
   (vertico-mode 1))
 (elpaca nil (use-package vertico-directory
               :after vertico
@@ -58,11 +58,11 @@
   :after (consult embark))
 
 (elpaca-use-package corfu
-  :init (global-corfu-mode)
+  :config (global-corfu-mode)
   :general
   ("M-<tab>" #'complete-symbol)
   ("M-/" #'completion-at-point)
-  :config
+  :init
   (setq corfu-auto t
         corfu-auto-delay 0.1
         corfu-preselect-first t

@@ -38,5 +38,7 @@
 ;; Disable CUA editing but keep rectangle
 (setq cua-enable-cua-keys 'nil)
 
+;; ** Buffer management
+
 ;; * Provide
 (provide 'config-system)
