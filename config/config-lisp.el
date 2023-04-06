@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(elpaca-use-package sly
+(use-package sly
                     :defer t
                     :commands (sly sly-connect)
                     :config

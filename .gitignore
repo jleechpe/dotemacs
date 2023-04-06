@@ -52,7 +52,7 @@ flycheck_*.el
 
 # elpaca packages
 /elpaca/
-
+/eln-cache/
 # system cache directories
 /.cache/
 

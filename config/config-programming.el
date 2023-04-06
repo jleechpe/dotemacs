@@ -3,48 +3,48 @@
 ;; * Programming related
 
 ;; ** Programming language modes
-(elpaca-use-package terraform-mode
+(use-package terraform-mode
   :defer t
   :mode "\\.tf\\'"
   :config
   (setq lsp-terraform-ls-enable-show-reference t)
   )
 
-(elpaca-use-package powershell
+(use-package powershell
   :defer t)
 
-(elpaca-use-package fish-mode
+(use-package fish-mode
   :defer t)
 
-(elpaca-use-package puppet-mode
+(use-package puppet-mode
   :defer t)
 
-(elpaca-use-package dockerfile-mode
+(use-package dockerfile-mode
   :defer t)
 
 ;; *** DotNet
-(elpaca-use-package csharp-mode
+(use-package csharp-mode
   :defer t)
 
-(elpaca-use-package fsharp-mode
+(use-package fsharp-mode
   :defer t)
 
 ;; *** Java
-(elpaca-use-package lsp-java
+(use-package lsp-java
   :hook (java-mode . lsp))
 
 ;; *** Lisp
 
-(elpaca nil
-  (use-package emacs-lisp
-    :init
-    (defun ignore-scratch ()
-      (unless (string= (buffer-name) "*scratch*")
-        (outshine-mode 1)))
-    :hook (emacs-lisp-mode . ignore-scratch)))
+(use-package emacs-lisp
+  :elpaca nil
+  :init
+  (defun ignore-scratch ()
+    (unless (string= (buffer-name) "*scratch*")
+      (outshine-mode 1)))
+  :hook (emacs-lisp-mode . ignore-scratch))
 
 ;; *** Python
-(elpaca-use-package python
+(use-package python
   :defer t
   :config
   (setq python-indent-guess-indent-offset-verbose nil)
@@ -61,10 +61,11 @@
    (t
     (setq python-shell-interpreter "python"))))
 
-(elpaca nil (use-package inferior-python-mode
-  :hook (inferior-python-mode . hide-mode-line-mode)))
+(use-package inferior-python-mode
+  :elpaca nil
+  :hook (inferior-python-mode . hide-mode-line-mode))
 
-(elpaca-use-package lsp-pyright
+(use-package lsp-pyright
   :defer t
   :config
   (setq lsp-pyright-disable-language-services nil
@@ -75,14 +76,14 @@
                           (require 'lsp-pyright) (lsp-deferred)))))
 
 ;; ** Data
-(elpaca-use-package yaml-mode
+(use-package yaml-mode
   :defer t)
 
-(elpaca-use-package json-mode
+(use-package json-mode
   :defer t)
 
 ;; ** OS Packages
-(elpaca-use-package systemd
+(use-package systemd
   :defer t)
 
 ;; * Provide

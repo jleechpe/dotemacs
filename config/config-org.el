@@ -22,7 +22,7 @@
   (interactive "P")
   (org-agenda arg "a"))
 
-(elpaca-use-package org
+(use-package org
   :defer t
   :hook
   ((org-mode . auto-fill-mode)
@@ -125,7 +125,7 @@
 
 ;; ** Roam
 
-(elpaca-use-package org-roam
+(use-package org-roam
   :defer t
   :init
   (setq org-roam-v2-ack t
@@ -196,23 +196,23 @@
          (org-mode . my/org-roam-update-todo-on-save)
          (org-mode . my/org-roam-update-todo-property)))
 
-(elpaca-use-package org-roam-ui
+(use-package org-roam-ui
   :defer t)
 
 ;; ** Outlining
-(elpaca-use-package outshine
+(use-package outshine
   :commands outshine-mode
   :config
   :diminish "Outl")
 
-(elpaca-use-package outorg
+(use-package outorg
   :after org
   :defer t
   :commands (outorg-edit-as-org))
 
-(elpaca nil
-  (use-package outline
-    :diminish outline-minor-mode))
+(use-package outline
+  :elpaca nil
+  :diminish outline-minor-mode)
 
 ;; * Provide
 (provide 'config-org)

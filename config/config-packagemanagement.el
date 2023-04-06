@@ -1,12 +1,17 @@
 ;; -*- lexical-binding: t; -*-
-;; * Package configuration management
+1;; * Package configuration management
 (elpaca use-package
   (setq use-package-verbose t
         use-package-compute-statistics t)
   (require 'use-package))
 
-(elpaca-use-package general)
+(elpaca elpaca-use-package
+	(elpaca-use-package-mode)
+	(setq elpaca-use-package-by-default t))
 
+(elpaca-wait)
+(use-package general :elpaca t)
+(elpaca-wait)
 ;; ** Benchmark Init File
 ;; Loading use-package and general first are low cost
 (elpaca benchmark-init

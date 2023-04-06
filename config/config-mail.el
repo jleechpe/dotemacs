@@ -61,7 +61,8 @@
 (elpaca nil
   (use-package mu4e
     :defer t
-    :commands mu4e
+    :commands (mu4e mu4e-update-index)
+    :elpaca nil
     :config
     (defun my/update-mu4e-contexts ()
       ""
@@ -105,7 +106,7 @@
     :hook
     (mu4e-headers-mode . (lambda () (auto-composition-mode 0)))))
 
-(elpaca-use-package mu4e-alert
+(use-package mu4e-alert
   :after mu4e
   :config
   (mu4e-alert-enable-mode-line-display)
@@ -113,26 +114,26 @@
   (setq doom-modeline-mu4e t))
 
 ;; * BBDB
-
-(elpaca-use-package (bbdb ;:files (:defaults "lisp/*")
-                     :pre-build (("./autogen.sh")("./configure")("make"))
-                     )
-  :defer t
-  :config
-  (bbdb-initialize 'mu4e 'pgp 'anniv)
-  ;; Currently does not auto-initialize..
-  (bbdb-mua-auto-update-init 'mu4e)
-  (bbdb-insinuate-mu4e)
-  (setq bbdb-mail-user-agent 'mu4e-user-agent
-        mu4e-view-mode-hook 'bbdb-mua-auto-update
-        mu4e~view-buffer-name "*Article*"
-        bbdb-mua-pop-up t
-        mu4e-compose-complete-addresses t
-        mu4e-view-show-addresses t
-        bbdb-mua-auto-update-p 'query
-        company-bbdb-modes '(message-mode mu4e-compose-mode))
-  :hook
-  (bbdb-notice-record . bbdb-auto-notes))
+;; (elpaca (bbdb ;:files (:defaults "lisp/*")
+;;          :pre-build '(("./autogen.sh")("./configure")("make"))
+;;          )
+;;   (use-package bbdb
+;;   :defer t
+;;   :config
+;;   (bbdb-initialize 'mu4e 'pgp 'anniv)
+;;   ;; Currently does not auto-initialize..
+;;   (bbdb-mua-auto-update-init 'mu4e)
+;;   (bbdb-insinuate-mu4e)
+;;   (setq bbdb-mail-user-agent 'mu4e-user-agent
+;;         mu4e-view-mode-hook 'bbdb-mua-auto-update
+;;         mu4e~view-buffer-name "*Article*"
+;;         bbdb-mua-pop-up t
+;;         mu4e-compose-complete-addresses t
+;;         mu4e-view-show-addresses t
+;;         bbdb-mua-auto-update-p 'query
+;;         company-bbdb-modes '(message-mode mu4e-compose-mode))
+;;   :hook
+;;   (bbdb-notice-record . bbdb-auto-notes)))
 
 
 ;; * Provide

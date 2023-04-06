@@ -1,11 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 
-(elpaca-use-package flycheck
+(use-package flycheck
   :defer t
   :hook ((yaml-mode powershell-mode text-mode) . flycheck-mode)
   )
 
-(elpaca-use-package lsp-mode
+(use-package lsp-mode
   :defer t
   :commands lsp
   :init
@@ -29,7 +29,7 @@
          (lsp-mode . yas-minor-mode)
          (lsp-completion-mode . corfu-lsp-completion)))
 
-(elpaca-use-package lsp-ui
+(use-package lsp-ui
   :after lsp-mode
   :config
   (setq lsp-ui-sideline-show-diagnostics t
@@ -46,12 +46,12 @@
   (lsp-command-map
    "s-n" #'lsp-ui-imenu))
 
-(elpaca-use-package lsp-treemacs
+(use-package lsp-treemacs
   :after lsp-mode
   :config
   (lsp-treemacs-sync-mode 1))
 
-(elpaca-use-package dap-mode
+(use-package dap-mode
   :defer t
   :after lsp-mode
   :config

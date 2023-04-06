@@ -3,15 +3,15 @@
 ;; ** Server
 ;; Start server to ensure it's running
 
-(elpaca nil
-         (use-package server
-           :config
-           (unless (server-running-p)
-             (server-start))))
+(use-package server
+  :elpaca nil
+  :config
+  (unless (server-running-p)
+    (server-start)))
 
 ;; * Edit Server
 ;; Allow edit-with-emacs to work
-(elpaca-use-package edit-server
+(use-package edit-server
                     :commands edit-server-start
                     :init (if after-init-time
                               (edit-server-start)

@@ -19,18 +19,18 @@
 (column-number-mode 1)
 (show-paren-mode 1)
 
-(elpaca nil
-  (use-package whitespace
-    :init
-    (setq whitespace-line-column 80
-          whitespace-global-modes '(not circe-mode)
-          whitespace-style '(tabs newline tab-mark space-mark
-                                  newline-mark face lines-tail)
-          whitespace-display-mappings '(
-                                        (space-mark nil)
-                                        (newline-mark 10 [172 10])
-                                        (tab-mark 9 [183 9] [92 9])))
-    :config (global-whitespace-mode 1)))
+(use-package whitespace
+  :elpaca nil
+  :init
+  (setq whitespace-line-column 80
+        whitespace-global-modes '(not circe-mode)
+        whitespace-style '(tabs newline tab-mark space-mark
+                                newline-mark face lines-tail)
+        whitespace-display-mappings '(
+                                      (space-mark nil)
+                                      (newline-mark 10 [172 10])
+                                      (tab-mark 9 [183 9] [92 9])))
+  :config (global-whitespace-mode 1))
 
 ;; ** Font
 
@@ -43,7 +43,7 @@
 
 ;; ** Theme
 ;; Rainbow mode colors text when a color is recognized
-(elpaca-use-package rainbow-mode
+(use-package rainbow-mode
   :hook (prog-mode . rainbow-mode))
 
 ;; Solaire makes non-file buffers slightly different background to
@@ -51,17 +51,17 @@
 (elpaca solaire-mode
   (solaire-global-mode 1))
 
-(elpaca-use-package doom-themes
+(use-package doom-themes
   :config
   (defun theme-color (color)
     (nth 2 (assoc color doom-themes--colors)))
   (load-theme emacs-theme t))
 
 ;; ** Modeline
-(elpaca-use-package minions
+(use-package minions
   :config (minions-mode 1))
 
-(elpaca-use-package doom-modeline
+(use-package doom-modeline
   :config (doom-modeline-mode 1)
   :init
   (setq doom-modeline-minor-modes t
@@ -77,7 +77,7 @@
   )
 
 ;; ** Delimiters
-(elpaca-use-package rainbow-delimiters
+(use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; ** File Treeview
@@ -85,7 +85,7 @@
 ;; perspective to show desired folders rather than purely follow the
 ;; current file.
 
-(elpaca-use-package treemacs
+(use-package treemacs
   :config
   (treemacs-fringe-indicator-mode 'only-when-focused)
   (defun my/treemacs-setup-title ()
@@ -107,15 +107,15 @@
            "C-t" #'treemacs-find-file
            "M-t" #'treemacs-find-tag))
 
-(elpaca-use-package all-the-icons
+(use-package all-the-icons
   :config
   (require 'all-the-icons))
 
-(elpaca-use-package all-the-icons-completion
+(use-package all-the-icons-completion
   :init (all-the-icons-completion-mode)
   :hook (marginalia-mode . #'all-the-icons-completion-marginalia-setup))
 
-(elpaca-use-package treemacs-all-the-icons
+(use-package treemacs-all-the-icons
   :after (treemacs all-the-icons))
 
 ;; * UX
@@ -124,26 +124,26 @@
 (setq require-final-newline t)
 
 ;; ** Keybindings
-(elpaca-use-package which-key
+(use-package which-key
   :config (which-key-mode 1))
 (elpaca nil
   (general-def
-  "C-M-i" #'delete-indentation
-  "C-M-=" #'align-regexp))
+    "C-M-i" #'delete-indentation
+    "C-M-=" #'align-regexp))
 
 ;; ** Diffs
 (setq ediff-window-setup-function #'ediff-setup-windows-plain
       ediff-split-window-function #'split-window-horizontally)
 
 ;; ** Search info
-(elpaca-use-package anzu
+(use-package anzu
   :config (global-anzu-mode 1)
   :general
   ([remap query-replace] #'anzu-query-replace)
   ([remap query-replace-regexp] #'anzu-query-replace-regexp))
 
 ;; ** Undo
-(elpaca-use-package undo-tree
+(use-package undo-tree
   :diminish
   :init
   (setq undo-tree-history-directory-alist
@@ -152,7 +152,7 @@
   (global-undo-tree-mode 1))
 
 ;; ** SmartParens
-(elpaca-use-package smartparens
+(use-package smartparens
   :config
   (defun configure-smartparens ()
     (require 'smartparens-config))
@@ -160,20 +160,19 @@
          (prog-mode . smartparens-mode)))
 
 ;; ** Dired extras
-(elpaca-use-package (sunrise-commander
-                     :host github
-                     :repo "sunrise-commander/sunrise-commander")
+(use-package sunrise-commander
+  :disabled t
   :commands sunrise)
 
 ;; ** Multiple Cursors
-(elpaca-use-package multiple-cursors
+(use-package multiple-cursors
   :general
   ("C-<" #'mc/mark-previous-like-this)
   ("C->" #'mc/mark-next-like-this)
   ("C-c C-<" #'mc/mark-all-like-this-dwim))
 
 ;; ** Projects
-(elpaca-use-package projectile
+(use-package projectile
   :init
   (setq projectile-mode-line-prefix " Prj"
         projectile-completion-system 'auto
@@ -186,11 +185,11 @@
   (projectile-mode 1)
   :general ("C-c p" #'projectile-command-map))
 
-(elpaca-use-package treemacs-projectile
+(use-package treemacs-projectile
   :after (treemacs projectile))
 
 ;; ** Window Management
-(elpaca-use-package ace-window
+(use-package ace-window
   :general ("M-o" #'ace-window)
   :config (ace-window-display-mode 1))
 

@@ -3,28 +3,29 @@
 ;; * General Completion
 
 ;; Enhance default completion framework for minibuffers and any other
-;; expansion systems.  
-(elpaca-use-package (vertico :files (:defaults "extensions/*"))
-  :config
-  (vertico-mode 1))
-(elpaca nil (use-package vertico-directory
-              :after vertico
-              :general
-              (:keymaps 'vertico-map
-                        "\r" #'vertico-directory-enter
-                        "\d" #'vertico-directory-delete-char
-                        "M-\d" #'vertico-directory-delete-word)))
-
+;; expansion systems.
+(elpaca (vertico :files(:defaults "extensions/*"))
+  (use-package vertico
+    :config
+    (vertico-mode 1))
+  (use-package vertico-directory
+    :after vertico
+    :elpaca nil
+    :general
+    (:keymaps 'vertico-map
+              "\r" #'vertico-directory-enter
+              "\d" #'vertico-directory-delete-char
+              "M-\d" #'vertico-directory-delete-word)))
 
 (elpaca orderless
   (setq completion-styles '(orderless)))
 
-(elpaca-use-package marginalia
+(use-package marginalia
   :config (marginalia-mode 1)
   :general
   (minibuffer-mode-map "s-a" #'marginalia-cycle))
 
-(elpaca-use-package consult
+(use-package consult
   :config
   (setq consult-project-root-function #'projectile-project-root
         consult-narrow-key "<"
@@ -45,34 +46,36 @@
   ("M-g M-i" #'consult-imenu)
   ("s-s" #'consult-isearch-history))
 
-(elpaca-use-package consult-projectile
+(use-package consult-projectile
   :commands consult-projectile
   :general
   ("C-x f" #'consult-projectile))
 
-(elpaca-use-package embark
+(use-package embark
   :defer t
   :general ("s-e" #'embark-act))
 
-(elpaca-use-package embark-consult
+(use-package embark-consult
   :after (consult embark))
 
-(elpaca-use-package corfu
-  :config (global-corfu-mode)
-  :general
-  ("M-<tab>" #'complete-symbol)
-  ("M-/" #'completion-at-point)
-  :init
-  (setq corfu-auto t
-        corfu-auto-delay 0.1
-        corfu-preselect-first t
-        corfu-preview-current t
-        corfu-cycle t
-        corfu-quit-at-boundary nil
-        corfu-quit-no-match t
-        corfu-scroll-margin 2))
+(elpaca (corfu :files (:defaults "extensions/*"))
+  (use-package corfu
+    :elpaca nil
+    :general
+    ("M-<tab>" #'complete-symbol)
+    ("M-/" #'completion-at-point)
+    :init
+    (global-corfu-mode)
+    (setq corfu-auto t
+          corfu-auto-delay 0.1
+          corfu-preselect-first t
+          corfu-preview-current t
+          corfu-cycle t
+          corfu-quit-at-boundary nil
+          corfu-quit-no-match t
+          corfu-scroll-margin 2)))
 
-(elpaca-use-package cape
+(use-package cape
   :config
   (defun my/tabnine-capf ()
     (interactive)
@@ -85,7 +88,7 @@
   ("M-<tab>" #'my/tabnine-capf)
   )
 
-(elpaca-use-package kind-icon
+(use-package kind-icon
   :after corfu
   :custom
   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
@@ -95,12 +98,12 @@
 
 ;; *** Tabnine support
 (elpaca company)
-(elpaca-use-package company-tabnine
+(use-package company-tabnine
   :defer t
   :after (company corfu))
 
 ;; ** Snippets
-(elpaca-use-package yasnippet
+(use-package yasnippet
   :init
   (setq yas-prompt-functions '(yas-completing-prompt
                                yas-dropdown-prompt
