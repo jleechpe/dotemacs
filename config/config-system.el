@@ -29,6 +29,7 @@
 
 (setq recentf-save-file (expand-file-name "recentf" user-cache-dir))
 (recentf-mode 1)
+(add-hook 'find-file-hook #'recentf-save-list)
 
 ;; ** Abbrevs
 ;; Keep abbrevs with config (chemacs)
