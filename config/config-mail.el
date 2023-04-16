@@ -94,7 +94,7 @@
      mu4e-completing-read-function 'completing-read
 
      ;; Sendmail
-     sendmail-program "/usr/bin/msmtp"
+     sendmail-program (executable-find "msmtp")
      message-sendmail-f-is-evil t
      mail-specify-envelope-from t
      mail-envelope-from 'header
