@@ -11,7 +11,7 @@
 (defgroup config-org nil ""
   :group 'config-init)
 
-(defcustom default-org-agenda-files user-org-dir
+(defcustom default-org-agenda-files `(,user-org-dir)
   ""
   :type 'list
   :group 'config-org)
