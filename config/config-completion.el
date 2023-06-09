@@ -5,9 +5,7 @@
 ;; Enhance default completion framework for minibuffers and any other
 ;; expansion systems.
 (elpaca (vertico :files(:defaults "extensions/*"))
-  (use-package vertico
-    :config
-    (vertico-mode 1))
+  (use-package vertico)
   (use-package vertico-directory
     :after vertico
     :elpaca nil
@@ -15,7 +13,8 @@
     (:keymaps 'vertico-map
               "\r" #'vertico-directory-enter
               "\d" #'vertico-directory-delete-char
-              "M-\d" #'vertico-directory-delete-word)))
+              "M-\d" #'vertico-directory-delete-word))
+  (vertico-mode))
 
 (elpaca orderless
   (setq completion-styles '(orderless)))
@@ -73,7 +72,8 @@
           corfu-cycle t
           corfu-quit-at-boundary nil
           corfu-quit-no-match t
-          corfu-scroll-margin 2)))
+          corfu-scroll-margin 2))
+  (global-corfu-mode))
 
 (use-package cape
   :config

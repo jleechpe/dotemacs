@@ -13,7 +13,7 @@
         :vars '((user-mail-address . "jonathan@leechpepin.com")
                 (user-full-name . "Jonathan Leech-Pepin")
                 (mu4e-trash-folder . "/jlp/Trash")
-                (mu4e-drafs-folder . "/jlp/Drafts")
+                (mu4e-drafts-folder . "/jlp/Drafts")
                 (mu4e-sent-folder . "/jlp/Sent")
                 (mu4e-refile-folder .
                                     (lambda (msg)
@@ -51,7 +51,7 @@
         :vars '((user-mail-address . "jlp@consultjlp.com")
                 (user-full-name . "Jonathan Leech-Pepin")
                 (mu4e-trash-folder . "/consultjlp/Trash")
-                (mu4e-drafs-folder . "/consultjlp/Drafts")
+                (mu4e-drafts-folder . "/consultjlp/Drafts")
                 (mu4e-sent-folder . "/consultjlp/Sent")
                 (mu4e-compose-signature .
                                         (concat

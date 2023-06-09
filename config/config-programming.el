@@ -10,6 +10,9 @@
   (setq lsp-terraform-ls-enable-show-reference t)
   )
 
+(use-package lua-mode
+  :defer t)
+
 (use-package powershell
   :defer t)
 
