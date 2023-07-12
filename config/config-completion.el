@@ -75,18 +75,19 @@
           corfu-scroll-margin 2))
   (global-corfu-mode))
 
-(use-package cape
-  :config
-  (defun my/tabnine-capf ()
-    (interactive)
-    (let ((completion-at-point-functions
-           (list (cape-company-to-capf #'company-tabnine))))
-      (completion-at-point)))
-  :demand t
-  :commands cape-abbrev
-  :general
-  ("M-<tab>" #'my/tabnine-capf)
-  )
+;; (use-package cape
+;;   :disabled t
+;;   :config
+;;   (defun my/tabnine-capf ()
+;;     (interactive)
+;;     (let ((completion-at-point-functions
+;;            (list (cape-company-to-capf #'company-tabnine))))
+;;       (completion-at-point)))
+;;   :demand t
+;;   :commands cape-abbrev
+;;   :general
+;;   ("M-<tab>" #'my/tabnine-capf)
+;;   )
 
 (use-package kind-icon
   :after corfu
@@ -97,10 +98,37 @@
 
 
 ;; *** Tabnine support
-(elpaca company)
-(use-package company-tabnine
-  :defer t
-  :after (company corfu))
+
+;; ;; Company-tabnine, requires company
+;; (elpaca company)
+;; (use-package company-tabnine
+;;   :defer t
+;;   :after (company corfu))
+(use-package editorconfig)
+(elpaca (tabnine :repo "https://github.com/shuxiao9058/tabnine"
+                 :refs nil
+                 :files (:defaults))
+  (use-package tabnine
+    :elpaca nil
+    :commands (tabnine-start-process)
+    :hook (prog-mode . tabnine-mode)
+    :diminish "⌬"
+    :custom
+    (tabnine-wait 1)
+    (tabnine-minimum-prefix-length 0)
+    :hook ((on-first-input . tabnine-start-process)
+           (kill-emacs . tabnine-kill-process))
+    :config (add-to-list 'completion-at-point-functions #'tabnine-completion-at-point)
+    :general
+    (:keymaps 'tabnine-mode-map
+              "TAB" #'tabnine-accept-completion
+              "<tab>" #'tabnine-accept-completion)
+    (:keymaps 'tabnine-completion-map
+              "M-f" #'tabnine-accept-completion-by-word
+              "M-<return>" #'tabnine-accept-completion-by-line
+              "C-g" #'tabnine-clear-overlay
+              "M-[" #'tabnine-previous-completion
+              "M-]" #'tabnine-next-completion)))
 
 ;; ** Snippets
 (use-package yasnippet

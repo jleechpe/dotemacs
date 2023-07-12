@@ -58,56 +58,56 @@
                                          "Thank you,\n"
                                          "JLP\n")))))))
 
-(elpaca nil
-  (use-package mu4e
-    :defer t
-    :commands (mu4e mu4e-update-index)
-    :elpaca nil
-    :config
-    (defun my/update-mu4e-contexts ()
-      ""
-      (interactive)
-      (setq mu4e-contexts nil)
-      (mapc (lambda (context)
-              (let ((key (car context))
-                    (val (cadr context)))
-                (if (or (eq (car context) config-enable-mail)
-                        (and (listp config-enable-mail)
-                             (member (car context) config-enable-mail))
-                        (eq config-enable-mail 'all)
-                        (eq config-enable-mail t))
-                    (add-to-list 'mu4e-contexts (eval val)))))
-            my/mu4e-contexts))
-    (my/update-mu4e-contexts)
-    (defun my/mu4e-context-dirs (dir)
-      (expand-file-name dir
-                        (expand-file-name mu4e-context-dir mu4e-maildir)))
-    (setq
-     mu4e-maildir "~/.mail"
-     mu4e-trash-folder "/Trash"
-     mu4e-drafts-folder "/Drafts"
-     mu4e-sent-folder "/Sent"
+(use-package mu4e
+  :defer t
+  :commands (mu4e mu4e-update-index)
+  :elpaca nil
+  :config
+  (defun my/update-mu4e-contexts ()
+    ""
+    (interactive)
+    (setq mu4e-contexts nil)
+    (mapc (lambda (context)
+            (let ((key (car context))
+                  (val (cadr context)))
+              (if (or (eq (car context) config-enable-mail)
+                      (and (listp config-enable-mail)
+                           (member (car context) config-enable-mail))
+                      (eq config-enable-mail 'all)
+                      (eq config-enable-mail t))
+                  (add-to-list 'mu4e-contexts (eval val)))))
+          my/mu4e-contexts))
+  (my/update-mu4e-contexts)
+  (defun my/mu4e-context-dirs (dir)
+    (expand-file-name dir
+                      (expand-file-name mu4e-context-dir mu4e-maildir)))
+  (setq
+   mu4e-maildir "~/.mail"
+   mu4e-trash-folder "/Trash"
+   mu4e-drafts-folder "/Drafts"
+   mu4e-sent-folder "/Sent"
 
-     mu4e-use-fancy-chars t
-     mu4e-sent-messages-behavior 'sent
-     mu4e-change-filenames-when-moving t
-     mu4e-completing-read-function 'completing-read
+   mu4e-use-fancy-chars t
+   mu4e-sent-messages-behavior 'sent
+   mu4e-change-filenames-when-moving t
+   mu4e-completing-read-function 'completing-read
 
-     ;; Sendmail
-     sendmail-program (executable-find "msmtp")
-     message-sendmail-f-is-evil t
-     mail-specify-envelope-from t
-     mail-envelope-from 'header
-     message-sendmail-extra-arguments '("--read-envelope-from")
-     send-mail-function 'smtpmail-send-it
-     message-send-mail-function 'message-send-mail-with-sendmail
-     )
+   ;; Sendmail
+   sendmail-program (executable-find "msmtp")
+   message-sendmail-f-is-evil t
+   mail-specify-envelope-from t
+   mail-envelope-from 'header
+   message-sendmail-extra-arguments '("--read-envelope-from")
+   send-mail-function 'smtpmail-send-it
+   message-send-mail-function 'message-send-mail-with-sendmail
+   )
 
-    :hook
-    (mu4e-headers-mode . (lambda () (auto-composition-mode 0)))))
+  :hook
+  (mu4e-headers-mode . (lambda () (auto-composition-mode 0))))
 
 (use-package mu4e-alert
   :after mu4e
+  :ensure t
   :config
   (mu4e-alert-enable-mode-line-display)
   (mu4e-alert-enable-notifications)
