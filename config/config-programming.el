@@ -2,6 +2,13 @@
 
 ;; * Programming related
 
+;; ** Ensure editor configuration
+(use-package editorconfig
+  :config (editorconfig-mode 1))
+
+(use-package envrc
+  :config (envrc-global-mode))
+
 ;; ** Programming language modes
 (use-package terraform-mode
   :defer t

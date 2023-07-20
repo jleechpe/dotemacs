@@ -41,6 +41,19 @@
                     :weight 'normal
                     :width 'normal)
 
+;; ** Buffer management
+(defun my/ibuffer-project-run ()
+  (setq ibuffer-filter-groups
+                    (ibuffer-project-generate-filter-groups))
+              (unless (eq ibuffer-sorting-mode 'project-file-relative)
+                (ibuffer-do-sort-by-project-file-relative)))
+(use-package ibuffer-project
+  :ensure t
+  :hook (ibuffer . my/ibuffer-project-run))
+(use-package ibuffer-sidebar
+  :commands (ibuffer-sidebar-toggle-sidebar)
+  :hook (ibuffer-sidebar-mode . my/ibuffer-project-run))
+
 ;; ** Theme
 ;; Rainbow mode colors text when a color is recognized
 (use-package rainbow-mode
@@ -172,21 +185,15 @@
   ("C-c C-<" #'mc/mark-all-like-this-dwim))
 
 ;; ** Projects
-(use-package projectile
-  :init
-  (setq projectile-mode-line-prefix " Prj"
-        projectile-completion-system 'auto
-        projectile-globally-ignored-files '(".tfstate" ".gitignore")
-        ;; cache files
-        projectile-cache-file (expand-file-name "projectile.cache" user-cache-dir)
-        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-cache-dir))
-  :config
-  (add-to-list 'projectile-globally-ignored-directories ".terraform")
-  (projectile-mode 1)
-  :general ("C-c p" #'projectile-command-map))
+(use-package project)
+(use-package project-mode-line-tag
+  :config (project-mode-line-tag-mode))
 
-(use-package treemacs-projectile
-  :after (treemacs projectile))
+(use-package project-treemacs
+  :after (treemacs project)
+  :config
+  (project-treemacs-mode))
+
 
 ;; ** Window Management
 (use-package ace-window

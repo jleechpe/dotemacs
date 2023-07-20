@@ -8,6 +8,9 @@
   :config
   (apheleia-global-mode 1))
 
+(use-package ws-butler
+  :config (ws-butler-global-mode 1))
+
 ;; ** Spell Check
 (use-package flyspell-correct
   :general

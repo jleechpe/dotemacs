@@ -26,8 +26,7 @@
 
 (use-package consult
   :config
-  (setq consult-project-root-function #'projectile-project-root
-        consult-narrow-key "<"
+  (setq consult-narrow-key "<"
         consult-preview-key '(:debounce 0.2 any))
   :general
   ([remap switch-to-buffer] #'consult-buffer)
@@ -44,11 +43,6 @@
   ("M-g i" #'consult-project-imenu)
   ("M-g M-i" #'consult-imenu)
   ("s-s" #'consult-isearch-history))
-
-(use-package consult-projectile
-  :commands consult-projectile
-  :general
-  ("C-x f" #'consult-projectile))
 
 (use-package embark
   :defer t
@@ -104,7 +98,7 @@
 ;; (use-package company-tabnine
 ;;   :defer t
 ;;   :after (company corfu))
-(use-package editorconfig)
+
 (elpaca (tabnine :repo "https://github.com/shuxiao9058/tabnine"
                  :refs nil
                  :files (:defaults))
@@ -115,15 +109,18 @@
     :diminish "⌬"
     :custom
     (tabnine-wait 1)
-    (tabnine-minimum-prefix-length 0)
+    (tabnine-idle-delay 0.5)
+    (tabnine-minimum-prefix-length 3)
     :hook ((on-first-input . tabnine-start-process)
            (kill-emacs . tabnine-kill-process))
-    :config (add-to-list 'completion-at-point-functions #'tabnine-completion-at-point)
+    :config
+    (add-to-list 'completion-at-point-functions
+                 #'tabnine-completion-at-point t)
+    (add-to-list 'kind-icon-mapping '(tabnine "ai" :icon "cloud" :face shadow) t)
     :general
-    (:keymaps 'tabnine-mode-map
-              "TAB" #'tabnine-accept-completion
-              "<tab>" #'tabnine-accept-completion)
     (:keymaps 'tabnine-completion-map
+              "<tab>" #'tabnine-accept-completion
+              "M-<tab>" #'tabnine-accept-completion
               "M-f" #'tabnine-accept-completion-by-word
               "M-<return>" #'tabnine-accept-completion-by-line
               "C-g" #'tabnine-clear-overlay
