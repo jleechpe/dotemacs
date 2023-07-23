@@ -36,14 +36,15 @@
   ([remap repeat-complex-command] #'consult-complex-command)
   ([remap goto-line] #'consult-goto-line)
   ("M-g M-g" #'consult-line)
+  ("M-g M-G" #'consult-line-multi)
   ([remap apropos-command] #'consult-apropos)
   ([remap yank-pop] #'consult-yank-pop)
   ([remap pop-global-mark] #'consult-global-mark)
   ("C-c k" #'consult-macro)
   ("M-g o" #'consult-outline)
-  ("M-g i" #'consult-project-imenu)
+  ("M-g i" #'consult-imenu-multi)
   ("M-g M-i" #'consult-imenu)
-  ("s-s" #'consult-isearch-history)
+  ("C-S-s" #'consult-isearch-history)
   (:keymaps 'project-prefix-map
             [remap project-find-regexp] #'consult-ripgrep))
 
