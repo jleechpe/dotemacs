@@ -30,6 +30,7 @@
         consult-preview-key '(:debounce 0.2 any))
   :general
   ([remap switch-to-buffer] #'consult-buffer)
+  ([remap project-switch-to-buffer] #'consult-project-buffer)
   ([remap switch-to-buffer-other-window] #'consult-buffer-other-window)
   ([remap switch-to-buffer-other-frame] #'consult-buffer-other-frame)
   ([remap repeat-complex-command] #'consult-complex-command)

@@ -8,6 +8,8 @@
 (use-package lsp-mode
   :defer t
   :commands lsp
+  :custom
+  (lsp-keymap-prefix "C-c l")
   :init
   (setq lsp-prefer-flymake nil
         lsp-session-file (expand-file-name ".lsp-session-v1" user-cache-dir)
