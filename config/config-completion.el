@@ -43,7 +43,9 @@
   ("M-g o" #'consult-outline)
   ("M-g i" #'consult-project-imenu)
   ("M-g M-i" #'consult-imenu)
-  ("s-s" #'consult-isearch-history))
+  ("s-s" #'consult-isearch-history)
+  (:keymaps 'project-prefix-map
+            [remap project-find-regexp] #'consult-ripgrep))
 
 (use-package embark
   :defer t
