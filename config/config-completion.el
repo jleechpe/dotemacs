@@ -45,8 +45,7 @@
   ("M-g i" #'consult-imenu-multi)
   ("M-g M-i" #'consult-imenu)
   ("C-S-s" #'consult-isearch-history)
-  (:keymaps 'project-prefix-map
-            [remap project-find-regexp] #'consult-ripgrep))
+  ([remap project-find-regexp] #'consult-ripgrep))
 
 (use-package embark
   :defer t
