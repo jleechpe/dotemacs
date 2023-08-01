@@ -39,6 +39,9 @@
 ;; Disable CUA editing but keep rectangle
 (setq cua-enable-cua-keys 'nil)
 
+;; ** Fill Column
+(setq-default fill-column 80)
+
 ;; ** Buffer management
 
 ;; * Provide

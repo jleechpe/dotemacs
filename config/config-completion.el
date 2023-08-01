@@ -35,17 +35,35 @@
   ([remap switch-to-buffer-other-frame] #'consult-buffer-other-frame)
   ([remap repeat-complex-command] #'consult-complex-command)
   ([remap goto-line] #'consult-goto-line)
-  ("M-g M-g" #'consult-line)
-  ("M-g M-G" #'consult-line-multi)
   ([remap apropos-command] #'consult-apropos)
   ([remap yank-pop] #'consult-yank-pop)
   ([remap pop-global-mark] #'consult-global-mark)
-  ("C-c k" #'consult-macro)
-  ("M-g o" #'consult-outline)
-  ("M-g i" #'consult-imenu-multi)
-  ("M-g M-i" #'consult-imenu)
+  ("C-c k" #'consult-kmacro)
   ("C-S-s" #'consult-isearch-history)
-  ([remap project-find-regexp] #'consult-ripgrep))
+  ([remap project-find-regexp] #'consult-ripgrep)
+  (:keymaps 'goto-map
+            "M-g" #'consult-line
+            "M-G" #'consult-line-multi
+            "o" #'consult-outline
+            "i" #'consult-imenu-multi
+            "M-i" #'consult-imenu))
+
+(use-package consult-flycheck
+ :defer t
+ :after (consult flycheck)
+ :general
+ (:keymaps 'goto-map
+           "e" #' consult-flycheck))
+
+(use-package consult-lsp
+  :defer t
+  :after (consult lsp-mode)
+  :general
+  (:keymaps 'lsp-mode-map
+            [remap xref-find-apropos] #'consult-lsp-symbols)
+  (:keymaps 'search-map :predicate '(memq 'lsp-mode local-minor-modes)
+            "M-s" #'consult-lsp-file-symbols
+            "S" #'consult-lsp-symbols))
 
 (use-package embark
   :defer t
