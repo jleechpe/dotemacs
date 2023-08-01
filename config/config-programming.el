@@ -43,6 +43,11 @@
 (use-package lsp-java
   :hook (java-mode . lsp))
 
+;; *** Javascript
+
+;; Indent to 2 since I always set it manually
+(setq js-indent-level 2)
+
 ;; *** Lisp
 
 (use-package emacs-lisp
@@ -69,7 +74,12 @@
    ((executable-find "python2")
     (setq python-shell-interpreter "python2"))
    (t
-    (setq python-shell-interpreter "python"))))
+    (setq python-shell-interpreter "python")))
+  ;; Let Vale work with Python (doesn't inherit from base yet)
+  (flycheck-add-mode 'vale 'python-mode)
+  (flycheck-add-mode 'vale 'python-ts-mode)
+  ;; Match fill column to black settings
+  :hook ((python-base-mode . (lambda () (set-fill-column 88)))))
 
 (use-package inferior-python-mode
   :elpaca nil
@@ -77,11 +87,16 @@
 
 (use-package lsp-pyright
   :defer t
+  :init
+  (setq lsp-pyright-multi-root nil)
   :config
   (setq lsp-pyright-disable-language-services nil
         lsp-pyright-disable-organize-imports nil
         lsp-pyright-auto-import-completions t
         lsp-pyright-use-library-code-for-types t)
+  ;; Vale and Flake8 should run automagically
+  (flycheck-add-next-checker 'lsp '(warning . python-flake8))
+  (flycheck-add-next-checker 'lsp 'vale)
   :hook ((python-mode . (lambda ()
                           (require 'lsp-pyright) (lsp-deferred)))))
 

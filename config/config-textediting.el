@@ -6,6 +6,10 @@
 ;; formatting is done to the text
 (use-package apheleia
   :config
+  (setf (alist-get 'isort apheleia-formatters)
+      '("isort" "--profile" "black" "--stdout" "-"))
+  (setf (alist-get 'python-base-mode apheleia-mode-alist)
+        '(isort black))
   (apheleia-global-mode 1))
 
 (use-package ws-butler
