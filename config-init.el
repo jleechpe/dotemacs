@@ -121,7 +121,8 @@
                       (packagemanagement . t)
                       (irc . nil)
                       (shell . t)
-                      (os . t)))
+                      (os . t)
+                      (buffer . t)))
 
 ;; * Provide
 (provide 'config-init)

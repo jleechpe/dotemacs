@@ -90,19 +90,10 @@
           corfu-scroll-margin 2))
   (global-corfu-mode))
 
-;; (use-package cape
-;;   :disabled t
-;;   :config
-;;   (defun my/tabnine-capf ()
-;;     (interactive)
-;;     (let ((completion-at-point-functions
-;;            (list (cape-company-to-capf #'company-tabnine))))
-;;       (completion-at-point)))
-;;   :demand t
-;;   :commands cape-abbrev
-;;   :general
-;;   ("M-<tab>" #'my/tabnine-capf)
-;;   )
+(use-package cape
+  :config
+  :demand t
+  :commands cape-abbrev)
 
 (use-package kind-icon
   :after corfu

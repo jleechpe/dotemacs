@@ -42,7 +42,5 @@
 ;; ** Fill Column
 (setq-default fill-column 80)
 
-;; ** Buffer management
-
 ;; * Provide
 (provide 'config-system)
