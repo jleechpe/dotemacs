@@ -1,5 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
+;; * Time Tracking
+(use-package wakatime-mode
+  :init
+  (global-wakatime-mode 1))
+
 ;; * Programming related
 
 ;; ** Ensure editor configuration
