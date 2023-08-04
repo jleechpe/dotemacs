@@ -22,4 +22,5 @@
                    textediting
                    ui
                    vc
-                   mail))
+                   mail
+                   buffer))
