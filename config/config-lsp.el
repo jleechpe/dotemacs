@@ -49,13 +49,15 @@
 (use-package lsp-treemacs
   :after lsp-mode
   :config
-  (lsp-treemacs-sync-mode 1))
+  (lsp-treemacs-sync-mode 1)
+  :after (treemacs))
 
 (use-package dap-mode
   :defer t
   :after lsp-mode
   :config
-  (dap-auto-configure-mode))
+  (dap-auto-configure-mode)
+  :after (lsp-treemacs))
 
 ;; * Provide
 (provide 'config-lsp)

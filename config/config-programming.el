@@ -46,7 +46,8 @@
 
 ;; *** Java
 (use-package lsp-java
-  :hook (java-mode . lsp))
+  :hook (java-mode . lsp)
+  :after (treemacs))
 
 ;; *** Javascript
 

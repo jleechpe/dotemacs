@@ -63,7 +63,7 @@
               (symbol-value v))
              (condition
               (eval condition))))
-         (p (intern
+        (p (intern
              (mapconcat 'identity
                         (cl-remove-if 'nil
                                       (list prefix n))
@@ -107,7 +107,9 @@
 
 ;; *** Known config files
 ;; Define known config files
-(define-config-vars '((completion . t)
+(define-config-vars '((buffer . t)
+                      (dependencies . t)
+                      (completion . t)
                       (lisp . t)
                       (lsp . t)
                       (mail . nil)
@@ -121,8 +123,7 @@
                       (packagemanagement . t)
                       (irc . nil)
                       (shell . t)
-                      (os . t)
-                      (buffer . t)))
+                      (os . t)))
 
 ;; * Provide
 (provide 'config-init)

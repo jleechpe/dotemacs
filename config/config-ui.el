@@ -80,44 +80,6 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; ** File Treeview
-;; Treemacs allows management of projects/workspaces and filtering by
-;; perspective to show desired folders rather than purely follow the
-;; current file.
-
-(use-package treemacs
-  :config
-  (treemacs-fringe-indicator-mode 'only-when-focused)
-  (defun my/treemacs-setup-title ()
-    (let* ((bg (face-attribute 'default :background))
-           (bg2 (doom-lighten bg 0.2))
-           (fg (face-attribute 'default :foreground)))
-      (face-remap-add-relative
-       'header-line
-       :background bg :foreground fg
-       :box `(:line-width ,(/ (line-pixel-height) 4) :color ,bg2))))
-  :hook (treemacs-mode . my/treemacs-setup-title)
-  :commands (treemacs-select-window)
-  :general
-  ("M-0" #'treemacs-select-window)
-  (:prefix "s-t"
-           "1"   #'delete-other-window
-           "t"   #'treemacs
-           "B"   #'treemacs-bookmark
-           "C-t" #'treemacs-find-file
-           "M-t" #'treemacs-find-tag))
-
-(use-package all-the-icons
-  :config
-  (require 'all-the-icons))
-
-(use-package all-the-icons-completion
-  :init (all-the-icons-completion-mode)
-  :hook (marginalia-mode . #'all-the-icons-completion-marginalia-setup))
-
-(use-package treemacs-all-the-icons
-  :after (treemacs all-the-icons))
-
 ;; * UX
 ;; ** Defaults
 (setq-default indent-tabs-mode nil)

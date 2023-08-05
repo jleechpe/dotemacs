@@ -13,6 +13,8 @@
 ;; 
 (config-packages '(system
                    server
+                   dependencies
+                   buffer
                    shell
                    org
                    lisp
@@ -22,5 +24,4 @@
                    textediting
                    ui
                    vc
-                   mail
-                   buffer))
+                   mail))

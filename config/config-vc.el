@@ -17,11 +17,8 @@
   (use-package treemacs-magit
     :after (treemacs magit)))
 
-(elpaca-queue
- (use-package closql
-   :defer t)
- (use-package forge
-   :defer t))
+(use-package forge
+  :defer t)
 
 ;; ** Fossil
 (elpaca vc-fossil)

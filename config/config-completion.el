@@ -110,7 +110,8 @@
 ;; (use-package company-tabnine
 ;;   :defer t
 ;;   :after (company corfu))
-
+(use-package vterm
+  :ensure t)
 (elpaca (tabnine :repo "https://github.com/shuxiao9058/tabnine"
                  :refs nil
                  :files (:defaults))
@@ -128,7 +129,8 @@
     :config
     (add-to-list 'completion-at-point-functions
                  #'tabnine-completion-at-point t)
-    (add-to-list 'kind-icon-mapping '(tabnine "ai" :icon "cloud" :face shadow) t)
+    (add-to-list 'kind-icon-mapping
+                 '(tabnine "ai" :icon "cloud" :face shadow) t)
     :general
     (:keymaps 'tabnine-completion-map
               "<tab>" #'tabnine-accept-completion
@@ -138,7 +140,6 @@
               "C-g" #'tabnine-clear-overlay
               "M-[" #'tabnine-previous-completion
               "M-]" #'tabnine-next-completion)))
-
 ;; ** Snippets
 (use-package yasnippet
   :init
