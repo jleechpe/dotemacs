@@ -48,22 +48,22 @@
             "i" #'consult-imenu-multi
             "M-i" #'consult-imenu))
 
-(use-package consult-flycheck
- :defer t
- :after (consult flycheck)
- :general
- (:keymaps 'goto-map
-           "e" #' consult-flycheck))
-
-(use-package consult-lsp
+(use-package consult-flymake
+  :elpaca nil
   :defer t
-  :after (consult lsp-mode)
+  :after (consult flymake)
   :general
-  (:keymaps 'lsp-mode-map
-            [remap xref-find-apropos] #'consult-lsp-symbols)
-  (:keymaps 'search-map :predicate '(memq 'lsp-mode local-minor-modes)
-            "M-s" #'consult-lsp-file-symbols
-            "S" #'consult-lsp-symbols))
+  (:keymaps 'goto-map
+            "e" #' consult-flymake))
+
+(use-package consult-eglot
+  :defer t
+  :after (consult eglot)
+  :general
+  (:keymaps 'eglot-mode-map
+            [remap xref-find-apropos] #'consult-eglot-symbols)
+  (:keymaps 'search-map :predicate '(memq 'eglot--managed-mode local-minor-modes)
+            "S" #'consult-eglot-symbols))
 
 (use-package embark
   :defer t
@@ -141,14 +141,10 @@
               "M-[" #'tabnine-previous-completion
               "M-]" #'tabnine-next-completion)))
 ;; ** Snippets
-(use-package yasnippet
-  :init
-  (setq yas-prompt-functions '(yas-completing-prompt
-                               yas-dropdown-prompt
-                               yas-no-prompt)
-        yas-snippet-dirs (list
-                          (expand-file-name "snippets" user-cache-dir)))
-  :hook (lsp-mode . yas-minor-mode))
+
+(use-package tempel
+  :defer t
+  :elpaca nil)
 
 ;; * Provide
 (provide 'config-completion)

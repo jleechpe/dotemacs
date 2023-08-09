@@ -20,15 +20,23 @@
   :general
   ([remap flyspell-auto-correct-word] #'flyspell-correct-wrapper))
 
-(use-package flycheck-vale
-  :config
-  (flycheck-vale-setup))
+(elpaca (flymake-vale :repo "https://github.com/tpeacock19/flymake-vale"
+                      :refs nil
+                      :files (:defaults))
+  (use-package flymake-vale
+    :elpaca nil
+    :config
+    (add-to-list 'flymake-vale-modes 'python-ts-mode)
+    (add-to-list 'flymake-vale-modes 'python-mode)
+    :hook ((find-file . flymake-vale-maybe-load)
+           (eglot-managed-mode . flymake-vale-maybe-load))
+  ))
 
 ;; ** Markdown
 (use-package markdown-mode
   :hook ((markdown-mode . auto-fill-mode)
          (markdown-mode . flyspell-mode)
-         (markdown-mode . flycheck-mode)))
+         (markdown-mode . flymake-mode)))
 
 ;; * Provides
 (provide 'config-textediting)

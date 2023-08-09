@@ -17,12 +17,17 @@
 (tool-bar-mode -1)
 (menu-bar-mode 1)
 (column-number-mode 1)
-(show-paren-mode 1)
+
+(use-package paren
+  :elpaca nil
+  :init
+  (setq show-paren-context-when-offscreen 'overlay)
+  (show-paren-mode 1))
 
 (use-package whitespace
   :elpaca nil
   :init
-  (setq whitespace-line-column 80
+  (setq whitespace-line-column nil ; Leave at nil to follow `fill-column'
         whitespace-global-modes '(not circe-mode)
         whitespace-style '(tabs newline tab-mark space-mark
                                 newline-mark face lines-tail)
