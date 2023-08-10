@@ -24,28 +24,29 @@
                 (mu4e-refile-folder
                  .
                  (lambda (msg)
-                   (cond
-                    ;; Fidelity
-                    ((mu4e-message-contact-field-matches
-                      msg
-                      :from ".*@mail.fidelity.com")
-                     "/jlp/Archive/Finances/Stocks")
-                    ;; Webull
-                    ((mu4e-message-contact-field-matches
-                      msg
-                      :from ".*@\\\(email.webull.com\\\|investordelivery.com\\\)")
-                     "/jlp/Archive/Finances/Stocks")
-                    ;; Coinbase
-                    ((mu4e-message-contact-field-matches
-                      msg
-                      :from "no-reply@coinbase.com")
-                     "/jlp/Archive/Finances/Coinbase")
-                    ;; Patreon
-                    ((mu4e-message-contact-field-matches
-                      msg :from "patreon")
-                     "/jlp/Archive/Patreon")
-                    ;; Catchall
-                    (t "/jlp/Archive"))))
+                   (let ((subject (mu4e-message-field msg :subject)))
+                     (cond
+                      ;; Fidelity
+                      ((mu4e-message-contact-field-matches
+                        msg
+                        :from ".*@mail.fidelity.com")
+                       "/jlp/Archive/Finances/Stocks")
+                      ;; Webull
+                      ((mu4e-message-contact-field-matches
+                        msg
+                        :from ".*@\\\(email.webull.com\\\|investordelivery.com\\\)")
+                       "/jlp/Archive/Finances/Stocks")
+                      ;; Coinbase
+                      ((mu4e-message-contact-field-matches
+                        msg
+                        :from "no-reply@coinbase.com")
+                       "/jlp/Archive/Finances/Coinbase")
+                      ;; Patreon
+                      ((mu4e-message-contact-field-matches
+                        msg :from "patreon")
+                       "/jlp/Archive/Patreon")
+                      ;; Catchall
+                      (t "/jlp/Archive")))))
                 (mu4e-compose-signature .
                                         (concat
                                          "Regards,\n"
@@ -73,18 +74,19 @@
                           (mu4e-refile-folder
                            .
                            (lambda (msg)
-                             (cond
-                    ;; ICS Timesheet
-                    ((and (string-match "Timesheet" subject)
-                          (mu4e-message-contact-field-matches
-                           msg '(:to :from :cc) "innovacare"))
-                     "/consultjlp/Consulting/InnovaCare/Timesheet")
-                    ;; ICS
-                    ((mu4e-message-contact-field-matches
-                      msg '(:to :from :cc) "innovacare")
-                     "/consultjlp/Consulting/InnovaCare")
-                    ;; Catchall
-                    ("/consultjlp/Archive")))))))))
+                             (let ((subject (mu4e-message-field msg :subject)))
+                               (cond
+                              ;; ICS Timesheet
+                                ((and (string-match "Timesheet" subject)
+                                      (mu4e-message-contact-field-matches
+                                       msg '(:to :from :cc) "innovacare"))
+                                 "/consultjlp/Consulting/InnovaCare/Timesheet")
+                              ;; ICS
+                                ((mu4e-message-contact-field-matches
+                                  msg '(:to :from :cc) "innovacare")
+                                 "/consultjlp/Consulting/InnovaCare")
+                              ;; Catchall
+                                ("/consultjlp/Archive"))))))))))
 
 (use-package mu4e
   :defer t

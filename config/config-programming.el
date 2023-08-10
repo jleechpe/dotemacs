@@ -112,6 +112,8 @@
   :init
   (add-to-list 'major-mode-remap-alist
                '(python-mode . python-ts-mode))
+  (setq eglot-python-backend
+        `((,(executable-find "pyright-langserver") "--stdio") "ruff-lsp"))
   :config
   (setq python-indent-guess-indent-offset-verbose nil
         python-flymake-command '("flake8" "--max-line-length=88" "-"))

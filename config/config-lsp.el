@@ -1,6 +1,37 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package eglot
+  :init
+  (defun eglot-next-backend ()
+    "Switch between chosen backends for MAJOR-MODE.
+
+Use variable `eglot-MODE-backend' (MODE just first word to allow
+for TS/non-ts) to define alternatives to cycle between.  Cycling
+values become buffer local since they overwrite
+`eglot-server-programs' to leverage eglot lifecycle.
+"
+    (interactive)
+    (let* ((name (car (split-string (symbol-name major-mode) "-")))
+           (var (intern (format "eglot-%s-backend" name))))
+      (message "%s" var)
+      (if (boundp var)
+          (let* ((val (symbol-value var))
+                 (contact (eglot--guess-contact))
+                 (item (nth 3 contact))
+                 (e (-elem-index item val))
+                 (l (-last-item val))
+                 (list-l (if (listp l)
+                             l
+                           (list l)))
+                 (new-eglot (if (-same-items? item list-l)
+                                (nth 0 val)
+                              (nth (+ 1 e) val))))
+            (setq-local eglot-server-programs
+                        (list (cons major-mode (if (listp new-eglot)
+                                                   new-eglot
+                                                 (list new-eglot)))))))
+      (eglot-shutdown (eglot-current-server))
+      (eglot-ensure)))
   :hook
   (((dockerfile-ts-mode
      terraform-mode
