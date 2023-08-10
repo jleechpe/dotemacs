@@ -1,6 +1,14 @@
 ;; -*- lexical-binding: t; -*-
 
 ;; * Version Control
+
+;; ** Diffing
+(use-package diff-hl
+  :init
+  (global-diff-hl-mode 1)
+  (diff-hl-flydiff-mode 1)
+  (diff-hl-dired-mode 1))
+
 ;; ** Git
 (use-package magit
   :commands magit-status

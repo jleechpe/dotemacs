@@ -3,6 +3,7 @@
 (use-package eglot
   :hook
   (((dockerfile-ts-mode
+     terraform-mode
      python-base-mode) . eglot-ensure)))
 
 (use-package eglot-tempel

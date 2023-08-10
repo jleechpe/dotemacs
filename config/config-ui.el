@@ -70,13 +70,14 @@
   :config (doom-modeline-mode 1)
   :init
   (setq doom-modeline-minor-modes t
-        doom-modeline-checker-simple-format t
-        doom-modeline-buffer-file-name-style 'truncate-with-project
+        doom-modeline-checker-simple-format nil
+        doom-modeline-buffer-file-name-style 'relative-to-project
         doom-modeline-enable-word-count t
         doom-modeline-hud t
         doom-modeline-icon t
         doom-modeline-continuous-word-count-modes '(markdown-mode org-mode)
-        doom-modeline-indent-info t
+        doom-modeline-indent-info nil
+        doom-modeline-buffer-encoding nil
         doom-modeline-env-version t
         doom-modeline-env-load-string "?env?")
   )

@@ -20,7 +20,8 @@
   :mode "\\.tf\\'"
   :init
   (add-to-list 'eglot-server-programs
-               '(terraform-mode "terraform-ls" "serve")))
+               '(terraform-mode "terraform-ls" "serve"))
+  :after eglot)
 
 (use-package lua-mode
   :defer t)

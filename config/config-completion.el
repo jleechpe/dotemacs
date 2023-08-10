@@ -112,6 +112,7 @@
 ;;   :after (company corfu))
 (use-package vterm
   :ensure t)
+
 (elpaca (tabnine :repo "https://github.com/shuxiao9058/tabnine"
                  :refs nil
                  :files (:defaults))
@@ -126,7 +127,7 @@
     (tabnine-minimum-prefix-length 3)
     :hook ((on-first-input . tabnine-start-process)
            (kill-emacs . tabnine-kill-process))
-    :config
+    :init
     (add-to-list 'completion-at-point-functions
                  #'tabnine-completion-at-point t)
     (add-to-list 'kind-icon-mapping
@@ -140,6 +141,7 @@
               "C-g" #'tabnine-clear-overlay
               "M-[" #'tabnine-previous-completion
               "M-]" #'tabnine-next-completion)))
+
 ;; ** Snippets
 
 (use-package tempel
