@@ -13,7 +13,10 @@
 (use-package magit
   :commands magit-status
   :general
-  ("<f12>" #'magit-status))
+  ("<f12>" #'magit-status)
+  :hook
+  ((magit-pre-refresh . diff-hl-magit-pre-refresh)
+   (magit-post-refresh . diff-hl-magit-post-refresh)))
 
 (use-package transient
   :init
