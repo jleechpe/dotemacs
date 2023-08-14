@@ -19,6 +19,9 @@
       kept-new-versions 6
       kept-old-versions 2)
 
+;; ** Get rid of annoying minimize command
+(global-unset-key (kbd "C-z"))
+
 ;; ** Persistence
 (setq savehist-file (expand-file-name "history" user-cache-dir))
 (savehist-mode 1)
