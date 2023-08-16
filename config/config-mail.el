@@ -26,6 +26,11 @@
                  (lambda (msg)
                    (let ((subject (mu4e-message-field msg :subject)))
                      (cond
+                      ;; Empower
+                      ((mu4e-message-contact-field-matches
+                        msg
+                        :from ".*@sfmc.empowermyretirement.com")
+                       "/jlp/Archive/Finances")
                       ;; Fidelity
                       ((mu4e-message-contact-field-matches
                         msg
