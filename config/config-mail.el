@@ -112,6 +112,12 @@
     (expand-file-name dir
                       (expand-file-name mu4e-context-dir mu4e-maildir)))
   (setq
+   mu4e-headers-fields '((:maildir . 16)
+                         (:human-date . 12)
+                         (:flags . 6)
+                         (:mailing-list . 5)
+                         (:from . 15)
+                         (:subject))
    mu4e-maildir "~/.mail"
    mu4e-trash-folder "/Trash"
    mu4e-drafts-folder "/Drafts"
