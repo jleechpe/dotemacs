@@ -11,6 +11,9 @@
 ;; ** Enable disabled features
 (put 'downcase-region 'disabled nil)
 
+;; ** Bookmarks
+(setq bookmark-default-file (expand-file-name "bookmarks" user-cache-dir))
+
 ;; ** Backups
 (setq backup-by-copying t
       backup-directory-alist

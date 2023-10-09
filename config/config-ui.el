@@ -111,7 +111,24 @@
   ([remap query-replace-regexp] #'anzu-query-replace-regexp))
 
 ;; ** Undo
+(use-package vundo
+  :init
+  (setq vundo-glyph-alist vundo-unicode-symbols)
+  :general
+  ("C-z" #'vundo))
+
+(use-package undo-fu-session
+  :init
+  (setq undo-fu-session-linear t
+        undo-fu-session-directory (expand-file-name "undo-fu-session"
+                                                    user-cache-dir)
+        undo-fu-session-command 'zst)
+  :config
+  (undo-fu-session-global-mode +1)
+  :demand t)
+
 (use-package undo-tree
+  :disabled t
   :diminish
   :init
   (setq undo-tree-history-directory-alist
@@ -134,13 +151,17 @@
 
 ;; ** Multiple Cursors
 (use-package multiple-cursors
+  :init
+  (setq mc/list-file (expand-file-name "mc-lists.el" user-cache-dir))
   :general
   ("C-<" #'mc/mark-previous-like-this)
   ("C->" #'mc/mark-next-like-this)
   ("C-c C-<" #'mc/mark-all-like-this-dwim))
 
 ;; ** Projects
-(use-package project)
+(use-package project
+  :init
+  (setq project-list-file (expand-file-name "projects" user-cache-dir)))
 (use-package project-mode-line-tag
   :config (project-mode-line-tag-mode))
 

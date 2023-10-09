@@ -29,6 +29,8 @@
     :after (treemacs magit)))
 
 (use-package forge
+  :init
+  (setq forge-database-file (expand-file-name "forge-database.sqlite" user-cache-dir))
   :defer t)
 
 ;; ** Fossil

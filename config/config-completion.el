@@ -111,7 +111,7 @@
 ;;   :defer t
 ;;   :after (company corfu))
 (use-package vterm
-  :ensure t)
+  :demand t)
 
 (elpaca (tabnine :repo "https://github.com/shuxiao9058/tabnine"
                  :refs nil

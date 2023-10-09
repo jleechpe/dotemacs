@@ -148,7 +148,7 @@
 
 (use-package mu4e-alert
   :after mu4e
-  :ensure t
+  :demand t
   :config
   (mu4e-alert-enable-mode-line-display)
   (mu4e-alert-enable-notifications)

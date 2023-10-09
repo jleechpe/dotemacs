@@ -10,7 +10,7 @@
  (use-package yaml)
  (use-package emacsql)
  (use-package compat
-   :ensure t)
+   :demand t)
  (use-package closql
    :defer t))
 

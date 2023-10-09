@@ -6,7 +6,7 @@
 ;; location.  Currently there should be very little but it can expand
 ;; ** Ibuffer / Buffer list
 (use-package ibuffer
-  :ensure t
+  :demand t
   :elpaca nil
   :general
   ([remap list-buffers] #'ibuffer))
@@ -18,7 +18,7 @@
                 (ibuffer-do-sort-by-project-file-relative)))
 
 (use-package ibuffer-project
-  :ensure t
+  :demand t
   :hook (ibuffer . my/ibuffer-project-run))
 
 (use-package ibuffer-sidebar

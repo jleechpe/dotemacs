@@ -38,12 +38,25 @@
    org-agenda-compact-blocks t
    org-log-into-drawer t
    org-clock-into-drawer t
-   org-outline-path-complete-in-steps nil
-   org-refile-use-outline-path t
-   org-refile-targets '((nil :maxlevel . 3))
    org-enforce-todo-dependencies t
    org-enforce-todo-checkbox-dependencies t
 
+   ;; Capturing
+   org-outline-path-complete-in-steps nil
+   org-refile-use-outline-path t
+   org-refile-targets '((nil :maxlevel . 3)
+                        ("~/jlptech/internal/timetracking.org" :tag . "#work")
+                        (org-agenda-files :maxlevel . 3))
+   org-capture-templates
+   '(("i" "Innovacare Task"
+      entry
+      (file+olp "~/jlptech/internal/timetracking.org" "Innovacare" "Tasks")
+      "* TODO %:subject - %:fromname
+
+%a
+
+%i"
+      :prepend t))
    ;; Publishing
    org-publish-project-alist
    '(("vitae"
@@ -61,7 +74,7 @@
      (:grouptags)
      ("#work" . ?W)
      ("#homelab" . ?H)
-     ("#FRTC". ?F)
+     ("#FTC". ?F)
      (:endgrouptag))
    ;; Todo Configs
    org-todo-keywords
@@ -130,7 +143,15 @@
   :init
   (setq org-roam-v2-ack t
         org-roam-directory user-roam-dir
-        org-roam-db-location (expand-file-name "db/org-roam.db" user-org-dir))
+        org-roam-db-location (expand-file-name "db/org-roam.db" user-org-dir)
+        org-roam-dailies-capture-templates
+        '(("d" "default" entry "* %?"
+           :target (file+head+olp "%<%Y-%m-%d>.org"
+                              "#+title: %<%Y-%m-%d>
+#+filetags: :review:
+
+"
+                              ("Log")))))
 
   :config
   (defun my/org-roam-agenda-all-files (&optional arg keys restriction)
