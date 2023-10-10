@@ -38,7 +38,9 @@ values become buffer local since they overwrite
      python-base-mode) . eglot-ensure)))
 
 (use-package eglot-tempel
-  :after (eglot))
+  :after (eglot)
+  :init
+  (eglot-tempel-mode 1))
 
 (use-package eldoc-box
   :init
