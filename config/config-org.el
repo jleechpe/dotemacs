@@ -85,17 +85,51 @@
      ;; Org Roam Sequences
      (sequence "LOG(l)" "FUP(f)" "|" "DONE(d@)")
      (sequence "TBR(T)" "RDN(R)" "|" "READ(D@)"))
-   org-todo-keyword-faces
-        `(("DEPR" . (:foreground  ,(theme-color 'orange) :weight bold))
-          ("PROG" . (:foreground  ,(theme-color 'dark-blue) :weight bold))
-          ("PEND" . (:foreground  ,(theme-color 'magenta) :weight bold))
-          ("BLOCK" . (:foreground  ,(theme-color 'orange) :inverse-video t))
-          ("RISK" . (:foreground  ,(theme-color 'red) :weight bold))
-          ("ISSUE" . (:foreground  ,(theme-color 'red) :inverse-video t))
-          ("AVRT" . (:foreground  ,(theme-color 'cyan) :weight bold))
-          ;; Org Roam faces
-          ("LOG" . (:foreground ,(theme-color 'violet) :weight bold))
-          ("FUP" . (:foreground ,(theme-color 'magenta) :weight bold))))
+   org-modern-todo-faces
+   `(("TODO" . (:foreground ,(theme-color 'base1) :background ,(theme-color 'green)
+                            :weight bold))
+     ("PROG" . (:foreground ,(theme-color 'base1) :background ,(theme-color 'dark-cyan)
+                            :weight bold))
+     ("PEND" . (:foreground ,(theme-color 'magenta)
+                            :weight bold
+                            :inverse-video t))
+     ("BLOCK" . (:foreground ,(theme-color 'orange) :inverse-video t))
+     ("RISK" . (:foreground ,(theme-color 'base2) :background ,(theme-color 'red)
+                            :weight bold))
+     ("ISSUE" . (:foreground ,(theme-color 'base8) :background ,(theme-color 'red)
+                             :weight bold))
+     ("AVRT" . (:foreground ,(theme-color 'cyan)
+                            :weight bold
+                            :inverse-video t))
+     ("DONE" . (:foreground ,(theme-color 'base5) :background ,(theme-color 'base0)
+                            :weight bold))
+     ("CANC" . (:foreground ,(theme-color 'base4) :background ,(theme-color 'base0)
+                            :weight bold))
+     ;; Org Roam faces
+     ("LOG" . (:foreground ,(theme-color 'violet) :background ,(theme-color 'dark-blue)
+                           :weight bold))
+     ("FUP" . (:foreground ,(theme-color 'magenta) :background ,(theme-color 'dark-blue)
+                           :weight bold))
+     ("TBR" . (:foreground ,(theme-color 'green) :background ,(theme-color 'base4)
+                           :weight :bold))
+     ("RDN" . (:foreground ,(theme-color 'yellow) :background ,(theme-color 'base4)
+                           :weight bold))
+     ("READ" . (:foreground ,(theme-color 'dark-cyan) :background ,(theme-color 'base0)
+                            :weight bold)))
+   org-todo-keyword-faces org-modern-todo-faces
+   ;; `(("TODO" . (:foreground ,(theme-color 'base1) :background ,(theme-color 'green)))
+   ;;   ("DEPR" . (:foreground  ,(theme-color 'orange) :weight bold))
+   ;;   ("PROG" . (:foreground  ,(theme-color 'dark-blue) :weight bold))
+   ;;   ("PEND" . (:foreground  ,(theme-color 'magenta) :weight bold))
+   ;;   ("BLOCK" . (:foreground  ,(theme-color 'orange) :inverse-video t))
+   ;;   ("RISK" . (:foreground  ,(theme-color 'red) :weight bold))
+   ;;   ("ISSUE" . (:foreground  ,(theme-color 'red) :inverse-video t))
+   ;;   ("AVRT" . (:foreground  ,(theme-color 'cyan) :weight bold))
+   ;;   ("DONE" . (:foreground ,(theme-color 'base5) :background ,(theme-color 'base0)))
+   ;;   ;; Org Roam faces
+   ;;   ("LOG" . (:foreground ,(theme-color 'violet) :weight bold))
+   ;;   ("FUP" . (:foreground ,(theme-color 'magenta) :weight bold)))
+   )
 
   ;; Update statistics
   (defun my/org-statistics-update (n-done n-not-done)
@@ -136,6 +170,24 @@
   ("<f5>" #'org-daily-agenda)
   ("S-<f5>" #'org-agenda))
 
+(use-package org-modern
+  :after org
+  :config
+  (set-face-attribute 'org-modern-date-active nil
+                      :foreground (theme-color 'yellow)
+                      :background (theme-color 'base2))
+  (set-face-attribute 'org-modern-date-inactive nil
+                      :foreground (theme-color 'orange)
+                      :background (theme-color 'base2))
+  (set-face-attribute 'org-modern-time-active nil
+                      :foreground (theme-color 'yellow)
+                      :background (theme-color 'base2)
+                      :inverse-video t)
+  (set-face-attribute 'org-modern-time-inactive nil
+                      :foreground (theme-color 'orange)
+                    :background (theme-color 'base2)
+                    :inverse-video t))
+
 ;; ** Roam
 
 (use-package org-roam
@@ -146,12 +198,13 @@
         org-roam-db-location (expand-file-name "db/org-roam.db" user-org-dir)
         org-roam-dailies-capture-templates
         '(("d" "default" entry "* %?"
-           :target (file+head+olp "%<%Y-%m-%d>.org"
-                              "#+title: %<%Y-%m-%d>
+           :target
+           (file+head+olp "%<%Y-%m-%d>.org"
+                          "#+title: %<%Y-%m-%d>
 #+filetags: :review:
 
 "
-                              ("Log")))))
+                          ("Log")))))
 
   :config
   (defun my/org-roam-agenda-all-files (&optional arg keys restriction)
@@ -219,6 +272,23 @@
 
 (use-package org-roam-ui
   :defer t)
+
+(use-package consult-org-roam
+  :after org-roam
+  :init
+  (consult-org-roam-mode 1)
+  :custom
+  (consult-org-roam-grep-func #'consult-ripgrep)
+  (consult-org-roam-buffer-narrow-key ?r)
+  (consult-org-roam-buffer-after-buffers t))
+
+(use-package consult-notes
+  :commands (consult-notes
+             consult-notes-org-roam-find-node
+             consult-notes-org-roam-find-node-relation)
+  :config
+  (consult-notes-org-roam-mode 1)
+  (consult-notes-org-headings-mode 1))
 
 ;; ** Outlining
 (use-package outshine
