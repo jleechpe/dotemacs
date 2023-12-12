@@ -56,7 +56,34 @@
 %a
 
 %i"
-      :prepend t))
+      :prepend t)
+     ("P" "3d Printing related")
+     ("PQ" "Qidi X Max 3")
+     ("PQs" "New Spool"
+      entry
+      (file+olp "~/org/printing.org" "Qidi XMax 3" "Filaments")
+      "* %^{Name}
+#+name: %\\1
+| | Print | Weight| Cost |
+|-+-------+-------|-|
+| |  | | |
+|-+-------+-------|-|
+|#| Total |       | |
+|^|       | tot | |
+|$| start=%^{Weight} | | |
+|$| color=%^{Color} | | |
+|$| type=%^{Type} | | |
+|$| cost=%^{Cost} | | |
+#+TBLFM: $tot=vsum(@I..@II)::@2$4..@3$4=($cost/$start)*$-1;%.2f
+"
+      :prepare-finalize (lambda () (org-store-link 'nil 't))
+      :after-finalize (lambda () (org-capture 'nil "PQS"))
+      :immediate-finish t)
+     ("PQS" "Summary Spool"
+     table-line
+     (file+olp "~/org/printing.org" "Qidi XMax 3" "Filament Amount")
+     "| %(substring-no-properties (cadar org-stored-links)) | | | | | |"
+     :immediate-finish t))
    ;; Publishing
    org-publish-project-alist
    '(("vitae"

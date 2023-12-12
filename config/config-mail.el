@@ -26,6 +26,18 @@
                  (lambda (msg)
                    (let ((subject (mu4e-message-field msg :subject)))
                      (cond
+                      ;; FTC related
+                      ((mu4e-message-contact-field-matches
+                        msg
+                        :from ;; ".*@\\\(servocity.com\\\|revrobotics.com\\\|andymark.com\\\|ftclive.org\\)"
+                        (rx (* nonl) "@"
+                                  (or "servocity.com"
+                                      "andymark.com"
+                                      "ftclive.org"
+                                      "revrobotics.com"
+                                      "zeffy.com"))
+                        )
+                       "/jlp/Archive/FTC")
                       ;; Empower
                       ((mu4e-message-contact-field-matches
                         msg
