@@ -38,9 +38,12 @@
               (curr (buffer-name)))
           (chezmoi-find (buffer-file-name))
           (display-buffer curr))))
-  :hook
-  ((find-file . chezmoi--is-target)
-   (chezmoi-mode . chezmoi--load-other)))
+  :autoload chezmoi-target-file-p
+  chezmoi-target-file
+  :general ("C-c C f" #'chezmoi-find
+            "C-c C s" #'chezmoi-write)
+  :hook ((find-file . chezmoi--is-target)
+         (chezmoi-mode . chezmoi--load-other)))
 
 
 ;; * Provide
