@@ -113,6 +113,7 @@
                       (lisp . t)
                       (lsp . t)
                       (mail . nil)
+                      (mgmt . t)
                       (org . t)
                       (programming . t)
                       (server . t)

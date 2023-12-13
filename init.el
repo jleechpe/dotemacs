@@ -20,6 +20,7 @@
                    lisp
                    completion
                    lsp
+                   mgmt
                    programming
                    textediting
                    ui
