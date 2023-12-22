@@ -12,7 +12,9 @@
  (use-package compat
    :demand t)
  (use-package closql
-   :defer t))
+   :defer t)
+ (use-package seq)
+ (use-package pfuture))
 
 ;; * Provide
 (provide 'config-dependencies)
