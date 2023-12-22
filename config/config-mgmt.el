@@ -8,14 +8,18 @@
     (interactive (list (buffer-file-name)))
     (if (chezmoi-target-file-p file)
         (chezmoi-find-other-window file)
-      (display-buffer (thread-first file
-                                    chezmoi-target-file
-                                    find-file-noselect))))
+      (let ((buffer (thread-first file
+                                  chezmoi-target-file
+                                  find-file-noselect)))
+        (with-current-buffer buffer
+          (auto-revert-mode))
+        (display-buffer buffer))))
 
   (defun chezmoi-find-other-window (file)
     (let ((source-file (chezmoi-source-file file)))
       (when source-file
-        (display-buffer (find-file-noselect source-file))
+        (let ((buffer (find-file-noselect source-file)))
+          (display-buffer (find-file-noselect source-file)))
         (let ((target-file (chezmoi-target-file source-file)))
 	  (when-let ((mode (thread-first target-file
 				         file-name-nondirectory
@@ -36,6 +40,7 @@
              (y-or-n-p "File is managed by Chezmoi.  Visit chezmoi copy?"))
         (let ((this-command 'nil)
               (curr (buffer-name)))
+          (auto-revert-mode)
           (chezmoi-find (buffer-file-name))
           (display-buffer curr))))
   :autoload chezmoi-target-file-p
