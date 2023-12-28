@@ -14,7 +14,8 @@
  (use-package closql
    :defer t)
  (use-package seq)
- (use-package pfuture))
+ (use-package pfuture)
+ (use-package hl-todo))
 
 ;; * Provide
 (provide 'config-dependencies)
