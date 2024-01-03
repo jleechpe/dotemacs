@@ -159,9 +159,22 @@
   ("C-c C-<" #'mc/mark-all-like-this-dwim))
 
 ;; ** Projects
+
+(defun my/project-save-project-files (arg)
+  (interactive "P")
+  (let* ((project-buffers (project-buffers (project-current)))
+         (pred (lambda () (memq (current-buffer) project-buffers))))
+    (funcall-interactively #'save-some-buffers arg pred)))
+
 (use-package project
   :init
-  (setq project-list-file (expand-file-name "projects" user-cache-dir)))
+  (setq project-list-file (expand-file-name "projects" user-cache-dir)
+        project-switch-use-entire-map nil
+        project-vc-extra-root-markers '(".project"))
+  :general
+  (:keymaps 'project-prefix-map
+            "C-s" #'my/project-save-project-files))
+
 (use-package project-mode-line-tag
   :config (project-mode-line-tag-mode))
 

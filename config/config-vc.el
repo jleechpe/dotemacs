@@ -38,8 +38,6 @@
   (setq forge-database-file (expand-file-name "forge-database.sqlite" user-cache-dir))
   :defer t)
 
-;; TODO: Verify todos work
-
 (use-package magit-todos
   :after magit
   :config (magit-todos-mode +1))
