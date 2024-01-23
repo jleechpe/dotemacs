@@ -14,6 +14,8 @@
  (use-package closql
    :defer t)
  (use-package seq)
+ (use-package jsonrpc)
+ (use-package eldoc)
  (use-package pfuture)
  (use-package hl-todo))
 

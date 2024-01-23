@@ -37,9 +37,12 @@
    org-startup-indented t
    org-agenda-compact-blocks t
    org-log-into-drawer t
-   org-clock-into-drawer t
    org-enforce-todo-dependencies t
    org-enforce-todo-checkbox-dependencies t
+
+   ;; Clocks and timestamps
+   org-clock-into-drawer t
+   org-clock-rounding-minutes 15
 
    ;; Capturing
    org-outline-path-complete-in-steps nil
@@ -80,10 +83,10 @@
       :after-finalize (lambda () (org-capture 'nil "PQS"))
       :immediate-finish t)
      ("PQS" "Summary Spool"
-     table-line
-     (file+olp "~/org/printing.org" "Qidi XMax 3" "Filament Amount")
-     "| %(substring-no-properties (cadar org-stored-links)) | | | | | |"
-     :immediate-finish t))
+      table-line
+      (file+olp "~/org/printing.org" "Qidi XMax 3" "Filament Amount")
+      "| %(substring-no-properties (cadar org-stored-links)) | | | | | |"
+      :immediate-finish t))
    ;; Publishing
    org-publish-project-alist
    '(("vitae"
@@ -212,8 +215,8 @@
                       :inverse-video t)
   (set-face-attribute 'org-modern-time-inactive nil
                       :foreground (theme-color 'orange)
-                    :background (theme-color 'base2)
-                    :inverse-video t))
+                      :background (theme-color 'base2)
+                      :inverse-video t))
 
 ;; ** Roam
 

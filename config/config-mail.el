@@ -1,110 +1,27 @@
 ;; -*- lexical-binding: t; -*-
 
-(setq mu4e-search-hide-predicate
-      (lambda (msg)
-        (string-match (rx (or "Trash"
-                              "Coinbase"))
-                      (mu4e-message-field msg :maildir))))
+;; * Contact Management
+(use-package ebdb
+  :init
+  (setq ebdb-sources "~/.syncthing/SecureSync/ebdb")
+  (defun my/mu4e-contacts-ebdb-capf ()
+    "Combine EBDB with Mu4e contacts"
+    (ebdb-records)
+    (add-to-list 'completion-at-point-functions
+                 (cape-capf-super
+                  (cape-capf-properties #'ebdb-mail-dwim-completion-at-point-function
+                                        :annotation-function (lambda (_) " EBDB")
+                                        :company-kind (lambda (_) 'text)
+                                        :exclusive 'no)
+                  (cape-capf-properties #'mu4e~compose-complete-contact
+                                        :annotation-function (lambda (_) " mu4e")
+                                        :company-kind (lambda (_) 'event)
+                                        :exclusive 'no))))
+  :hook
+  (mu4e-compose-mode . my/mu4e-contacts-ebdb-capf)
+  :after mu4e)
 
-(setq my/mu4e-contexts
-      '((JLP (make-mu4e-context
-        :name "JLP"
-        :enter-func (lambda () (mu4e-message "Entering JLP Context"))
-        :leave-func (lambda () (mu4e-message "Leaving JLP Context"))
-        :match-func (lambda (msg)
-                      (when msg
-                        (mu4e-message-contact-field-matches
-                         msg
-                         :to "jonathan@leechpepin.com")))
-        :vars '((user-mail-address . "jonathan@leechpepin.com")
-                (user-full-name . "Jonathan Leech-Pepin")
-                (mu4e-trash-folder . "/jlp/Trash")
-                (mu4e-drafts-folder . "/jlp/Drafts")
-                (mu4e-sent-folder . "/jlp/Sent")
-                (mu4e-refile-folder
-                 .
-                 (lambda (msg)
-                   (let ((subject (mu4e-message-field msg :subject)))
-                     (cond
-                      ;; FTC related
-                      ((mu4e-message-contact-field-matches
-                        msg
-                        :from ;; ".*@\\\(servocity.com\\\|revrobotics.com\\\|andymark.com\\\|ftclive.org\\)"
-                        (rx (* nonl) "@"
-                                  (or "servocity.com"
-                                      "andymark.com"
-                                      "ftclive.org"
-                                      "revrobotics.com"
-                                      "zeffy.com"))
-                        )
-                       "/jlp/Archive/FTC")
-                      ;; Empower
-                      ((mu4e-message-contact-field-matches
-                        msg
-                        :from ".*@sfmc.empowermyretirement.com")
-                       "/jlp/Archive/Finances")
-                      ;; Fidelity
-                      ((mu4e-message-contact-field-matches
-                        msg
-                        :from ".*@mail.fidelity.com")
-                       "/jlp/Archive/Finances/Stocks")
-                      ;; Webull
-                      ((mu4e-message-contact-field-matches
-                        msg
-                        :from ".*@\\\(email.webull.com\\\|investordelivery.com\\\)")
-                       "/jlp/Archive/Finances/Stocks")
-                      ;; Coinbase
-                      ((mu4e-message-contact-field-matches
-                        msg
-                        :from "no-reply@coinbase.com")
-                       "/jlp/Archive/Finances/Coinbase")
-                      ;; Patreon
-                      ((mu4e-message-contact-field-matches
-                        msg :from "patreon")
-                       "/jlp/Archive/Patreon")
-                      ;; Catchall
-                      (t "/jlp/Archive")))))
-                (mu4e-compose-signature .
-                                        (concat
-                                         "Regards,\n"
-                                         "Jon\n")))))
-        (Consult (make-mu4e-context
-                  :name "Consulting"
-                  :enter-func
-                  (lambda () (mu4e-message "Switching to Consulting context"))
-                  :leave-func
-                  (lambda () (mu4e-message "Leaving consulting context"))
-                  :match-func (lambda (msg)
-                                (when msg
-                                  (mu4e-message-contact-field-matches
-                                   msg
-                                   :to "jlp@consultjlp.com")))
-                  :vars '((user-mail-address . "jlp@consultjlp.com")
-                          (user-full-name . "Jonathan Leech-Pepin")
-                          (mu4e-trash-folder . "/consultjlp/Trash")
-                          (mu4e-drafts-folder . "/consultjlp/Drafts")
-                          (mu4e-sent-folder . "/consultjlp/Sent")
-                          (mu4e-compose-signature .
-                                                  (concat
-                                                   "Thank you,\n"
-                                                   "JLP\n"))
-                          (mu4e-refile-folder
-                           .
-                           (lambda (msg)
-                             (let ((subject (mu4e-message-field msg :subject)))
-                               (cond
-                              ;; ICS Timesheet
-                                ((and (string-match "Timesheet" subject)
-                                      (mu4e-message-contact-field-matches
-                                       msg '(:to :from :cc) "innovacare"))
-                                 "/consultjlp/Consulting/InnovaCare/Timesheet")
-                              ;; ICS
-                                ((mu4e-message-contact-field-matches
-                                  msg '(:to :from :cc) "innovacare")
-                                 "/consultjlp/Consulting/InnovaCare")
-                              ;; Catchall
-                                ("/consultjlp/Archive"))))))))))
-
+;; * Mu4e
 (use-package mu4e
   :defer t
   :commands (mu4e mu4e-update-index)
@@ -145,6 +62,12 @@
    mu4e-change-filenames-when-moving t
    mu4e-completing-read-function 'completing-read
 
+   mu4e-search-hide-predicate
+   (lambda (msg)
+     (string-match (rx (or "Trash"
+                           "Coinbase"))
+                   (mu4e-message-field msg :maildir)))
+
    ;; Sendmail
    sendmail-program (executable-find "msmtp")
    message-sendmail-f-is-evil t
@@ -160,34 +83,111 @@
 
 (use-package mu4e-alert
   :after mu4e
-  :demand t
+  :defer t
   :config
   (mu4e-alert-enable-mode-line-display)
   (mu4e-alert-enable-notifications)
   (setq doom-modeline-mu4e t))
 
-;; * BBDB
-;; (elpaca (bbdb ;:files (:defaults "lisp/*")
-;;          :pre-build '(("./autogen.sh")("./configure")("make"))
-;;          )
-;;   (use-package bbdb
-;;   :defer t
-;;   :config
-;;   (bbdb-initialize 'mu4e 'pgp 'anniv)
-;;   ;; Currently does not auto-initialize..
-;;   (bbdb-mua-auto-update-init 'mu4e)
-;;   (bbdb-insinuate-mu4e)
-;;   (setq bbdb-mail-user-agent 'mu4e-user-agent
-;;         mu4e-view-mode-hook 'bbdb-mua-auto-update
-;;         mu4e~view-buffer-name "*Article*"
-;;         bbdb-mua-pop-up t
-;;         mu4e-compose-complete-addresses t
-;;         mu4e-view-show-addresses t
-;;         bbdb-mua-auto-update-p 'query
-;;         company-bbdb-modes '(message-mode mu4e-compose-mode))
-;;   :hook
-;;   (bbdb-notice-record . bbdb-auto-notes)))
-
+;; ** Email Contexts
+(setq my/mu4e-contexts
+      '((JLP (make-mu4e-context
+              :name "JLP"
+              :enter-func (lambda () (mu4e-message "Entering JLP Context"))
+              :leave-func (lambda () (mu4e-message "Leaving JLP Context"))
+              :match-func (lambda (msg)
+                            (when msg
+                              (mu4e-message-contact-field-matches
+                               msg
+                               :to "jonathan@leechpepin.com")))
+              :vars '((user-mail-address . "jonathan@leechpepin.com")
+                      (user-full-name . "Jonathan Leech-Pepin")
+                      (mu4e-trash-folder . "/jlp/Trash")
+                      (mu4e-drafts-folder . "/jlp/Drafts")
+                      (mu4e-sent-folder . "/jlp/Sent")
+                      (mu4e-refile-folder
+                       .
+                       (lambda (msg)
+                         (let ((subject (mu4e-message-field msg :subject)))
+                           (cond
+                            ;; FTC related
+                            ((mu4e-message-contact-field-matches
+                              msg
+                              :from ;; ".*@\\\(servocity.com\\\|revrobotics.com\\\|andymark.com\\\|ftclive.org\\)"
+                              (rx (* nonl) "@"
+                                  (or "servocity.com"
+                                      "andymark.com"
+                                      "ftclive.org"
+                                      "revrobotics.com"
+                                      "zeffy.com"))
+                              )
+                             "/jlp/Archive/FTC")
+                            ;; Empower
+                            ((mu4e-message-contact-field-matches
+                              msg
+                              :from ".*@sfmc.empowermyretirement.com")
+                             "/jlp/Archive/Finances")
+                            ;; Fidelity
+                            ((mu4e-message-contact-field-matches
+                              msg
+                              :from ".*@mail.fidelity.com")
+                             "/jlp/Archive/Finances/Stocks")
+                            ;; Webull
+                            ((mu4e-message-contact-field-matches
+                              msg
+                              :from ".*@\\\(email.webull.com\\\|investordelivery.com\\\)")
+                             "/jlp/Archive/Finances/Stocks")
+                            ;; Coinbase
+                            ((mu4e-message-contact-field-matches
+                              msg
+                              :from "no-reply@coinbase.com")
+                             "/jlp/Archive/Finances/Coinbase")
+                            ;; Patreon
+                            ((mu4e-message-contact-field-matches
+                              msg :from "patreon")
+                             "/jlp/Archive/Patreon")
+                            ;; Catchall
+                            (t "/jlp/Archive")))))
+                      (mu4e-compose-signature .
+                                              (concat
+                                               "Regards,\n"
+                                               "Jon\n")))))
+        (Consult (make-mu4e-context
+                  :name "Consulting"
+                  :enter-func
+                  (lambda () (mu4e-message "Switching to Consulting context"))
+                  :leave-func
+                  (lambda () (mu4e-message "Leaving consulting context"))
+                  :match-func (lambda (msg)
+                                (when msg
+                                  (mu4e-message-contact-field-matches
+                                   msg
+                                   :to "jlp@consultjlp.com")))
+                  :vars '((user-mail-address . "jlp@consultjlp.com")
+                          (user-full-name . "Jonathan Leech-Pepin")
+                          (mu4e-trash-folder . "/consultjlp/Trash")
+                          (mu4e-drafts-folder . "/consultjlp/Drafts")
+                          (mu4e-sent-folder . "/consultjlp/Sent")
+                          (mu4e-compose-signature .
+                                                  (concat
+                                                   "Thank you,\n"
+                                                   "JLP\n"))
+                          (mu4e-refile-folder
+                           .
+                           (lambda (msg)
+                             (let ((subject (mu4e-message-field msg :subject)))
+                               (cond
+                                ;; ICS Timesheet
+                                ((and (string-match "Timesheet" subject)
+                                      (mu4e-message-contact-field-matches
+                                       msg '(:to :from :cc) "innovacare"))
+                                 "/consultjlp/Consulting/InnovaCare/Timesheet")
+                                ;; ICS
+                                ((mu4e-message-contact-field-matches
+                                  msg '(:to :from :cc) "innovacare")
+                                 "/consultjlp/Consulting/InnovaCare")
+                                ;; Catchall
+                                ("/consultjlp/Archive"))))))))))
 
 ;; * Provide
 (provide 'config-mail)

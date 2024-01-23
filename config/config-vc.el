@@ -12,7 +12,7 @@
 ;; ** Git
 (use-package magit
   :commands magit-status
-  :demand t
+  :defer t
   :general
   ("<f12>" #'magit-status)
   :hook
@@ -21,7 +21,8 @@
 
 (use-package magit-extras
   :elpaca nil
-  :demand t)
+  :defer t
+  :after magit)
 
 (use-package transient
   :init
@@ -39,7 +40,7 @@
   :defer t)
 
 (use-package magit-todos
-  :after magit
+  :after (hl-todo magit)
   :config (magit-todos-mode +1))
 
 (use-package magit-delta

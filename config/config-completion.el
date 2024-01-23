@@ -146,7 +146,7 @@
 
 (use-package tempel
   :defer t
-  :elpaca nil
+  :elpaca t
   :init
   (defun tempel-setup-capf ()
     ;; Add the Tempel Capf to `completion-at-point-functions'.

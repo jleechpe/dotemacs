@@ -16,26 +16,7 @@
   :config (envrc-global-mode))
 
 ;; ** Programming language modes
-(use-package terraform-mode
-  :defer t
-  :mode "\\.tf\\'"
-  :init
-  (add-to-list 'eglot-server-programs
-               '(terraform-mode "terraform-ls" "serve"))
-  :after eglot)
-
-(use-package lua-mode
-  :defer t)
-
-(use-package powershell
-  :defer t)
-
-(use-package fish-mode
-  :defer t)
-
-(use-package puppet-mode
-  :defer t)
-
+;; *** Dockerfile
 (use-package dockerfile-mode
   :disabled t
   :defer t)
@@ -85,6 +66,10 @@
 (use-package fsharp-mode
   :defer t)
 
+;; *** Fish shell
+(use-package fish-mode
+  :defer t)
+
 ;; *** Java
 
 ;; (use-package lsp-java
@@ -97,6 +82,10 @@
 ;; Indent to 2 since I always set it manually
 (setq js-indent-level 2)
 
+;; *** Just
+(use-package just-mode
+  :defer t)
+
 ;; *** Lisp
 
 (use-package emacs-lisp
@@ -106,6 +95,18 @@
     (unless (string= (buffer-name) "*scratch*")
       (outshine-mode 1)))
   :hook (emacs-lisp-mode . ignore-scratch))
+
+;; *** Lua
+(use-package lua-mode
+  :defer t)
+
+;; *** Powershell
+(use-package powershell
+  :defer t)
+
+;; *** Puppet
+(use-package puppet-mode
+  :defer t)
 
 ;; *** Python
 (use-package python
@@ -139,6 +140,18 @@
 (use-package inferior-python-mode
   :elpaca nil
   :hook (inferior-python-mode . hide-mode-line-mode))
+
+;; *** Terraform
+(use-package terraform-mode
+  :defer t
+  :mode "\\.tf\\'"
+  :init
+  (add-to-list 'eglot-server-programs
+               '(terraform-mode "terraform-ls" "serve"))
+  :after eglot)
+
+
+
 
 ;; ** Data
 (use-package yaml-mode
