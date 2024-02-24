@@ -13,9 +13,9 @@
 
 (defun my/ibuffer-project-run ()
   (setq ibuffer-filter-groups
-                    (ibuffer-project-generate-filter-groups))
-              (unless (eq ibuffer-sorting-mode 'project-file-relative)
-                (ibuffer-do-sort-by-project-file-relative)))
+        (ibuffer-project-generate-filter-groups))
+  (unless (eq ibuffer-sorting-mode 'project-file-relative)
+    (ibuffer-do-sort-by-project-file-relative)))
 
 (use-package ibuffer-project
   :demand t
@@ -30,7 +30,13 @@
   :defer t
   :init
   ;; Window Definitions
-  (setq popper-group-function #'popper-group-by-project)
+  (setq popper-group-function #'popper-group-by-project
+        popper-reference-buffers
+        '("\\*eldoc for.*\\*$"
+          "\\*Messages\\*"
+          help-mode
+          flymake-diagnostics-buffer-mode
+          compilation-mode))
   ;; Must come before enabling
   :config
   (popper-mode +1)

@@ -87,6 +87,9 @@
       (file+olp "~/org/printing.org" "Qidi XMax 3" "Filament Amount")
       "| %(substring-no-properties (cadar org-stored-links)) | | | | | |"
       :immediate-finish t))
+   org-capture-templates-contexts
+   '(("i" ((in-mode . "mu4e-view-mode")
+           (in-mode . "mu4e-headers-mode"))))
    ;; Publishing
    org-publish-project-alist
    '(("vitae"

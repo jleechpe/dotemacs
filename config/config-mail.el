@@ -3,6 +3,8 @@
 ;; * Contact Management
 (use-package ebdb
   :init
+  ;; Set list to nil to avoid undefined variable when trying to load
+  (setq ebdb-db-list nil)
   (setq ebdb-sources "~/.syncthing/SecureSync/ebdb")
   (defun my/mu4e-contacts-ebdb-capf ()
     "Combine EBDB with Mu4e contacts"
@@ -111,16 +113,17 @@
                          (let ((subject (mu4e-message-field msg :subject)))
                            (cond
                             ;; FTC related
-                            ((mu4e-message-contact-field-matches
-                              msg
-                              :from ;; ".*@\\\(servocity.com\\\|revrobotics.com\\\|andymark.com\\\|ftclive.org\\)"
-                              (rx (* nonl) "@"
-                                  (or "servocity.com"
-                                      "andymark.com"
-                                      "ftclive.org"
-                                      "revrobotics.com"
-                                      "zeffy.com"))
-                              )
+                            ((or (mu4e-message-contact-field-matches
+                                  msg
+                                  :from ;; ".*@\\\(servocity.com\\\|revrobotics.com\\\|andymark.com\\\|ftclive.org\\)"
+                                  (rx (* nonl) "@"
+                                      (or "servocity.com"
+                                          "andymark.com"
+                                          "ftclive.org"
+                                          "revrobotics.com"
+                                          "zeffy.com"))
+                                  )
+                                 (string-match-p (rx (or "FTC" "Saturn" "9944")) subject))
                              "/jlp/Archive/FTC")
                             ;; Empower
                             ((mu4e-message-contact-field-matches
