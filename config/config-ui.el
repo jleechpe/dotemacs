@@ -79,8 +79,7 @@
         doom-modeline-indent-info nil
         doom-modeline-buffer-encoding nil
         doom-modeline-env-version t
-        doom-modeline-env-load-string "?env?")
-  )
+        doom-modeline-env-load-string "?env?"))
 
 ;; ** Delimiters
 (use-package rainbow-delimiters

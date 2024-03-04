@@ -7,7 +7,7 @@
 (use-package apheleia
   :config
   (setf (alist-get 'isort apheleia-formatters)
-      '("isort" "--profile" "black" "--stdout" "-"))
+        '("isort" "--profile" "black" "--stdout" "-"))
   (setf (alist-get 'python-base-mode apheleia-mode-alist)
         '(isort black))
   (apheleia-global-mode 1))
@@ -29,8 +29,7 @@
     (add-to-list 'flymake-vale-modes 'python-ts-mode)
     (add-to-list 'flymake-vale-modes 'python-mode)
     :hook ((find-file . flymake-vale-maybe-load)
-           (eglot-managed-mode . flymake-vale-maybe-load))
-  ))
+           (eglot-managed-mode . flymake-vale-maybe-load))))
 
 ;; ** Markdown
 (use-package markdown-mode

@@ -26,8 +26,7 @@
   (let* ((original (nth n treesit-font-lock-feature-list)))
     (mapc (lambda (x) (add-to-list 'original x 't)) custom)
     (setf (nth n treesit-font-lock-feature-list) original)
-    (treesit-font-lock-recompute-features)
-    ))
+    (treesit-font-lock-recompute-features)))
 
 (defun my/dockerfile-ts-fontification ()
   (my/ts-fontification 3 '(definition)))
@@ -44,8 +43,7 @@
            (env_pair value: (unquoted_string) @font-lock-constant-face)
            (workdir_instruction (path) @font-lock-constant-face)
            (label_pair key: (unquoted_string) @font-lock-variable-name-face)
-           (label_pair value: (unquoted_string) @font-lock-constant-face)
-           )
+           (label_pair value: (unquoted_string) @font-lock-constant-face))
          :language 'dockerfile
          :feature 'string
          '((json_string) @font-lock-string-face))

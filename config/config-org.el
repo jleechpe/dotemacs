@@ -44,6 +44,9 @@
    org-clock-into-drawer t
    org-clock-rounding-minutes 15
 
+   ;; Habits
+   org-habit-show-habits-only-for-today nil
+
    ;; Capturing
    org-outline-path-complete-in-steps nil
    org-refile-use-outline-path t
@@ -92,9 +95,9 @@
            (in-mode . "mu4e-headers-mode"))))
    ;; Publishing
    org-publish-project-alist
-   '(("vitae"
-      :base-directory (expand-file-name "vitae" user-repo-dir)
-      :publishing-directory (expand-file-name "vitae/export" user-repo-dir)
+   `(("vitae"
+      :base-directory ,(expand-file-name "vitae" user-repo-dir)
+      :publishing-directory ,(expand-file-name "vitae/export" user-repo-dir)
       :publishing-function org-latex-publish-to-pdf))
 
    ;; Tags

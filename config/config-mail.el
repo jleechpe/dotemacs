@@ -15,7 +15,7 @@
                                         :annotation-function (lambda (_) " EBDB")
                                         :company-kind (lambda (_) 'text)
                                         :exclusive 'no)
-                  (cape-capf-properties #'mu4e~compose-complete-contact
+                  (cape-capf-properties #'mu4e--compose-complete-contact
                                         :annotation-function (lambda (_) " mu4e")
                                         :company-kind (lambda (_) 'event)
                                         :exclusive 'no))))
@@ -77,8 +77,7 @@
    mail-envelope-from 'header
    message-sendmail-extra-arguments '("--read-envelope-from")
    send-mail-function 'smtpmail-send-it
-   message-send-mail-function 'message-send-mail-with-sendmail
-   )
+   message-send-mail-function 'message-send-mail-with-sendmail)
 
   :hook
   (mu4e-headers-mode . (lambda () (auto-composition-mode 0))))
@@ -121,8 +120,7 @@
                                           "andymark.com"
                                           "ftclive.org"
                                           "revrobotics.com"
-                                          "zeffy.com"))
-                                  )
+                                          "zeffy.com")))
                                  (string-match-p (rx (or "FTC" "Saturn" "9944")) subject))
                              "/jlp/Archive/FTC")
                             ;; Empower

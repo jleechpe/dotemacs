@@ -23,7 +23,7 @@
   "Directory for all configurations to go under.")
 (defvar user-lisp-dir (expand-file-name "single-lisp" user-emacs-directory)
   "Directory for standalone lisp files that are manually installed.")
-(defcustom user-repo-dir (expand-file-name "git" (getenv "HOME"))
+(defcustom user-repo-dir (expand-file-name "sources" (getenv "HOME"))
   "User directory that repos are stored in."
   :type 'directory
   :group 'config-dirs)
@@ -55,7 +55,7 @@
                           "windows")
                          ((memq system-type '(gnu gnu/linux gnu/kfreebsd))
                           "linux")
-                           "other"))
+                         "other"))
                   ((symbol-name package))))
          (v (intern (format "config-enable-%s" n)))
          (c (cond
@@ -63,7 +63,7 @@
               (symbol-value v))
              (condition
               (eval condition))))
-        (p (intern
+         (p (intern
              (mapconcat 'identity
                         (cl-remove-if 'nil
                                       (list prefix n))
@@ -76,10 +76,9 @@
     (if c
         `(prog1
              ,@(cl-remove-if 'nil
-                            (list (unless (or silent config-load-silently)
-                                    (message "Config loaded: %s" n))
-                                  `(require ',p nil ,fail-silently))
-           ))
+                             (list (unless (or silent config-load-silently)
+                                     (message "Config loaded: %s" n))
+                                   `(require ',p nil ,fail-silently))))
       (unless (or config-load-silently silent fail-silently)
         `(message "Did not load %s due to %s not being 't." ',package ',r)))))
 
@@ -87,8 +86,8 @@
 (defmacro config-packages (packages)
   ""
   `(mapc (lambda (x)
-          (eval `(config-require ,x)))
-        ,packages))
+           (eval `(config-require ,x)))
+         ,packages))
 
 (defmacro define-config-vars (vars)
   ""
@@ -97,9 +96,8 @@
                    (v (cdr x)))
                (eval `(defcustom ,k ,v ,(format "If 't enable %s related functionality." k)
                         :type 'boolean
-                        :group 'config-loading))
-	       ))
-        ,vars))
+                        :group 'config-loading))))
+           ,vars))
 
 ;; *** Silence messages
 (defvar config-load-silently 'nil
