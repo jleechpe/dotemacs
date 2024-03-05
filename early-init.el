@@ -1,5 +1,5 @@
 (setq package-enable-at-startup nil)
-
+(setq elpaca-hide-initial-build t)
 ;; (declare-function elpaca-generate-autoloads "elpaca")
 ;; (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 ;; (when-let ((elpaca-repo (expand-file-name "repos/elpaca/" elpaca-directory))
