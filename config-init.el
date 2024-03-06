@@ -23,7 +23,7 @@
   "Directory for all configurations to go under.")
 (defvar user-lisp-dir (expand-file-name "single-lisp" user-emacs-directory)
   "Directory for standalone lisp files that are manually installed.")
-(defcustom user-repo-dir (expand-file-name "sources" (getenv "HOME"))
+(defcustom user-repo-dir (expand-file-name "git" (getenv "HOME"))
   "User directory that repos are stored in."
   :type 'directory
   :group 'config-dirs)

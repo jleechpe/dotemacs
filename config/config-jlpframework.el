@@ -1,4 +1,4 @@
-(setq user-repo-dir "Sources"
+(setq user-repo-dir "sources"
       config-enable-mail t
       inhibit-startup-echo-area-message "jleechpe")
 
