@@ -64,6 +64,8 @@
    mu4e-change-filenames-when-moving t
    mu4e-completing-read-function 'completing-read
 
+   mu4e-context-policy 'pick-first
+
    mu4e-search-hide-predicate
    (lambda (msg)
      (string-match (rx (or "Trash"
