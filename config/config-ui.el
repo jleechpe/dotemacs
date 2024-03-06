@@ -37,6 +37,11 @@
                                       (tab-mark 9 [183 9] [92 9])))
   :config (global-whitespace-mode 1))
 
+(use-package tab-bar
+  :elpaca nil
+  :config
+  (setq tab-bar-show 1))
+
 ;; ** Font
 
 (set-fontset-font t nil emoji-font)
@@ -84,6 +89,29 @@
 ;; ** Delimiters
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
+
+;; ** Dashboard
+(use-package dashboard
+  :init
+  (setq dashboard-projects-backend 'project-el
+        initial-buffer-choice (lambda () (get-buffer-create "*dashboard*"))
+        dashboard-center-content t
+        dashboard-vertically-center-content t
+        dashboard-icon-type 'all-the-icons
+        dashboard-display-icons-p t
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-items '((recents . 5)
+                          (projects . 5)
+                          (agenda . 5)
+                          (bookmarks . 5)
+                          (registers . 5)))
+  :hook
+  ((elpaca-after-init . dashboard-insert-startupify-lists)
+   (elpaca-after-init . dashboard-initialize))
+  :config
+  (dashboard-setup-startup-hook))
+;; ** Activities
 
 ;; * UX
 ;; ** Defaults
@@ -182,5 +210,27 @@
   :config
   (project-treemacs-mode))
 
+;; ** Activities
+(use-package activities
+  :init
+  (activities-mode)
+  (activities-tabs-mode)
+  (setq edebug-inhibit-emacs-lisp-mode-bindings t
+        activities-bookmark-store t)
+
+  ;; Figure out keybindings...
+  :general
+  (:prefix "C-x C-a"
+           ;; C- means changing/modifying activities
+           "C-n" #'activities-new
+           "C-a" #'activities-resume
+           "C-s" #'activities-suspend
+           "C-k" #'activities-kill
+           "C-r" #'activities-rename
+           ;; Bare means modify/list
+           "RET" #'activities-switch
+           "b" #'activities-switch-buffer
+           "g" #'activities-revert
+           "l" #'activities-list))
 ;; * Provide
 (provide 'config-ui)
