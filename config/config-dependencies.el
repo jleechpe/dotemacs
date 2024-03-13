@@ -18,6 +18,7 @@
   :preface (unload-feature 'seq t)
   :elpaca `(seq :build ,(+elpaca-seq-build-steps)))
 
+(use-package jsonrpc)
 ;; (elpaca-queue
 ;;  (use-package dash)
 ;;  (use-package yaml)
