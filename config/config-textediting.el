@@ -16,7 +16,14 @@
   :config (ws-butler-global-mode 1))
 
 ;; ** Spell Check
+(use-package jinx
+  :hook (emacs-startup . global-jinx-mode)
+  :general
+  ([remap ispell-word] #'jinx-correct
+   "C-M-$" #'jinx-languages))
+
 (use-package flyspell-correct
+  :disabled t
   :general
   ([remap flyspell-auto-correct-word] #'flyspell-correct-wrapper))
 
@@ -34,7 +41,7 @@
 ;; ** Markdown
 (use-package markdown-mode
   :hook ((markdown-mode . auto-fill-mode)
-         (markdown-mode . flyspell-mode)
+         ;; (markdown-mode . flyspell-mode)
          (markdown-mode . flymake-mode)))
 
 ;; * Provides

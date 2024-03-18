@@ -26,7 +26,7 @@
   :defer t
   :hook
   ((org-mode . auto-fill-mode)
-   (org-mode . flyspell-mode)
+   ;; (org-mode . flyspell-mode)
    (org-after-todo-statistics . my/org-statistics-update)
    (org-checkbox-statistics . my/org-checkbox-statistics-update))
   :config
