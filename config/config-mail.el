@@ -2,6 +2,7 @@
 
 ;; * Contact Management
 (use-package ebdb
+  :defer t
   :init
   ;; Set list to nil to avoid undefined variable when trying to load
   (setq ebdb-db-list nil)
@@ -21,6 +22,7 @@
                                         :exclusive 'no))))
   :hook
   (mu4e-compose-mode . my/mu4e-contacts-ebdb-capf)
+  :requires seq
   :after mu4e)
 
 ;; * Mu4e
@@ -190,7 +192,32 @@
                                   msg '(:to :from :cc) "innovacare")
                                  "/consultjlp/Consulting/InnovaCare")
                                 ;; Catchall
-                                ("/consultjlp/Archive"))))))))))
+                                ("/consultjlp/Archive"))))))))
+        (Aurelius (make-mu4e-context
+                   :name "Aurelius"
+                   :enter-func
+                   (lambda () (mu4e-message "Switching to Aurelius context"))
+                   :leave-func
+                   (lambda () (mu4e-message "Leaving Aurelius context"))
+                   :match-func (lambda (msg)
+                                 (when msg
+                                   (mu4e-message-contact-field-matches
+                                    msg
+                                    :to "jlp@aureliusmind.ai")))
+                   :vars '((user-mail-address . "jlp@aureliusmind.ai")
+                           (user-full-name . "Jonathan Leech-Pepin")
+                           (mu4e-trash-folder . "/jlpaurelius/[Gmail]/Trash")
+                           (mu4e-sent-folter . "jlpaurelius/[Gmail]/Sent Mail")
+                           (mu4e-compose-signature .
+                                                   (concat
+                                                    "Thank you,\n"
+                                                    "JLP\n"))
+                           (mu4e-refile-folder
+                            .
+                            (lambda (msg)
+                              (let ((subject (mu4e-message-field msg :subject)))
+                                (cond
+                                 ("/jlpaurelius/[Gmail]/Archive"))))))))))
 
 ;; * Provide
 (provide 'config-mail)
