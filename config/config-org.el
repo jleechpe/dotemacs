@@ -341,5 +341,16 @@
   :elpaca nil
   :diminish outline-minor-mode)
 
+(use-package khalel
+  :after org
+  :init
+  (setq khalel-capture-key "e"
+        khalel-import-org-file (expand-file-name "khal.org" org-directory)
+        khalel-import-start-date "-5d"
+        khalel-import-end-date "+30d"
+        khalel-import-org-file-confirm-overwrite nil)
+  :config
+  (khalel-add-capture-template))
+
 ;; * Provide
 (provide 'config-org)

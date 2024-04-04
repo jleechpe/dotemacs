@@ -42,7 +42,7 @@
   (popper-mode +1)
   (popper-echo-mode +1)
   :general
-  ("C-`" #'popper-toggle-latest)
+  ("C-`" #'popper-toggle)
   ("M-`" #'popper-cycle)
   ("C-M-`" #'popper-toggle-type))
 
