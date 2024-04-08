@@ -62,6 +62,10 @@
   (solaire-global-mode 1))
 
 (use-package doom-themes
+  :init
+  (setq doom-spacegrey-comment-bg nil
+        doom-spacegrey-brighter-comments t
+        doom-spacegrey-brighter-modeline nil)
   :config
   (defun theme-color (color)
     (nth 2 (assoc color doom-themes--colors)))

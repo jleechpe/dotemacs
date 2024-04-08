@@ -37,6 +37,9 @@
 (recentf-mode 1)
 (add-hook 'find-file-hook #'recentf-save-list)
 
+(add-to-list 'auto-save-file-name-transforms
+             `(".*" ,(expand-file-name "auto-save" user-cache-dir) t) t)
+
 ;; ** Abbrevs
 ;; Keep abbrevs with config (chemacs)
 (setq abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory))
