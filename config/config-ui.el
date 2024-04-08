@@ -69,7 +69,14 @@
   :config
   (defun theme-color (color)
     (nth 2 (assoc color doom-themes--colors)))
-  (load-theme emacs-theme t))
+  (load-theme emacs-theme t)
+  (doom-themes-org-config)
+  :custom-face
+  (tab-bar ((t (:background ,(doom-color 'base2)))))
+  (tab-bar-tab
+   ((t (:background ,(doom-color 'base4) :foreground ,(doom-color 'cyan)))))
+  (tab-bar-tab-inactive
+   ((t (:background ,(doom-color 'base2) :foreground ,(doom-color 'base4))))))
 
 ;; ** Modeline
 (use-package minions
@@ -221,7 +228,8 @@
   (activities-tabs-mode)
   (setq edebug-inhibit-emacs-lisp-mode-bindings t
         activities-bookmark-store t)
-
+  :custom-face
+  (activities-tabs ((t (:foreground ,(doom-color 'dark-cyan)))))
   ;; Figure out keybindings...
   :general
   (:prefix "C-x C-a"
