@@ -84,6 +84,11 @@
 (use-package just-mode
   :defer t)
 
+(use-package justl
+  :general
+  (:keymaps 'project-prefix-map
+            "j" #'justl))
+
 ;; *** Lisp
 
 (use-package emacs-lisp
