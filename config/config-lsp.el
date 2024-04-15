@@ -38,6 +38,7 @@ values become buffer local since they overwrite
      python-base-mode) . eglot-ensure)))
 
 (use-package eglot-tempel
+  :ensure (:host github :repo "jleechpe/eglot-tempel")
   :after (eglot)
   :init
   (eglot-tempel-mode 1))

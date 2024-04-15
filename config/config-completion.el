@@ -105,11 +105,6 @@
 
 ;; *** Tabnine support
 
-;; ;; Company-tabnine, requires company
-;; (elpaca company)
-;; (use-package company-tabnine
-;;   :defer t
-;;   :after (company corfu))
 (use-package vterm
   :demand t)
 
@@ -122,7 +117,7 @@
     :hook (prog-mode . tabnine-mode)
     :diminish "⌬"
     :custom
-    (tabnine-wait 1)
+    (tabnine-wait 1.0)
     (tabnine-idle-delay 0.5)
     (tabnine-minimum-prefix-length 3)
     :hook ((on-first-input . tabnine-start-process)
