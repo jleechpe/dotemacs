@@ -16,7 +16,7 @@
                                         :annotation-function (lambda (_) " EBDB")
                                         :company-kind (lambda (_) 'text)
                                         :exclusive 'no)
-                  (cape-capf-properties #'mu4e--compose-complete-contact
+                  (cape-capf-properties #'mu4e--compose-complete-contact-field
                                         :annotation-function (lambda (_) " mu4e")
                                         :company-kind (lambda (_) 'event)
                                         :exclusive 'no))))

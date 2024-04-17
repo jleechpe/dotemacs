@@ -37,11 +37,6 @@
                                       (tab-mark 9 [183 9] [92 9])))
   :config (global-whitespace-mode 1))
 
-(use-package tab-bar
-  :elpaca nil
-  :config
-  (setq tab-bar-show 1))
-
 ;; ** Font
 
 (set-fontset-font t nil emoji-font)
@@ -62,21 +57,30 @@
   (solaire-global-mode 1))
 
 (use-package doom-themes
+  :demand t
   :init
+  (defun theme-color (color)
+    (nth 2 (assoc color doom-themes--colors)))
   (setq doom-spacegrey-comment-bg nil
         doom-spacegrey-brighter-comments t
         doom-spacegrey-brighter-modeline nil)
   :config
-  (defun theme-color (color)
-    (nth 2 (assoc color doom-themes--colors)))
   (load-theme emacs-theme t)
   (doom-themes-org-config)
-  :custom-face
-  (tab-bar ((t (:background ,(doom-color 'base2)))))
-  (tab-bar-tab
-   ((t (:background ,(doom-color 'base4) :foreground ,(doom-color 'cyan)))))
-  (tab-bar-tab-inactive
-   ((t (:background ,(doom-color 'base2) :foreground ,(doom-color 'base4))))))
+  (custom-set-faces
+   `(tab-bar ((t (:background ,(doom-color 'base2)))))
+   `(tab-bar-tab
+     ((t (:background ,(doom-color 'base4) :foreground ,(doom-color 'cyan)))))
+   `(tab-bar-tab-inactive
+     ((t (:background ,(doom-color 'base2) :foreground ,(doom-color 'base4)))))
+   `(activities-tabs ((t (:foreground ,(doom-color 'dark-cyan)))))))
+
+(use-package tab-bar
+  :ensure nil
+  :demand t
+  :after doom-themes
+  :config
+  (setq tab-bar-show 1))
 
 ;; ** Modeline
 (use-package minions
@@ -122,7 +126,6 @@
    (elpaca-after-init . dashboard-initialize))
   :config
   (dashboard-setup-startup-hook))
-;; ** Activities
 
 ;; * UX
 ;; ** Defaults
@@ -228,8 +231,6 @@
   (activities-tabs-mode)
   (setq edebug-inhibit-emacs-lisp-mode-bindings t
         activities-bookmark-store t)
-  :custom-face
-  (activities-tabs ((t (:foreground ,(doom-color 'dark-cyan)))))
   ;; Figure out keybindings...
   :general
   (:prefix "C-x C-a"
