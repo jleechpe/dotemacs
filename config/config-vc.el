@@ -30,9 +30,9 @@
         transient-values-file (expand-file-name "transients/values.el" user-cache-dir)
         transient-history-file (expand-file-name "transients/history.el" user-cache-dir)))
 
-(elpaca nil
-  (use-package treemacs-magit
-    :after (treemacs magit)))
+(use-package treemacs-magit
+  :after (treemacs magit))
+
 
 (use-package forge
   :init

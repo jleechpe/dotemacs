@@ -135,10 +135,9 @@
 ;; ** Keybindings
 (use-package which-key
   :config (which-key-mode 1))
-(elpaca nil
   (general-def
     "C-M-i" #'delete-indentation
-    "C-M-=" #'align-regexp))
+    "C-M-=" #'align-regexp)
 
 ;; ** Diffs
 (setq ediff-window-setup-function #'ediff-setup-windows-plain
