@@ -39,6 +39,7 @@
    org-log-into-drawer t
    org-enforce-todo-dependencies t
    org-enforce-todo-checkbox-dependencies t
+   org-list-allow-alphabetical t
 
    ;; Clocks and timestamps
    org-clock-into-drawer t

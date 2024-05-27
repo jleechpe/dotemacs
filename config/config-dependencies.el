@@ -15,8 +15,10 @@
                        elpaca--pre-built-steps elpaca-build-steps))
           (list '+elpaca-unload-seq 'elpaca--activate-package))) ;
 (use-package seq
-  :preface (unload-feature 'seq t)
-  :elpaca `(seq :build ,(+elpaca-seq-build-steps)))
+  ;; :preface (unload-feature 'seq t)
+  :demand t
+  ;; :elpaca `(seq :build ,(+elpaca-seq-build-steps))
+  )
 
 (use-package jsonrpc)
 ;; (elpaca-queue
