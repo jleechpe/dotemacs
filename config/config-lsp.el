@@ -48,6 +48,35 @@ values become buffer local since they overwrite
   (eldoc-box-hover-mode 1)
   :hook ((eglot-managed-mode . eldoc-box-hover-mode)))
 
+(use-package dape
+  :hook
+  ((kill-emacs . dape-breakpoint-save)
+   (after-init . dape-breakpoint-load))
+  :config
+  (dape-breakpoint-global-mode)
+  (add-to-list
+   'dape-configs
+   '(debugpy-remote
+     modes (python-mode python-ts-mode)
+     host "localhost"
+     port (lambda ()
+            (let ((port (if (bound-and-true-p debugpy-port)
+                            debugpy-port
+                          5678)))
+              (read-number "Port: " port)))
+     :request "attach"
+     :type "python"
+     :justMyCode t
+     :showReturnValue t
+     :pathMappings [(
+                     :localRoot (lambda ()
+                                  (expand-file-name
+                                   (read-directory-name "Local Source directory: "
+                                                        (funcall dape-cwd-fn))))
+                     :remoteRoot (lambda ()
+                                   (read-string "Remote source directory: "
+                                                ".")))])))
+
 ;; (use-package lsp-mode
 ;;   :defer t
 ;;   :commands lsp

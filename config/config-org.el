@@ -352,5 +352,12 @@
   :config
   (khalel-add-capture-template))
 
+;; ** Postman requests
+(use-package verb
+  :after org
+  :general
+  (:keymaps 'org-mode-map
+            "C-c C-r" verb-command-map))
+
 ;; * Provide
 (provide 'config-org)

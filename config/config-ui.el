@@ -135,9 +135,9 @@
 ;; ** Keybindings
 (use-package which-key
   :config (which-key-mode 1))
-  (general-def
-    "C-M-i" #'delete-indentation
-    "C-M-=" #'align-regexp)
+(general-def
+  "C-M-i" #'delete-indentation
+  "C-M-=" #'align-regexp)
 
 ;; ** Diffs
 (setq ediff-window-setup-function #'ediff-setup-windows-plain
@@ -232,7 +232,7 @@
         activities-bookmark-store t)
   ;; Figure out keybindings...
   :general
-  (:prefix "C-x C-a"
+  (:prefix "s-a"
            ;; C- means changing/modifying activities
            "C-n" #'activities-new
            "C-a" #'activities-resume
