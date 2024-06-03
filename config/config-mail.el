@@ -29,7 +29,7 @@
 (use-package mu4e
   :defer t
   :commands (mu4e mu4e-update-index)
-  :elpaca nil
+  :ensure nil
   :config
   (defun my/update-mu4e-contexts ()
     ""
@@ -95,16 +95,18 @@
   (setq doom-modeline-mu4e t))
 
 ;; ** Email Contexts
+(defun mu4e-select-maildir-context (msg maildir)
+  ""
+  (when msg
+    (string-match-p maildir
+                    (mu4e-message-field msg :maildir))))
+
 (setq my/mu4e-contexts
       '((JLP (make-mu4e-context
               :name "JLP"
               :enter-func (lambda () (mu4e-message "Entering JLP Context"))
               :leave-func (lambda () (mu4e-message "Leaving JLP Context"))
-              :match-func (lambda (msg)
-                            (when msg
-                              (mu4e-message-contact-field-matches
-                               msg
-                               :to "jonathan@leechpepin.com")))
+              :match-func (lambda (msg) (mu4e-select-maildir-context msg "^/jlp/.*"))
               :vars '((user-mail-address . "jonathan@leechpepin.com")
                       (user-full-name . "Jonathan Leech-Pepin")
                       (mu4e-trash-folder . "/jlp/Trash")
@@ -163,11 +165,7 @@
                   (lambda () (mu4e-message "Switching to Consulting context"))
                   :leave-func
                   (lambda () (mu4e-message "Leaving consulting context"))
-                  :match-func (lambda (msg)
-                                (when msg
-                                  (mu4e-message-contact-field-matches
-                                   msg
-                                   :to "jlp@consultjlp.com")))
+                  :match-func (lambda (msg) (mu4e-select-maildir-context msg "^/consultjlp/.*"))
                   :vars '((user-mail-address . "jlp@consultjlp.com")
                           (user-full-name . "Jonathan Leech-Pepin")
                           (mu4e-trash-folder . "/consultjlp/Trash")
@@ -199,11 +197,7 @@
                    (lambda () (mu4e-message "Switching to Aurelius context"))
                    :leave-func
                    (lambda () (mu4e-message "Leaving Aurelius context"))
-                   :match-func (lambda (msg)
-                                 (when msg
-                                   (mu4e-message-contact-field-matches
-                                    msg
-                                    :to "jlp@aureliusmind.ai")))
+                   :match-func (lambda (msg) (mu4e-select-maildir-context msg "^/jlpaurelius/.*"))
                    :vars '((user-mail-address . "jlp@aureliusmind.ai")
                            (user-full-name . "Jonathan Leech-Pepin")
                            (mu4e-trash-folder . "/jlpaurelius/[Gmail]/Trash")
