@@ -244,5 +244,9 @@
            "b" #'activities-switch-buffer
            "g" #'activities-revert
            "l" #'activities-list))
+
+;; ** Emacs-Everywhere
+(use-package emacs-everywhere)
+
 ;; * Provide
 (provide 'config-ui)

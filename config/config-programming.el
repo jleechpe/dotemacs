@@ -144,6 +144,27 @@
   :elpaca nil
   :hook (inferior-python-mode . hide-mode-line-mode))
 
+(use-package flymake-ruff
+  :ensure t
+  :hook (eglot-managed-mode . flymake-ruff-load)
+  :config
+  (defun update-ruff-codes ()
+    (interactive)
+    (let* ((codes (car (remove flymake-ruff--curr-codes
+                               flymake-ruff--codes)))
+           (args `("--quiet" "check"
+                   "--preview" ; enables beta checks
+                   "--line-length=100"
+                   ,@(flatten-list (mapcar (lambda (code) (list "--select" code))
+                                           codes)) ;codes to select
+                   "--output-format=text"
+                   "--stdin-filename=stdin" "-")))
+      (setq flymake-ruff--curr-codes codes
+            flymake-ruff-program-args args)))
+  (setq flymake-ruff--codes '(("ALL")("E" "W" "F"))
+        flymake-ruff--curr-codes '("ALL"))
+  (update-ruff-codes))
+
 ;; *** Terraform
 (use-package terraform-mode
   :defer t
