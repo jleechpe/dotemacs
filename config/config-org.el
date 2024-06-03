@@ -22,8 +22,10 @@
   (interactive "P")
   (org-agenda arg "a"))
 
+(use-package doct)
 (use-package org
   :defer t
+  :after (doct)
   :hook
   ((org-mode . auto-fill-mode)
    ;; (org-mode . flyspell-mode)
@@ -54,17 +56,19 @@
    org-refile-targets '((nil :maxlevel . 3)
                         ("~/jlptech/internal/timetracking.org" :tag . "#work")
                         (org-agenda-files :maxlevel . 3))
+   org-capture-templates--email
+   `((:group "Mail Task"
+             :template "* TODO %:subject - %:fromname\n\n%a\n\n%i"
+             :contexts ((:in-mode "mu4e-view-mode")
+                        (:in-mode "mu4e-headers-mode"))
+             :children (("Innovacare"
+                         :keys "i"
+                         :file "~/jlptech/internal/timetracking.org"
+                         :type entry
+                         :olp ("Innovacare" "Tasks")
+                         :prepend t))))
    org-capture-templates
-   '(("i" "Innovacare Task"
-      entry
-      (file+olp "~/jlptech/internal/timetracking.org" "Innovacare" "Tasks")
-      "* TODO %:subject - %:fromname
-
-%a
-
-%i"
-      :prepend t)
-     ("P" "3d Printing related")
+   '(("P" "3d Printing related")
      ("PQ" "Qidi X Max 3")
      ("PQs" "New Spool"
       entry
@@ -94,6 +98,8 @@
    org-capture-templates-contexts
    '(("i" ((in-mode . "mu4e-view-mode")
            (in-mode . "mu4e-headers-mode"))))
+   org-capture-templates (doct-add-to org-capture-templates
+                                      org-capture-templates--email)
    ;; Publishing
    org-publish-project-alist
    `(("vitae"
