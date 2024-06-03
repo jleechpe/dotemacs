@@ -211,7 +211,8 @@
             (org-todo done))))))
   :general
   ("<f5>" #'org-daily-agenda)
-  ("S-<f5>" #'org-agenda))
+  ("S-<f5>" #'org-agenda)
+  ("<f6>" #'org-capture))
 
 (use-package org-modern
   :after org

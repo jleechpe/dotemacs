@@ -30,6 +30,9 @@
   :defer t
   :commands (mu4e mu4e-update-index)
   :ensure nil
+  :general
+  (:keymaps '(mu4e-view-mode-map mu4e-headers-mode-map)
+            "<f6>" #'mu4e-org-store-and-capture)
   :config
   (defun my/update-mu4e-contexts ()
     ""
