@@ -67,6 +67,21 @@
                          :type entry
                          :olp ("Innovacare" "Tasks")
                          :prepend t))))
+   org-capture-templates--health
+   `(("Health"
+      :keys "H"
+      :file "~/org/roam/20240610085623-health.org"
+      :type table-line
+      :immediate-finish t
+      :children (("Weight"
+                  :keys "w"
+                  :olp ("Weight")
+                  :template "| %u | %^{Weight} |"
+                  )
+                 ("Exercise"
+                  :keys "e"
+                  :olp ("Exercise")
+                  :template "| %u | %^{Type} | %^{Amount}"))))
    org-capture-templates
    '(("P" "3d Printing related")
      ("PQ" "Qidi X Max 3")
@@ -100,6 +115,8 @@
            (in-mode . "mu4e-headers-mode"))))
    org-capture-templates (doct-add-to org-capture-templates
                                       org-capture-templates--email)
+   org-capture-templates (doct-add-to org-capture-templates
+                                      org-capture-templates--health)
    ;; Publishing
    org-publish-project-alist
    `(("vitae"
