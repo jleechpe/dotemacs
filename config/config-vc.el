@@ -44,6 +44,7 @@
   :config (magit-todos-mode +1))
 
 (use-package magit-delta
+  :disabled t
   :hook (magit-mode . magit-delta-mode))
 
 ;; ** Fossil

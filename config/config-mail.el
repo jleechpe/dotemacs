@@ -156,6 +156,10 @@
                             ((mu4e-message-contact-field-matches
                               msg :from "patreon")
                              "/jlp/Archive/Patreon")
+                            ;; Mollie (taxes)
+                            ((mu4e-message-contact-field-matches
+                              msg :from "m3virtualaccounting.com")
+                             "/jlp/Archive/Finances/Taxes")
                             ;; Catchall
                             (t "/jlp/Archive")))))
                       (mu4e-compose-signature .
