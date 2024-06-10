@@ -47,6 +47,8 @@
    org-enforce-todo-dependencies t
    org-enforce-todo-checkbox-dependencies t
    org-list-allow-alphabetical t
+   org-agenda-include-diary nil
+   org-agenda-span 'day
 
    ;; Clocks and timestamps
    org-clock-into-drawer t
@@ -249,6 +251,7 @@ This can take a long time, so it is recommended to run this only
 on installation and when first tasks are added to many files via
 methods the save hook cannot detect, like file synchronization."
     (interactive)
+    (require 'org-roam)
     (setq org-agenda-files default-org-agenda-files)
     (org-agenda-files-track-ql-cleanup-files 'full)
     (message "Initialized org agenda files"))
@@ -318,6 +321,7 @@ methods the save hook cannot detect, like file synchronization."
         org-roam-directory user-roam-dir
         org-roam-db-location (expand-file-name "db/org-roam.db" user-org-dir)
         org-roam-node-annotation-function #'my/org-roam-node-annotate
+        org-roam-completion-everywhere t
         org-roam-dailies-capture-templates
         '(("d" "default" entry "* %c"
            :target
@@ -327,18 +331,11 @@ methods the save hook cannot detect, like file synchronization."
                           ("Log"))
            :empty-lines 3)))
 
-  (defun my/org-roam-update-links-on-save ()
-    (add-hook 'before-save-hook 'org-roam-link-replace-all nil 't))
-
   (defun my/org-completion-completers ()
-    (mapc (lambda (x)
-            (add-to-list 'completion-at-point-functions x))
-          org-roam-completion-functions)
     (add-to-list 'completion-at-point-functions #'cape-abbrev))
   :config
 
   (org-roam-db-autosync-mode 1)
-  ;; (advice-add 'org-agenda :before #'my/org-roam-update-org-agenda-files)
 
   (defun my/org-roam-capture-daily (date)
     (interactive "P")
@@ -361,8 +358,7 @@ methods the save hook cannot detect, like file synchronization."
   (:keymaps 'org-roam-org-mode-map
             "t" #'org-roam-buffer-toggle
             "d" #'org-roam-buffer-display-dedicated)
-  :hook ((org-mode . my/org-completion-completers)
-         (org-mode . my/org-roam-update-links-on-save)))
+  :hook ((org-mode . my/org-completion-completers)))
 
 (use-package org-roam-ui
   :defer t
@@ -394,7 +390,7 @@ methods the save hook cannot detect, like file synchronization."
 (use-package consult-notes)
 
 (use-package consult-notes-org-roam
-  :ensure nil)
+  :disabled t)
 
 (use-package org-super-agenda
   :after org
@@ -426,7 +422,7 @@ methods the save hook cannot detect, like file synchronization."
   :commands (outorg-edit-as-org))
 
 (use-package outline
-  :elpaca nil
+  :ensure nil
   :diminish outline-minor-mode)
 
 (use-package khalel
