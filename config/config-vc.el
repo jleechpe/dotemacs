@@ -20,7 +20,7 @@
    (magit-post-refresh . diff-hl-magit-post-refresh)))
 
 (use-package magit-extras
-  :elpaca nil
+  :ensure nil
   :defer t
   :after magit)
 

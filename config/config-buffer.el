@@ -7,7 +7,7 @@
 ;; ** Ibuffer / Buffer list
 (use-package ibuffer
   :demand t
-  :elpaca nil
+  :ensure nil
   :general
   ([remap list-buffers] #'ibuffer))
 

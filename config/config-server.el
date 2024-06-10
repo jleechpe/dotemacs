@@ -4,7 +4,7 @@
 ;; Start server to ensure it's running
 
 (use-package server
-  :elpaca nil
+  :ensure nil
   :config
   (unless (server-running-p)
     (server-start)))

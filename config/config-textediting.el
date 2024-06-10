@@ -42,7 +42,7 @@
                       :refs nil
                       :files (:defaults))
   (use-package flymake-vale
-    :elpaca nil
+    :ensure nil
     :config
     (add-to-list 'flymake-vale-modes 'python-ts-mode)
     (add-to-list 'flymake-vale-modes 'python-mode)

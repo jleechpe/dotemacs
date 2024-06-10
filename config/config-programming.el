@@ -32,7 +32,7 @@
   (my/ts-fontification 3 '(definition)))
 
 (use-package dockerfile-ts-mode
-  :elpaca nil
+  :ensure nil
   :config
   (setq my/dockerfile-ts-mode--font-lock-settings
         (treesit-font-lock-rules
@@ -55,7 +55,7 @@
 
 ;; *** DotNet
 (use-package csharp-mode
-  :elpaca nil
+  :ensure nil
   :init
   (add-to-list 'major-mode-remap-alist
                '(csharp-mode . csharp-ts-mode))
@@ -92,7 +92,7 @@
 ;; *** Lisp
 
 (use-package emacs-lisp
-  :elpaca nil
+  :ensure nil
   :init
   (defun ignore-scratch ()
     (unless (string= (buffer-name) "*scratch*")
@@ -141,7 +141,7 @@
                                               'python-flymake t)))))
 
 (use-package inferior-python-mode
-  :elpaca nil
+  :ensure nil
   :hook (inferior-python-mode . hide-mode-line-mode))
 
 (use-package flymake-ruff
@@ -182,7 +182,7 @@
   :defer t)
 
 (use-package json-ts-mode
-  :elpaca nil
+  :ensure nil
   :defer nil ; Do not defer since json-mode is from a different file
   :init
   (add-to-list 'major-mode-remap-alist

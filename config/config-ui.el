@@ -19,13 +19,13 @@
 (column-number-mode 1)
 
 (use-package paren
-  :elpaca nil
+  :ensure nil
   :init
   (setq show-paren-context-when-offscreen 'overlay)
   (show-paren-mode 1))
 
 (use-package whitespace
-  :elpaca nil
+  :ensure nil
   :init
   (setq whitespace-line-column nil ; Leave at nil to follow `fill-column'
         whitespace-global-modes '(not circe-mode)

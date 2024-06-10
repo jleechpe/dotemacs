@@ -8,7 +8,7 @@
   (use-package vertico)
   (use-package vertico-directory
     :after vertico
-    :elpaca nil
+    :ensure nil
     :general
     (:keymaps 'vertico-map
               "\r" #'vertico-directory-enter
@@ -49,7 +49,7 @@
             "M-i" #'consult-imenu))
 
 (use-package consult-flymake
-  :elpaca nil
+  :ensure nil
   :defer t
   :after (consult flymake)
   :general
@@ -74,7 +74,7 @@
 
 (elpaca (corfu :files (:defaults "extensions/*"))
   (use-package corfu
-    :elpaca nil
+    :ensure nil
     :general
     ("M-<tab>" #'complete-symbol)
     ("M-/" #'completion-at-point)
@@ -112,7 +112,7 @@
                  :refs nil
                  :files (:defaults))
   (use-package tabnine
-    :elpaca nil
+    :ensure nil
     :commands (tabnine-start-process)
     :hook (prog-mode . tabnine-mode)
     :diminish "⌬"
@@ -141,7 +141,7 @@
 
 (use-package tempel
   :defer t
-  :elpaca t
+  :ensure t
   :init
   (defun tempel-setup-capf ()
     ;; Add the Tempel Capf to `completion-at-point-functions'.

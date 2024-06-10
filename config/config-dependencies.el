@@ -17,7 +17,7 @@
 (use-package seq
   ;; :preface (unload-feature 'seq t)
   :demand t
-  ;; :elpaca `(seq :build ,(+elpaca-seq-build-steps))
+  ;; :ensure `(seq :build ,(+elpaca-seq-build-steps))
   )
 
 (use-package jsonrpc)
