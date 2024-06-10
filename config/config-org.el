@@ -237,20 +237,50 @@
 (use-package org-roam
   :defer t
   :init
+  (setq org-roam-org-mode-map (make-sparse-keymap "Org-Roam"))
+  (defun my/org-roam-node-annotate (node)
+    (let* ((id (org-roam-node-id node))
+           (title (org-roam-node-title node))
+           (aliases (org-roam-node-aliases node))
+           (tags (org-roam-node-tags node))
+           (blinks (length (org-roam-db-query
+                            [:select (funcall count source)
+                                     :from links
+                                     :where (= dest $s1)
+                                     :and (= type "id")]
+                            id)))
+           (flinks (length (org-roam-db-query
+                            [:select dest
+                                     :from links
+                                     :where (= source $s1)
+                                     :and (= type "id")
+                                     :group-by dest]
+                            id)))
+           (file (org-roam-node-file node))
+           (dir (file-name-nondirectory (directory-file-name
+                                         (file-name-directory file)))))
+      (concat (propertize " " 'display `(space :align-to center))
+              title " " (format "%S" aliases) " "
+              (format "B:%s" blinks)
+              " "
+              (format "F:%s" flinks)
+              " "
+              (s-truncate 8 (format "%s" dir) "..."))))
+
+
   (setq org-roam-v2-ack t
         org-roam-directory user-roam-dir
         org-roam-db-location (expand-file-name "db/org-roam.db" user-org-dir)
+        org-roam-node-annotation-function #'my/org-roam-node-annotate
         org-roam-dailies-capture-templates
-        '(("d" "default" entry "* %?"
+        '(("d" "default" entry "* %c"
            :target
            (file+head+olp "%<%Y-%m-%d>.org"
                           "#+title: %<%Y-%m-%d>
-#+filetags: :review:
+#+filetags: :log:review:\n\n* Log"
+                          ("Log"))
+           :empty-lines 3)))
 
-"
-                          ("Log")))))
-
-  :config
   (defun my/org-roam-agenda-all-files (&optional arg keys restriction)
     (interactive)
     (advice-remove 'org-agenda #'my/org-roam-update-org-agenda-files)
@@ -277,7 +307,6 @@
              (not (member (org-element-property :todo-keyword h)
                           org-roam-states-not-todo))))
       nil 'first-match))
-
   (defun my/org-roam-update-org-agenda-files (&optional arg keys restriction)
     (interactive)
     (setq org-agenda-files
@@ -305,34 +334,68 @@
             (add-to-list 'completion-at-point-functions x))
           org-roam-completion-functions)
     (add-to-list 'completion-at-point-functions #'cape-abbrev))
+  :config
 
   (org-roam-db-autosync-mode 1)
   (advice-add 'org-agenda :before #'my/org-roam-update-org-agenda-files)
-  :general ("C-<f5>" #'my/org-roam-agenda-all-files)
+
+  (defun my/org-roam-capture-daily (date)
+    (interactive "P")
+    (message "%S" date)
+    (cond
+     ((equal '(16) date)
+      (org-roam-dailies-goto-date))
+     ((equal '(4) date)
+      (org-roam-dailies-goto-yesterday 1))
+     ((eq '- date)
+      (org-roam-dailies-goto-tomorrow 1))
+     (date
+      (org-roam-dailies-goto-yesterday date))
+     ((org-roam-dailies-goto-today))))
+  :general
+  ("C-<f5>" #'my/org-roam-agenda-all-files
+   "C-<f6>" #'my/org-roam-capture-daily)
+  (:keymaps 'org-mode-map
+            "C-c r" org-roam-org-mode-map)
+  (:keymaps 'org-roam-org-mode-map
+            "t" #'org-roam-buffer-toggle
+            "d" #'org-roam-buffer-display-dedicated)
   :hook ((org-mode . my/org-completion-completers)
          (org-mode . my/org-roam-update-links-on-save)
          (org-mode . my/org-roam-update-todo-on-save)
          (org-mode . my/org-roam-update-todo-property)))
 
 (use-package org-roam-ui
-  :defer t)
+  :defer t
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start nil)
+  :general
+  (:keymaps 'org-roam-org-mode-map
+            "u" #'org-roam-ui-open))
 
 (use-package consult-org-roam
-  :after org-roam
+  :after (org-roam)
   :init
   (consult-org-roam-mode 1)
   :custom
   (consult-org-roam-grep-func #'consult-ripgrep)
   (consult-org-roam-buffer-narrow-key ?r)
-  (consult-org-roam-buffer-after-buffers t))
+  (consult-org-roam-buffer-after-buffers t)
+  :general
+  (:keymaps 'org-roam-org-mode-map
+            "b" #'consult-org-roam-backlinks
+            "B" #'consult-org-roam-backlinks-recursive
+            "f" #'consult-org-roam-forward-links
+            "g" #'consult-org-roam-search ; mirror `C-x p g' from project
+            ))
 
-(use-package consult-notes
-  :commands (consult-notes
-             consult-notes-org-roam-find-node
-             consult-notes-org-roam-find-node-relation)
-  :config
-  (consult-notes-org-roam-mode 1)
-  (consult-notes-org-headings-mode 1))
+(use-package consult-notes)
+
+(use-package consult-notes-org-roam
+  :ensure nil)
 
 ;; ** Outlining
 (use-package outshine
