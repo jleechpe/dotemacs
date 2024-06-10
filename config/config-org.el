@@ -8,10 +8,15 @@
   :type 'directory
   :group 'config-dirs)
 
+(defcustom user-roam-daily-dir (expand-file-name "daily" user-roam-dir)
+  "Directory for Daily files in OrgRoam"
+  :type 'directory
+  :group 'config-dirs)
+
 (defgroup config-org nil ""
   :group 'config-init)
 
-(defcustom default-org-agenda-files `(,user-org-dir)
+(defcustom default-org-agenda-files `(,user-org-dir ,user-roam-dir ,user-roam-daily-dir)
   ""
   :type 'list
   :group 'config-org)
@@ -231,6 +236,29 @@
   ("S-<f5>" #'org-agenda)
   ("<f6>" #'org-capture))
 
+(use-package org-agenda-files-track-ql-mode
+  :ensure t
+  :init
+  ;; Setup org agenda files to account for sync changes
+  (if (file-directory-p "~/jlptech/internal")
+      (add-to-list 'default-org-agenda-files "~/jlptech/internal"))
+  (defun my/org-agenda-files-track-init ()
+    "(Re)initialize dynamic agenda files.
+
+This can take a long time, so it is recommended to run this only
+on installation and when first tasks are added to many files via
+methods the save hook cannot detect, like file synchronization."
+    (interactive)
+    (setq org-agenda-files default-org-agenda-files)
+    (org-agenda-files-track-ql-cleanup-files 'full)
+    (message "Initialized org agenda files"))
+  :config
+  (org-agenda-files-track-ql-mode t)
+  ;; Run agenda files hook on startup since syncthing might make out of band
+  ;; updates (until I share custom as part of repo)
+  :hook (elpaca-after-init . my/org-agenda-files-track-init)
+  )
+
 (use-package org-modern
   :after org
   :config
@@ -252,7 +280,8 @@
 ;; ** Roam
 
 (use-package org-roam
-  :defer t
+  :ensure t
+  :after org
   :init
   (setq org-roam-org-mode-map (make-sparse-keymap "Org-Roam"))
   (defun my/org-roam-node-annotate (node)
@@ -298,51 +327,6 @@
                           ("Log"))
            :empty-lines 3)))
 
-  (defun my/org-roam-agenda-all-files (&optional arg keys restriction)
-    (interactive)
-    (advice-remove 'org-agenda #'my/org-roam-update-org-agenda-files)
-    (setq org-agenda-files
-          (flatten-tree (list default-org-agenda-files
-                              user-roam-dir
-                              (expand-file-name "daily" user-roam-dir))))
-    (org-agenda arg keys restriction)
-    (advice-add 'org-agenda :before #'my/org-roam-update-org-agenda-files))
-
-  (defun my/org-roam--find-todo-files ()
-    (let ((nodes (seq-filter (lambda (e)
-                               (assoc "HAS_TODO" (org-roam-node-properties e)))
-                             (org-roam-node-list))))
-      (seq-uniq (seq-map #'org-roam-node-file nodes))))
-
-  (defun my/org-roam--todo-p ()
-    (org-element-map
-        (org-element-parse-buffer 'headline)
-        'headline
-      (lambda (h)
-        (and (eq (org-element-property :todo-type h)
-                 'todo)
-             (not (member (org-element-property :todo-keyword h)
-                          org-roam-states-not-todo))))
-      nil 'first-match))
-  (defun my/org-roam-update-org-agenda-files (&optional arg keys restriction)
-    (interactive)
-    (setq org-agenda-files
-          (flatten-tree (list default-org-agenda-files
-                              (my/org-roam--find-todo-files)))))
-
-  (defun my/org-roam-update-todo-property ()
-    (interactive)
-    (when (and (not (active-minibuffer-window))
-               (org-roam-file-p))
-      (org-with-point-at 1
-        (let ((is-todo (my/org-roam--todo-p)))
-          (if is-todo
-              (org-roam-property-add "HAS_TODO" "t")
-            (org-roam-property-remove "HAS_TODO" "t"))))))
-
-  (defun my/org-roam-update-todo-on-save ()
-    (add-hook 'before-save-hook #'my/org-roam-update-todo-property nil 't))
-
   (defun my/org-roam-update-links-on-save ()
     (add-hook 'before-save-hook 'org-roam-link-replace-all nil 't))
 
@@ -354,7 +338,7 @@
   :config
 
   (org-roam-db-autosync-mode 1)
-  (advice-add 'org-agenda :before #'my/org-roam-update-org-agenda-files)
+  ;; (advice-add 'org-agenda :before #'my/org-roam-update-org-agenda-files)
 
   (defun my/org-roam-capture-daily (date)
     (interactive "P")
@@ -378,9 +362,7 @@
             "t" #'org-roam-buffer-toggle
             "d" #'org-roam-buffer-display-dedicated)
   :hook ((org-mode . my/org-completion-completers)
-         (org-mode . my/org-roam-update-links-on-save)
-         (org-mode . my/org-roam-update-todo-on-save)
-         (org-mode . my/org-roam-update-todo-property)))
+         (org-mode . my/org-roam-update-links-on-save)))
 
 (use-package org-roam-ui
   :defer t
@@ -414,6 +396,24 @@
 (use-package consult-notes-org-roam
   :ensure nil)
 
+(use-package org-super-agenda
+  :after org
+  :ensure t
+  :init
+  ;; Don't show the warning about org-element in non-org buffer until this gets
+  ;; fixed: https://github.com/alphapapa/org-super-agenda/issues/247
+  (add-to-list 'warning-suppress-types '(org-element))
+  :config
+  (setq org-super-agenda-groups
+        `((:name "Habits"
+                 :habit t
+                 :order 3)
+          (:name "Daily Calendar"
+                 :time-grid t)
+          (:name "Aurelius"
+                 :tag "aurelius"
+                 )
+          )))
 ;; ** Outlining
 (use-package outshine
   :commands outshine-mode
