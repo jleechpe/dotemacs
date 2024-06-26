@@ -105,22 +105,24 @@
 
 ;; *** Tabnine support
 
-(use-package vterm
-  :demand t)
-
 (elpaca (tabnine :repo "https://github.com/shuxiao9058/tabnine"
                  :refs nil
                  :files (:defaults))
   (use-package tabnine
     :ensure nil
     :commands (tabnine-start-process)
-    :hook (prog-mode . tabnine-mode)
     :diminish "⌬"
     :custom
     (tabnine-wait 1.0)
     (tabnine-idle-delay 0.5)
     (tabnine-minimum-prefix-length 3)
-    :hook ((on-first-input . tabnine-start-process)
+    :config
+    :hook ((tabnine-mode ;; fix indentation for emacs-lisp-mode until fixed upstream
+            . (lambda ()
+                (add-to-list 'tabnine-util--indentation-alist
+                             '(emacs-lisp-mode lisp-indent-offset))))
+           (prog-mode . tabnine-mode)
+           (on-first-input . tabnine-start-process)
            (kill-emacs . tabnine-kill-process))
     :init
     (add-to-list 'completion-at-point-functions

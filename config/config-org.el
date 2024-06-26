@@ -1,4 +1,6 @@
 ;; -*- lexical-binding: t; -*-
+
+;; *** Custom Vars
 (defcustom user-org-dir "~/org" "Default directory for org files"
   :type 'directory
   :group 'config-dirs)
@@ -23,11 +25,14 @@
 
 (defconst org-roam-states-not-todo '("LOG" "FUP" "TBR" "RDN"))
 
+;; *** Custom Functions
 (defun org-daily-agenda (arg)
   (interactive "P")
   (org-agenda arg "a"))
 
-(use-package doct)
+;; *** Org-Mode Setup
+(use-package doct
+  :ensure t)
 (use-package org
   :defer t
   :after (doct)
@@ -136,19 +141,22 @@
    org-tag-persistent-alist
    '(
      ;; Org Roam Tags
-     (:startgrouptag)
-     ("#" . "#")
+     (:startgroup)
+     ("#" . "Context")
      (:grouptags)
      ("#work" . ?W)
      ("#homelab" . ?H)
      ("#FTC". ?F)
-     (:endgrouptag))
+     ("#aurelius" . ?A)
+     ("#config" . ?C)
+     (:endgroup))
    ;; Todo Configs
    org-todo-keywords
    '((sequence "TODO(t)" "PROG(p)" "PEND(n@)" "|" "DONE(d@)")
      (sequence "TODO(t)" "PROG(p)" "BLOCK(b)" "|" "DONE(d@)")
      (type "RISK(r@)" "ISSUE(i@)" "|" "AVRT(a@)")
      (sequence "|" "CANC(c@)")
+     (sequence "PRCH(P)" "|" "BGHT(B)")
      ;; Org Roam Sequences
      (sequence "LOG(l)" "FUP(f)" "|" "DONE(d@)")
      (sequence "TBR(T)" "RDN(R)" "|" "READ(D@)"))
@@ -238,8 +246,10 @@
   ("S-<f5>" #'org-agenda)
   ("<f6>" #'org-capture))
 
+;; *** Org-Agenda-Files-track-ql
 (use-package org-agenda-files-track-ql
   :ensure t
+  :after (org-ql org-roam)
   :init
   ;; Setup org agenda files to account for sync changes
   (if (file-directory-p "~/jlptech/internal")
@@ -251,7 +261,7 @@ This can take a long time, so it is recommended to run this only
 on installation and when first tasks are added to many files via
 methods the save hook cannot detect, like file synchronization."
     (interactive)
-    (require 'org-roam)
+    (require 'org-agenda-files-track-ql)
     (setq org-agenda-files default-org-agenda-files)
     (org-agenda-files-track-ql-cleanup-files 'full)
     (message "Initialized org agenda files"))
@@ -262,6 +272,7 @@ methods the save hook cannot detect, like file synchronization."
   :hook (elpaca-after-init . my/org-agenda-files-track-init)
   )
 
+;; *** Org-Modern
 (use-package org-modern
   :after org
   :config
@@ -280,8 +291,10 @@ methods the save hook cannot detect, like file synchronization."
                       :background (doom-color 'base2)
                       :inverse-video t))
 
+;; *** Org-Ql
 (use-package org-ql
   :after (org)
+  :ensure t
   :init
   ;; Setup org-ql filtering variables so views and agendas can use them
   (setq
@@ -330,10 +343,13 @@ methods the save hook cannot detect, like file synchronization."
                        :query ,org-ql-query--reading-list
                        :title "Reading List"
                        :super-groups org-super-agenda-groups)))
+  (defun my/setup-ql-views ()
+    (mapc (lambda (view)
+            (add-to-list 'org-ql-views view))
+          org-ql--my-views))
+  :hook
+  (elpaca-after-init . my/setup-ql-views)
   :config
-  (mapc (lambda (view)
-          (add-to-list 'org-ql-views view))
-        org-ql--my-views)
   (setq org-agenda-custom-commands
         `(("r" "Roam"
            ((org-ql-block (quote ,org-ql-query--roam)
@@ -358,7 +374,11 @@ methods the save hook cannot detect, like file synchronization."
             (org-ql-block (quote ,org-ql-query--reading-list)
                           ((org-ql-block-header "Reading List"))))))))
 
+;; *** Org-Super-Agenda
 (use-package org-super-agenda
+  :after (org)
+  :init
+  (add-to-list 'warning-suppress-types '(org-element))
   :config
   (org-super-agenda-mode)
   (setq org-super-agenda-groups
@@ -387,7 +407,7 @@ methods the save hook cannot detect, like file synchronization."
                       :order -1))))
 
 ;; ** Roam
-
+;; *** Org-Roam
 (use-package org-roam
   :ensure t
   :after org
@@ -466,6 +486,7 @@ methods the save hook cannot detect, like file synchronization."
             "d" #'org-roam-buffer-display-dedicated)
   :hook ((org-mode . my/org-completion-completers)))
 
+;; *** Org-Roam-UI
 (use-package org-roam-ui
   :defer t
   :config
@@ -477,6 +498,7 @@ methods the save hook cannot detect, like file synchronization."
   (:keymaps 'org-roam-org-mode-map
             "u" #'org-roam-ui-open))
 
+;; *** Consult-Org-Roam
 (use-package consult-org-roam
   :after (org-roam)
   :init
@@ -493,29 +515,30 @@ methods the save hook cannot detect, like file synchronization."
             "g" #'consult-org-roam-search ; mirror `C-x p g' from project
             ))
 
+;; ** Consult-Notes
 (use-package consult-notes)
 
 (use-package consult-notes-org-roam
   :disabled t)
 
-(use-package org-super-agenda
-  :after org
-  :ensure t
-  :init
-  ;; Don't show the warning about org-element in non-org buffer until this gets
-  ;; fixed: https://github.com/alphapapa/org-super-agenda/issues/247
-  (add-to-list 'warning-suppress-types '(org-element))
-  :config
-  (setq org-super-agenda-groups
-        `((:name "Habits"
-                 :habit t
-                 :order 3)
-          (:name "Daily Calendar"
-                 :time-grid t)
-          (:name "Aurelius"
-                 :tag "aurelius"
-                 )
-          )))
+;; (use-package org-super-agenda
+;;   :after org
+;;   :ensure t
+;;   :init
+;;   ;; Don't show the warning about org-element in non-org buffer until this gets
+;;   ;; fixed: https://github.com/alphapapa/org-super-agenda/issues/247
+;;   (add-to-list 'warning-suppress-types '(org-element))
+;;   :config
+;;   (setq org-super-agenda-groups
+;;         `((:name "Habits"
+;;                  :habit t
+;;                  :order 3)
+;;           (:name "Daily Calendar"
+;;                  :time-grid t)
+;;           (:name "Aurelius"
+;;                  :tag "aurelius"
+;;                  )
+;;           )))
 ;; ** Outlining
 (use-package outshine
   :commands outshine-mode
