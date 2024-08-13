@@ -86,6 +86,8 @@
    send-mail-function 'smtpmail-send-it
    message-send-mail-function 'message-send-mail-with-sendmail
    mu4e-update-interval (* 5 60))
+  (command-query #'mu4e-compose-reply
+                 "Do you really want to only reply to the sender?")
   :hook
   (mu4e-headers-mode . (lambda () (auto-composition-mode 0))))
 
