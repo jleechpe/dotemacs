@@ -32,6 +32,7 @@
 
 ;; *** Org-Mode Setup
 (use-package doct
+  :defer t
   :ensure t)
 (use-package org
   :defer t
@@ -258,6 +259,7 @@
 ;; *** Org-Agenda-Files-track-ql
 (use-package org-agenda-files-track-ql
   :ensure t
+  :defer t
   :after (org-ql org-roam)
   :init
   ;; Setup org agenda files to account for sync changes
@@ -284,6 +286,7 @@ methods the save hook cannot detect, like file synchronization."
 ;; *** Org-Modern
 (use-package org-modern
   :after org
+  :defer t
   :config
   (set-face-attribute 'org-modern-date-active nil
                       :foreground (doom-color 'yellow)
@@ -304,6 +307,7 @@ methods the save hook cannot detect, like file synchronization."
 (use-package org-ql
   :after (org)
   :ensure t
+  :defer t
   :init
   ;; Setup org-ql filtering variables so views and agendas can use them
   (setq
@@ -420,6 +424,7 @@ methods the save hook cannot detect, like file synchronization."
 ;; *** Org-Roam
 (use-package org-roam
   :ensure t
+  :defer t
   :after org
   :init
   (setq org-roam-org-mode-map (make-sparse-keymap "Org-Roam"))
@@ -568,6 +573,7 @@ methods the save hook cannot detect, like file synchronization."
 ;; ** Postman requests
 (use-package verb
   :after org
+  :defer t
   :general
   (:keymaps 'org-mode-map
             "C-c C-r" verb-command-map))
