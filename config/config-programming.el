@@ -135,10 +135,7 @@
    (t
     (setq python-shell-interpreter "python")))
   ;; Match fill column to black settings
-  :hook ((python-base-mode . (lambda () (set-fill-column 88)))
-         (eglot-managed-mode . (lambda ()
-                                 (add-to-list 'flymake-diagnostic-functions
-                                              'python-flymake t)))))
+  :hook ((python-base-mode . (lambda () (set-fill-column 88)))))
 
 (use-package inferior-python-mode
   :ensure nil
@@ -152,13 +149,12 @@
     (interactive)
     (let* ((codes (car (remove flymake-ruff--curr-codes
                                flymake-ruff--codes)))
-           (args `("--quiet" "check"
+           (args `("check" "--quiet"
                    "--preview" ; enables beta checks
-                   "--line-length=100"
                    ,@(flatten-list (mapcar (lambda (code) (list "--select" code))
                                            codes)) ;codes to select
-                   "--output-format=text"
-                   "--stdin-filename=stdin" "-")))
+                   "--output-format" "concise"
+                   "--exit-zero" "-")))
       (setq flymake-ruff--curr-codes codes
             flymake-ruff-program-args args)))
   (setq flymake-ruff--codes '(("ALL")("E" "W" "F"))

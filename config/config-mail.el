@@ -84,8 +84,8 @@
    mail-envelope-from 'header
    message-sendmail-extra-arguments '("--read-envelope-from")
    send-mail-function 'smtpmail-send-it
-   message-send-mail-function 'message-send-mail-with-sendmail)
-
+   message-send-mail-function 'message-send-mail-with-sendmail
+   mu4e-update-interval (* 5 60))
   :hook
   (mu4e-headers-mode . (lambda () (auto-composition-mode 0))))
 

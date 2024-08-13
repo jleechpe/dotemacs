@@ -88,12 +88,12 @@
       :children (("Weight"
                   :keys "w"
                   :olp ("Weight")
-                  :template "| %u | %^{Weight} |"
+                  :template "| %^u | %^{Weight} |"
                   )
                  ("Exercise"
                   :keys "e"
                   :olp ("Exercise")
-                  :template "| %u | %^{Type} | %^{Amount}"))))
+                  :template "| %^u | %^{Type} | %^{Amount}"))))
    org-capture-templates
    '(("P" "3d Printing related")
      ("PQ" "Qidi X Max 3")
@@ -142,14 +142,23 @@
    '(
      ;; Org Roam Tags
      (:startgroup)
-     ("#" . "Context")
+     ("Context" . "Context")
      (:grouptags)
      ("#work" . ?W)
      ("#homelab" . ?H)
      ("#FTC". ?F)
      ("#aurelius" . ?A)
      ("#config" . ?C)
-     (:endgroup))
+     ("#dev" . ?D)
+     (:endgroup)
+     (:startgroup)
+     ("ConfigType" . "Config Type")
+     (:grouptags)
+     ("%theme" . ?t)
+     ("%workflow" . ?w)
+     ("%binding" . ?b)
+     (:endgroup)
+     )
    ;; Todo Configs
    org-todo-keywords
    '((sequence "TODO(t)" "PROG(p)" "PEND(n@)" "|" "DONE(d@)")
@@ -265,11 +274,11 @@ methods the save hook cannot detect, like file synchronization."
     (setq org-agenda-files default-org-agenda-files)
     (org-agenda-files-track-ql-cleanup-files 'full)
     (message "Initialized org agenda files"))
-  :config
+  ;; :config
   (org-agenda-files-track-ql-mode t)
   ;; Run agenda files hook on startup since syncthing might make out of band
   ;; updates (until I share custom as part of repo)
-  :hook (elpaca-after-init . my/org-agenda-files-track-init)
+  ;; :hook (elpaca-after-init . my/org-agenda-files-track-init)
   )
 
 ;; *** Org-Modern

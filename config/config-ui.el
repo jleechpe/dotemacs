@@ -18,6 +18,18 @@
 (menu-bar-mode 1)
 (column-number-mode 1)
 
+(use-package display-line-numbers
+  :ensure nil
+  :hook ((prog-mode text-mode) . display-line-numbers-mode)
+  :init
+  (defun my/display-line-numbers-relative-toggle ()
+    (interactive)
+    (if display-line-numbers-mode
+        (if (eq display-line-numbers 'relative)
+            (setq display-line-numbers t)
+          (setq display-line-numbers 'relative)))))
+
+
 (use-package paren
   :ensure nil
   :init

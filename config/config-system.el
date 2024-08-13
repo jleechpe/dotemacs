@@ -46,7 +46,10 @@
 
 ;; ** CUA
 ;; Disable CUA editing but keep rectangle
-(setq cua-enable-cua-keys 'nil)
+
+(setq cua-enable-cua-keys 'nil
+      cua-rectangle-mark-key (kbd "C-M-<return>"))
+(cua-selection-mode 1)
 
 ;; ** Fill Column
 (setq-default fill-column 80)
