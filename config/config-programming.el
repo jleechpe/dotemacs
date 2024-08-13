@@ -141,6 +141,10 @@
   :ensure nil
   :hook (inferior-python-mode . hide-mode-line-mode))
 
+(use-package python-pytest
+  :ensure t
+  :defer t)
+
 (use-package flymake-ruff
   :ensure t
   :hook (eglot-managed-mode . flymake-ruff-load)
@@ -174,6 +178,12 @@
 
 
 ;; ** Data
+(use-package sxhkdrc-mode
+  :defer t)
+
+(use-package dhall-mode
+  :defer t)
+
 (use-package yaml-mode
   :defer t)
 
