@@ -133,11 +133,11 @@
                           (agenda . 5)
                           (bookmarks . 5)
                           (registers . 5)))
-  :hook
-  ((elpaca-after-init . dashboard-insert-startupify-lists)
-   (elpaca-after-init . dashboard-initialize))
-  :config
-  (dashboard-setup-startup-hook))
+  (defun my/delay-dashboard ()
+    (message "Setting up dashboard")
+    (dashboard-insert-startupify-lists)
+    )
+  (run-with-idle-timer 5 nil #'my/delay-dashboard))
 
 ;; * UX
 ;; ** Defaults

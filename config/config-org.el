@@ -386,6 +386,7 @@ methods the save hook cannot detect, like file synchronization."
 ;; *** Org-Super-Agenda
 (use-package org-super-agenda
   :after (org)
+  :defer t
   :init
   (add-to-list 'warning-suppress-types '(org-element))
   :config
@@ -510,6 +511,7 @@ methods the save hook cannot detect, like file synchronization."
 ;; *** Consult-Org-Roam
 (use-package consult-org-roam
   :after (org-roam)
+  :defer t
   :init
   (consult-org-roam-mode 1)
   :custom
@@ -525,33 +527,17 @@ methods the save hook cannot detect, like file synchronization."
             ))
 
 ;; ** Consult-Notes
-(use-package consult-notes)
+(use-package consult-notes
+  :defer t)
 
 (use-package consult-notes-org-roam
   :disabled t)
 
-;; (use-package org-super-agenda
-;;   :after org
-;;   :ensure t
-;;   :init
-;;   ;; Don't show the warning about org-element in non-org buffer until this gets
-;;   ;; fixed: https://github.com/alphapapa/org-super-agenda/issues/247
-;;   (add-to-list 'warning-suppress-types '(org-element))
-;;   :config
-;;   (setq org-super-agenda-groups
-;;         `((:name "Habits"
-;;                  :habit t
-;;                  :order 3)
-;;           (:name "Daily Calendar"
-;;                  :time-grid t)
-;;           (:name "Aurelius"
-;;                  :tag "aurelius"
-;;                  )
-;;           )))
 ;; ** Outlining
 (use-package outshine
   :commands outshine-mode
   :config
+  :defer t
   :diminish "Outl")
 
 (use-package outorg
@@ -561,16 +547,21 @@ methods the save hook cannot detect, like file synchronization."
 
 (use-package outline
   :ensure nil
+  :defer t
   :diminish outline-minor-mode)
 
+;; ** Calendar sync
 (use-package khalel
   :after org
+  :defer t
+  :autoload khalel-import-events
   :init
   (setq khalel-capture-key "e"
         khalel-import-org-file (expand-file-name "khal.org" org-directory)
         khalel-import-start-date "-5d"
         khalel-import-end-date "+30d"
         khalel-import-org-file-confirm-overwrite nil)
+  (run-at-time 0 300 #'khalel-import-events)
   :config
   (khalel-add-capture-template))
 
