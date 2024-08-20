@@ -36,7 +36,6 @@
   :ensure t)
 (use-package org
   :defer t
-  :after (doct)
   :hook
   ((org-mode . auto-fill-mode)
    ;; (org-mode . flyspell-mode)
