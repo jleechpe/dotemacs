@@ -39,12 +39,17 @@
   (setq forge-database-file (expand-file-name "forge-database.sqlite" user-cache-dir))
   :defer t)
 
+(use-package hl-todo
+  :defer t
+  :hook (prog-mode . hl-todo-mode))
+
 (use-package magit-todos
-  :after (hl-todo magit)
-  :config (magit-todos-mode +1))
+  :after magit
+  :init (magit-todos-mode 1))
 
 (use-package magit-delta
   :disabled t
+  :after (magit)
   :hook (magit-mode . magit-delta-mode))
 
 ;; ** Fossil

@@ -80,7 +80,7 @@
     ("M-/" #'completion-at-point)
     :init
     (global-corfu-mode)
-    (setq corfu-auto t
+    (setq corfu-auto nil
           corfu-auto-delay 0.1
           corfu-preselect-first t
           corfu-preview-current t
@@ -89,6 +89,12 @@
           corfu-quit-no-match t
           corfu-scroll-margin 2))
   (global-corfu-mode))
+
+(use-package corfu-candidate-overlay
+  :init
+  (corfu-candidate-overlay-mode 1)
+  :general
+  ("C-S-<iso-lefttab>" #'corfu-candidate-overlay-complete-at-point))
 
 (use-package cape
   :config
@@ -102,42 +108,61 @@
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
+;; *** Tabby support
+(use-package tabby
+  :init
+  (defun my/tabby-disable-overlay ()
+    "Disable overlays from Tabby after canceling or dismissing"
+    (member real-last-command '(keyboard-quit tabby-dismiss)))
+  (setq tabby-disable-predicates '(my/tabby-disable-overlay)
+        tabby-disable-display-predicates '(my/tabby-disable-overlay))
+  :ensure (tabby :host github :repo "alan-w-255/tabby.el"
+                 :branch "master"
+                 :files (:defaults "node_scripts")
+                 :main "tabby.el")
+  :defer nil
+  :hook (prog-mode . tabby-mode)
+  :general
+  (:keymaps 'tabby-mode-map
+            "C-l" #'tabby-accept-completion-by-line
+            "C-<tab>" #'tabby-accept-completion-by-word
+            "C-j" #'tabby-accept-completion))
 
 ;; *** Tabnine support
 
-(elpaca (tabnine :repo "https://github.com/shuxiao9058/tabnine"
-                 :refs nil
-                 :files (:defaults))
-  (use-package tabnine
-    :ensure nil
-    :commands (tabnine-start-process)
-    :diminish "⌬"
-    :custom
-    (tabnine-wait 1.0)
-    (tabnine-idle-delay 0.5)
-    (tabnine-minimum-prefix-length 3)
-    :config
-    :hook ((tabnine-mode ;; fix indentation for emacs-lisp-mode until fixed upstream
-            . (lambda ()
-                (add-to-list 'tabnine-util--indentation-alist
-                             '(emacs-lisp-mode lisp-indent-offset))))
-           (prog-mode . tabnine-mode)
-           (on-first-input . tabnine-start-process)
-           (kill-emacs . tabnine-kill-process))
-    :init
-    (add-to-list 'completion-at-point-functions
-                 #'tabnine-completion-at-point t)
-    (add-to-list 'kind-icon-mapping
-                 '(tabnine "ai" :icon "cloud" :face shadow) t)
-    :general
-    (:keymaps 'tabnine-completion-map
-              "<tab>" #'tabnine-accept-completion
-              "M-<tab>" #'tabnine-accept-completion
-              "M-f" #'tabnine-accept-completion-by-word
-              "M-<return>" #'tabnine-accept-completion-by-line
-              "C-g" #'tabnine-clear-overlay
-              "M-[" #'tabnine-previous-completion
-              "M-]" #'tabnine-next-completion)))
+(use-package tabnine
+  :disabled t
+  :ensure (tabnine :repo "https://github.com/shuxiao9058/tabnine"
+                   :refs nil
+                   :files (:defaults))
+  :commands (tabnine-start-process)
+  :diminish "⌬"
+  :custom
+  (tabnine-wait 1.0)
+  (tabnine-idle-delay 0.5)
+  (tabnine-minimum-prefix-length 3)
+  :config
+  :hook ((tabnine-mode ;; fix indentation for emacs-lisp-mode until fixed upstream
+          . (lambda ()
+              (add-to-list 'tabnine-util--indentation-alist
+                           '(emacs-lisp-mode lisp-indent-offset))))
+         (prog-mode . tabnine-mode)
+         (on-first-input . tabnine-start-process)
+         (kill-emacs . tabnine-kill-process))
+  :init
+  (add-to-list 'completion-at-point-functions
+               #'tabnine-completion-at-point t)
+  (add-to-list 'kind-icon-mapping
+               '(tabnine "ai" :icon "cloud" :face shadow) t)
+  :general
+  (:keymaps 'tabnine-completion-map
+            "<tab>" #'tabnine-accept-completion
+            "M-<tab>" #'tabnine-accept-completion
+            "M-f" #'tabnine-accept-completion-by-word
+            "M-<return>" #'tabnine-accept-completion-by-line
+            "C-g" #'tabnine-clear-overlay
+            "M-[" #'tabnine-previous-completion
+            "M-]" #'tabnine-next-completion))
 
 ;; ** Snippets
 

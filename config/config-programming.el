@@ -143,7 +143,10 @@
 
 (use-package python-pytest
   :ensure t
-  :defer t)
+  :defer t
+  :general
+  (:keymaps 'python-base-mode-map
+            "C-c t" #'python-pytest-dispatch))
 
 (use-package flymake-ruff
   :ensure t

@@ -150,7 +150,69 @@
 (general-def
   "C-M-i" #'delete-indentation
   "C-M-=" #'align-regexp)
+;; ** Casual
+(use-package casual-suite
+  :ensure t)
 
+(use-package casual-calc
+  :ensure nil
+  :general (:keymaps 'calc-mode-map "C-o" #'casual-calc-tmenu))
+
+(use-package casual-info
+  :ensure nil
+  :general (:keymaps 'Info-mode-map "C-o" #'casual-info-tmenu))
+
+(use-package casual-dired
+  :ensure nil
+  :general (:keymaps 'dired-mode-map "C-o"  #'casual-dired-tmenu))
+
+(use-package casual-isearch
+  :ensure nil
+  :general (:keymaps 'isearch-mode-map "C-o"  #'casual-isearch-tmenu))
+
+(use-package re-builder
+  :defer t
+  :ensure nil)
+(use-package casual-re-builder
+  :ensure nil
+  :general
+  (:keymaps 'reb-mode-map
+            "C-o" #'casual-re-builder-tmenu)
+  (:keymaps 'reb-lisp-mode-map
+            "C-o" #'casual-re-builder-tmenu)
+  :after (re-builder))
+
+(use-package bookmark
+  :ensure nil
+  :defer t)
+(use-package casual-bookmarks
+  :ensure nil
+  :after (bookmark)
+  :general (:keymaps 'bookmark-bmenu-mode-map
+                     "C-o" #'casual-bookmarks-tmenu
+                     "S" #'casual-bookmarks-sortby-tmenu
+                     "J" #'bookmark-jump))
+
+(use-package casual-ibuffer
+  :ensure nil
+  :after (ibuffer)
+  :general
+  (:keymaps 'ibuffer-mode-map
+            "C-o" #'casual-ibuffer-tmenu
+            "F" #'casual-ibuffer-filter-tmenu
+            "s" #'casual-ibuffer-sortby-tmenu
+            "[" #'ibuffer-backwards-next-marked
+            "]" #'ibuffer-forward-next-marked
+            "{" #'ibuffer-backward-filter-group
+            "}" #'ibuffer-forward-filter-group
+            "$" #'ibuffer-toggle-filter-group))
+
+(use-package casual-agenda
+  :ensure nil
+  :after (org)
+  :general
+  (:keymaps 'org-agenda-mode-map
+            "C-o" #'casual-agenda-tmenu))
 ;; ** Diffs
 (setq ediff-window-setup-function #'ediff-setup-windows-plain
       ediff-split-window-function #'split-window-horizontally)
