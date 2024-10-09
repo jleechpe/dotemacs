@@ -135,8 +135,7 @@
                           (registers . 5)))
   (defun my/delay-dashboard ()
     (message "Setting up dashboard")
-    (dashboard-insert-startupify-lists)
-    )
+    (dashboard-insert-startupify-lists))
   (run-with-idle-timer 5 nil #'my/delay-dashboard))
 
 ;; * UX
@@ -281,6 +280,7 @@
     (funcall-interactively #'save-some-buffers arg pred)))
 
 (use-package project
+  :ensure nil
   :init
   (setq project-list-file (expand-file-name "projects" user-cache-dir)
         project-switch-use-entire-map nil

@@ -20,7 +20,7 @@
   :ensure `(seq :build ,(+elpaca-seq-build-steps))
   )
 
-(use-package jsonrpc)
+;; (use-package jsonrpc)
 ;; (elpaca-queue
 ;;  (use-package dash)
 ;;  (use-package yaml)

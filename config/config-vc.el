@@ -44,6 +44,7 @@
   :hook (prog-mode . hl-todo-mode))
 
 (use-package magit-todos
+  :disabled t
   :after magit
   :init (magit-todos-mode 1))
 

@@ -114,6 +114,7 @@
 ;; *** Python
 (use-package python
   :defer t
+  :ensure nil
   :init
   (add-to-list 'major-mode-remap-alist
                '(python-mode . python-ts-mode))

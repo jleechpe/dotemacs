@@ -30,6 +30,65 @@
   (interactive "P")
   (org-agenda arg "a"))
 
+;; *** Org-Ql
+(defun my/setup-ql-views ()
+  (mapc (lambda (view)
+          (add-to-list 'org-ql-views view))
+        org-ql--my-views))
+
+(use-package org-ql
+  :after (org)
+  :ensure t
+  :defer t
+  :init
+  ;; Setup org-ql filtering variables so views and agendas can use them
+  (setq
+   ;; Filters
+   org-ql-todo--roam-log '(todo "LOG" "FUP")
+   org-ql-todo--reading-list '(todo "TBR" "RDN")
+   org-ql-todo--excl-testing '(not (category "testing"))
+
+   ;; Queries
+   org-ql-query--roam
+   `(and ,org-ql-todo--roam-log
+         (tags "review"))
+   org-ql-query--habit-stats
+   '(and (habit)
+         ;; (not (scheduled :to today))
+         )
+   org-ql-query--habits
+   '(and (habit)
+         (scheduled :to today))
+   org-ql-query--reading-list
+   `(and ,org-ql-todo--reading-list
+         ,org-ql-todo--excl-testing)
+   org-ql-query--todos
+   `(and (todo)
+         (not ,org-ql-todo--roam-log)
+         ,org-ql-todo--excl-testing
+         (not (habit))
+         (not ,org-ql-todo--reading-list))
+   ;; Views
+   org-ql--my-views `(("Roam: Review"
+                       :buffers-files org-agenda-files
+                       :query ,org-ql-query--roam
+                       :sort (date priority)
+                       :title "Roam Review"
+                       :super-groups ((:take (5 (:tag "review")))))
+                      ("Habit: status"
+                       :buffers-files org-agenda-files
+                       :query ,org-ql-query--habit-stats
+                       :sort (date priority)
+                       :title "Habit status"
+                       :super-groups ((:name "Overdue" :scheduled past)
+                                      (:name "Current" :scheduled today)
+                                      (:name "Up-to-date" :scheduled future)))
+                      ("Reading List"
+                       :buffers-files org-agenda-files
+                       :query ,org-ql-query--reading-list
+                       :title "Reading List"
+                       :super-groups org-super-agenda-groups))))
+
 ;; *** Org-Mode Setup
 (use-package doct
   :defer t
@@ -43,6 +102,30 @@
    (org-checkbox-statistics . my/org-checkbox-statistics-update))
   :config
   (add-to-list 'org-modules 'org-habit)
+
+  (setq org-agenda-custom-commands
+        `(("r" "Roam"
+           ((org-ql-block (quote ,org-ql-query--roam)
+                          ((org-agenda-max-entries 5)))))
+          ("H" "Habit status"
+           ((org-ql-block (quote ,org-ql-query--habit-stats))))
+          ("h" "Habits"
+           ((org-ql-block (quote ,org-ql-query--habits))))
+          ("t" "Todo test"
+           ((org-ql-block (quote ,org-ql-query--todos))))
+          ("A" "Test blocks"
+           ((org-ql-block (quote ,org-ql-query--todos)
+                          (;; (org-agenda-max-entries 5)
+                           (org-ql-block-header "TODOs")))
+            (org-ql-block (quote ,org-ql-query--roam)
+                          (;; (org-agenda-max-entries 5)
+                           (org-ql-block-header "Roam Review")))
+            ;; (org-ql-block (quote ,org-ql-query--habits)
+            ;;               ((org-ql-block-header "Habits")))
+            (org-ql-block (quote ,org-ql-query--habit-stats)
+                          ((org-ql-block-header "Habits")))
+            (org-ql-block (quote ,org-ql-query--reading-list)
+                          ((org-ql-block-header "Reading List")))))))
 
   (setq
    ;; Overall Org
@@ -301,90 +384,6 @@ methods the save hook cannot detect, like file synchronization."
                       :foreground (doom-color 'orange)
                       :background (doom-color 'base2)
                       :inverse-video t))
-
-;; *** Org-Ql
-(use-package org-ql
-  :after (org)
-  :ensure t
-  :defer t
-  :init
-  ;; Setup org-ql filtering variables so views and agendas can use them
-  (setq
-   ;; Filters
-   org-ql-todo--roam-log '(todo "LOG" "FUP")
-   org-ql-todo--reading-list '(todo "TBR" "RDN")
-   org-ql-todo--excl-testing '(not (category "testing"))
-
-   ;; Queries
-   org-ql-query--roam
-   `(and ,org-ql-todo--roam-log
-         (tags "review"))
-   org-ql-query--habit-stats
-   '(and (habit)
-         ;; (not (scheduled :to today))
-         )
-   org-ql-query--habits
-   '(and (habit)
-         (scheduled :to today))
-   org-ql-query--reading-list
-   `(and ,org-ql-todo--reading-list
-         ,org-ql-todo--excl-testing)
-   org-ql-query--todos
-   `(and (todo)
-         (not ,org-ql-todo--roam-log)
-         ,org-ql-todo--excl-testing
-         (not (habit))
-         (not ,org-ql-todo--reading-list))
-   ;; Views
-   org-ql--my-views `(("Roam: Review"
-                       :buffers-files org-agenda-files
-                       :query ,org-ql-query--roam
-                       :sort (date priority)
-                       :title "Roam Review"
-                       :super-groups ((:take (5 (:tag "review")))))
-                      ("Habit: status"
-                       :buffers-files org-agenda-files
-                       :query ,org-ql-query--habit-stats
-                       :sort (date priority)
-                       :title "Habit status"
-                       :super-groups ((:name "Overdue" :scheduled past)
-                                      (:name "Current" :scheduled today)
-                                      (:name "Up-to-date" :scheduled future)))
-                      ("Reading List"
-                       :buffers-files org-agenda-files
-                       :query ,org-ql-query--reading-list
-                       :title "Reading List"
-                       :super-groups org-super-agenda-groups)))
-  (defun my/setup-ql-views ()
-    (mapc (lambda (view)
-            (add-to-list 'org-ql-views view))
-          org-ql--my-views))
-  :hook
-  (elpaca-after-init . my/setup-ql-views)
-  :config
-  (setq org-agenda-custom-commands
-        `(("r" "Roam"
-           ((org-ql-block (quote ,org-ql-query--roam)
-                          ((org-agenda-max-entries 5)))))
-          ("H" "Habit status"
-           ((org-ql-block (quote ,org-ql-query--habit-stats))))
-          ("h" "Habits"
-           ((org-ql-block (quote ,org-ql-query--habits))))
-          ("t" "Todo test"
-           ((org-ql-block (quote ,org-ql-query--todos))))
-          ("A" "Test blocks"
-           ((org-ql-block (quote ,org-ql-query--todos)
-                          (;; (org-agenda-max-entries 5)
-                           (org-ql-block-header "TODOs")))
-            (org-ql-block (quote ,org-ql-query--roam)
-                          (;; (org-agenda-max-entries 5)
-                           (org-ql-block-header "Roam Review")))
-            ;; (org-ql-block (quote ,org-ql-query--habits)
-            ;;               ((org-ql-block-header "Habits")))
-            (org-ql-block (quote ,org-ql-query--habit-stats)
-                          ((org-ql-block-header "Habits")))
-            (org-ql-block (quote ,org-ql-query--reading-list)
-                          ((org-ql-block-header "Reading List"))))))))
 
 ;; *** Org-Super-Agenda
 (use-package org-super-agenda

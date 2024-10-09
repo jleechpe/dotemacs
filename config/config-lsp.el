@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package eglot
+  :ensure nil
   :init
   (defun eglot-next-backend ()
     "Switch between chosen backends for MAJOR-MODE.
