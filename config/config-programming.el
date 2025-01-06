@@ -169,6 +169,10 @@
         flymake-ruff--curr-codes '("ALL"))
   (update-ruff-codes))
 
+;; *** Salt
+(use-package salt-mode
+  :defer t)
+
 ;; *** Terraform
 (use-package terraform-mode
   :defer t

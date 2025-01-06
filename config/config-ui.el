@@ -18,6 +18,10 @@
 (menu-bar-mode 1)
 (column-number-mode 1)
 
+(global-hl-line-mode 1)
+(add-hook 'find-file-hooks 'goto-address-prog-mode)
+(setq help-window-select t)
+
 (use-package display-line-numbers
   :ensure nil
   :hook ((prog-mode text-mode) . display-line-numbers-mode)
@@ -219,10 +223,22 @@
 ;; ** Search info
 (use-package anzu
   :config (global-anzu-mode 1)
+  :disabled t
   :general
   ([remap query-replace] #'anzu-query-replace)
   ([remap query-replace-regexp] #'anzu-query-replace-regexp))
 
+(use-package ctrlf
+  :config (ctrlf-mode 1))
+
+(use-package visual-replace
+  :defer t
+  :init (visual-replace-global-mode 1)
+  :general
+  (:keymaps 'ctrlf-mode-map
+            "C-c r" #'visual-replace-from-isearch)
+  ("C-c r" #'visual-replace)
+  ("C-c R" #'visual-replace-thing-at-point))
 ;; ** Undo
 (use-package vundo
   :init

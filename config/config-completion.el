@@ -2,6 +2,19 @@
 
 ;; * General Completion
 
+(use-package completion-preview
+  :ensure nil
+  :demand t
+  :init
+  (setq completion-preview-minimum-symbol-length 2)
+  :hook
+  ((prog-mode text-mode comint-mode) . completion-preview-mode)
+  :general
+  (:keymaps 'completion-preview-active-mode-map
+            "M-n" #'completion-preview-next-candidate
+            "M-p" #'completion-preview-previous-candidate
+            "M-i" #'completion-preview-insert))
+
 ;; Enhance default completion framework for minibuffers and any other
 ;; expansion systems.
 (elpaca (vertico :files(:defaults "extensions/*"))
@@ -91,6 +104,7 @@
   (global-corfu-mode))
 
 (use-package corfu-candidate-overlay
+  :disabled t
   :init
   (corfu-candidate-overlay-mode 1)
   :general

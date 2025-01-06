@@ -101,6 +101,7 @@
    (org-after-todo-statistics . my/org-statistics-update)
    (org-checkbox-statistics . my/org-checkbox-statistics-update))
   :config
+  (push 'org-self-insert-command completion-preview-commands)
   (add-to-list 'org-modules 'org-habit)
 
   (setq org-agenda-custom-commands
@@ -250,7 +251,7 @@
      (sequence "|" "CANC(c@)")
      (sequence "PRCH(P)" "|" "BGHT(B)")
      ;; Org Roam Sequences
-     (sequence "LOG(l)" "FUP(f)" "|" "DONE(d@)")
+     (sequence "LOG(l)" "FUP(f)" "|" "LOGD(L@)")
      (sequence "TBR(T)" "RDN(R)" "|" "READ(D@)"))
    org-modern-todo-faces
    `(("TODO" . (:foreground ,(doom-color 'base1) :background ,(doom-color 'green)
@@ -340,7 +341,7 @@
 
 ;; *** Org-Agenda-Files-track-ql
 (use-package org-agenda-files-track-ql
-  :ensure t
+  :ensure (:host github :repo "jleechpe/org-agenda-files-track")
   :defer t
   :after (org-ql org-roam)
   :init
@@ -557,6 +558,7 @@ methods the save hook cannot detect, like file synchronization."
 (use-package khalel
   :after org
   :defer t
+  :disabled t
   :autoload khalel-import-events
   :init
   (setq khalel-capture-key "e"
