@@ -70,13 +70,13 @@
   :hook (treemacs-mode . my/treemacs-setup-title)
   :commands (treemacs-select-window)
   :general
-  ("M-0" #'treemacs-select-window)
-  (:prefix "s-t"
-           "1"   #'delete-other-window
-           "t"   #'treemacs
-           "B"   #'treemacs-bookmark
-           "C-t" #'treemacs-find-file
-           "M-t" #'treemacs-find-tag)
+  (("M-0" #'treemacs-select-window)
+   (:prefix "C-c t"
+            "1"   #'delete-other-window
+            "t"   #'treemacs
+            "B"   #'treemacs-bookmark
+            "C-t" #'treemacs-find-file
+            "M-t" #'treemacs-find-tag))
   :after (ace-window))
 
 (use-package all-the-icons

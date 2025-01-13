@@ -131,18 +131,36 @@
                                           "andymark.com"
                                           "ftclive.org"
                                           "revrobotics.com"
+                                          "firstinspires.org"
+                                          "firstpartners.org"
                                           "zeffy.com")))
                                  (string-match-p (rx (or "FTC" "Saturn" "9944")) subject))
                              "/jlp/Archive/FTC")
                             ;; Empower
                             ((mu4e-message-contact-field-matches
                               msg
-                              :from ".*@sfmc.empowermyretirement.com")
+                              :from (rx (* nonl) "@"
+                                        (or "sfmc.empowermyretirement.com"
+                                            "joinatmos.com"
+                                            "estatements.vystarcu.org"
+                                            "welcome.americanexpress.com"
+                                            )))
                              "/jlp/Archive/Finances")
-                            ;; Fidelity
+                            ;; HSA
                             ((mu4e-message-contact-field-matches
                               msg
-                              :from ".*@mail.fidelity.com")
+                              :from (rx (* nonl) "@"
+                                        (or "hsabank.com"
+                                            "healthequity.com")))
+                             "/jlp/Archive/Finances/HSA")
+                            ;; Stocks
+                            ((mu4e-message-contact-field-matches
+                              msg
+                              :from (rx (* nonl) "@"
+                                        (or "mail.fidelity.com"
+                                            "brf.empowermyretirement.com"
+                                            "mail.fidelity.com"
+                                            "shareholderdocs.fidelity.com")))
                              "/jlp/Archive/Finances/Stocks")
                             ;; Webull
                             ((mu4e-message-contact-field-matches
