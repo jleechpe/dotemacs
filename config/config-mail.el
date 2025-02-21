@@ -123,18 +123,26 @@
                          (let ((subject (mu4e-message-field msg :subject)))
                            (cond
                             ;; FTC related
-                            ((or (mu4e-message-contact-field-matches
-                                  msg
-                                  :from ;; ".*@\\\(servocity.com\\\|revrobotics.com\\\|andymark.com\\\|ftclive.org\\)"
-                                  (rx (* nonl) "@"
-                                      (or "servocity.com"
-                                          "andymark.com"
-                                          "ftclive.org"
-                                          "revrobotics.com"
-                                          "firstinspires.org"
-                                          "firstpartners.org"
-                                          "zeffy.com")))
-                                 (string-match-p (rx (or "FTC" "Saturn" "9944")) subject))
+                            ((or
+                              (mu4e-message-contact-field-matches
+                               msg
+                               :cc
+                               (rx (* nonl) "@"
+                                   (or "botnefl.org")))
+                              (mu4e-message-contact-field-matches
+                               msg
+                               :from
+                               (rx (* nonl) "@"
+                                   (or "servocity.com"
+                                       "andymark.com"
+                                       "botnefl.org"
+                                       "ftclive.org"
+                                       "revrobotics.com"
+                                       "firstinspires.org"
+                                       "firstpartners.org"
+                                       "gobilda.com"
+                                       "zeffy.com")))
+                              (string-match-p (rx (or "FTC" "Saturn" "9944")) subject))
                              "/jlp/Archive/FTC")
                             ;; Empower
                             ((mu4e-message-contact-field-matches
