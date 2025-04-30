@@ -49,7 +49,13 @@
 ;; ** Window management
 (use-package ace-window
   :general ("M-o" #'ace-window)
-  :config (ace-window-display-mode 1))
+  :config
+  (ace-window-display-mode 1)
+  (ace-window-posframe-mode 1)
+  (set-face-attribute 'aw-leading-char-face nil
+                      :foreground (doom-color 'red)
+                      :background (doom-color 'base7)
+                      :height 6.0))
 
 ;; ** File Treeview
 ;; Treemacs allows management of projects/workspaces and filtering by
@@ -57,6 +63,8 @@
 ;; current file.
 
 (use-package treemacs
+  :init
+  (setq treemacs-map (make-sparse-keymap "Treemacs"))
   :config
   (treemacs-fringe-indicator-mode 'only-when-focused)
   (defun my/treemacs-setup-title ()
@@ -67,18 +75,19 @@
        'header-line
        :background bg :foreground fg
        :box `(:line-width ,(/ (line-pixel-height) 4) :color ,bg2))))
+
   :hook (treemacs-mode . my/treemacs-setup-title)
   :commands (treemacs-select-window)
   :general
-  (("M-0" #'treemacs-select-window)
-   ;; (:prefix "C-c t"
-   ;;          "1"   #'delete-other-window
-   ;;          "t"   #'treemacs
-   ;;          "B"   #'treemacs-bookmark
-   ;;          "C-t" #'treemacs-find-file
-   ;;          "M-t" #'treemacs-find-tag)
-   )
-  :after (ace-window))
+  ("M-0" #'treemacs-select-window)
+  (:prefix "C-c"
+           "t" treemacs-map)
+  (:keymaps 'treemacs-map
+            "1"   #'delete-other-window
+            "t"   #'treemacs
+            "B"   #'treemacs-bookmark
+            "C-t" #'treemacs-find-file
+            "M-t" #'treemacs-find-tag))
 
 (use-package all-the-icons
   :config

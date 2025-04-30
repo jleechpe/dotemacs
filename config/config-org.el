@@ -205,7 +205,11 @@
       table-line
       (file+olp "~/org/printing.org" "Qidi XMax 3" "Filament Amount")
       "| %(substring-no-properties (cadar org-stored-links)) | | | | | |"
-      :immediate-finish t))
+      :immediate-finish t)
+     ("p" "Org protocol"
+      entry
+      (file+headline "~/org/notes.org" "Inbox")
+      "* %^{Title}\n\nSource: %u\n\n[[%:link][%:description]]\n\n%i"))
    org-capture-templates-contexts
    '(("i" ((in-mode . "mu4e-view-mode")
            (in-mode . "mu4e-headers-mode"))))
@@ -252,7 +256,8 @@
      (sequence "PRCH(P)" "|" "BGHT(B)")
      ;; Org Roam Sequences
      (sequence "LOG(l)" "FUP(f)" "|" "LOGD(L@)")
-     (sequence "TBR(T)" "RDN(R)" "|" "READ(D@)"))
+     (sequence "TBR(T)" "RDN(R)" "|" "READ(D@)")
+     (sequence "BLOG(g)" "|" "BLGD(G@)"))
    org-modern-todo-faces
    `(("TODO" . (:foreground ,(doom-color 'base1) :background ,(doom-color 'green)
                             :weight bold))

@@ -153,6 +153,12 @@
 (general-def
   "C-M-i" #'delete-indentation
   "C-M-=" #'align-regexp)
+
+(use-package isearch
+  :ensure nil
+  :config
+  (setopt isearch-lazy-count t))
+
 ;; ** Casual
 (use-package casual-suite
   :ensure t)
@@ -229,6 +235,7 @@
   ([remap query-replace-regexp] #'anzu-query-replace-regexp))
 
 (use-package ctrlf
+  :disabled t
   :config (ctrlf-mode 1))
 
 (use-package visual-replace

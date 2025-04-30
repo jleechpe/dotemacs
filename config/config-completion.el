@@ -59,7 +59,10 @@
             "M-G" #'consult-line-multi
             "o" #'consult-outline
             "i" #'consult-imenu-multi
-            "M-i" #'consult-imenu))
+            "M-i" #'consult-imenu)
+  (:keymaps 'isearch-mode-map
+            "M-i" #'consult-line
+            "M-I" #'consult-line-multi))
 
 (use-package consult-flymake
   :ensure nil
