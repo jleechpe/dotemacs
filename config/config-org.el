@@ -424,6 +424,11 @@ methods the save hook cannot detect, like file synchronization."
           (:time-grid t
                       :order -1))))
 
+;; *** ox-hugo
+(use-package ox-hugo
+  :after ox
+  :ensure (:host github :repo "jleechpe/ox-hugo"))
+
 ;; ** Roam
 ;; *** Org-Roam
 (use-package org-roam
