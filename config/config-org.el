@@ -288,7 +288,18 @@
      ("RDN" . (:foreground ,(doom-color 'yellow) :background ,(doom-color 'base4)
                            :weight bold))
      ("READ" . (:foreground ,(doom-color 'dark-cyan) :background ,(doom-color 'base0)
-                            :weight bold)))
+                            :weight bold))
+     ;; Blogging faces
+     ("IDEA" . (:foreground ,(doom-color 'base1) :background ,(doom-color 'green)
+                            :weight bold))
+     ("WRITE" . (:foreground ,(doom-color 'base1) :background ,(doom-color 'dark-cyan)
+                             :weight bold))
+     ("TITLE" . (:foreground ,(doom-color 'magenta)
+                             :weight bold
+                             :inverse-video t))
+     ("POSTED" . (:foreground ,(doom-color 'base5) :background ,(doom-color 'base0)
+                              :weight bold))
+     )
    org-todo-keyword-faces org-modern-todo-faces
    ;; `(("TODO" . (:foreground ,(doom-color 'base1) :background ,(doom-color 'green)))
    ;;   ("DEPR" . (:foreground  ,(doom-color 'orange) :weight bold))
