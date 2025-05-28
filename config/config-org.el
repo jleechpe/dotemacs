@@ -139,6 +139,10 @@
    org-agenda-include-diary nil
    org-agenda-span 'day
 
+   ;; ID Links
+   org-id-link-to-org-use-id 'create-if-interactive
+   org-id-link-consider-parent-id t
+
    ;; Clocks and timestamps
    org-clock-into-drawer t
    org-clock-rounding-minutes 15
@@ -276,7 +280,7 @@
                             :inverse-video t))
      ("DONE" . (:foreground ,(doom-color 'base5) :background ,(doom-color 'base0)
                             :weight bold))
-     ("CANC" . (:foreground ,(doom-color 'base4) :background ,(doom-color 'base0)
+     ("CANC" . (:foreground ,(doom-color 'orange) :background ,(doom-color 'base0)
                             :weight bold))
      ;; Org Roam faces
      ("LOG" . (:foreground ,(doom-color 'violet) :background ,(doom-color 'dark-blue)

@@ -48,14 +48,22 @@
 
 ;; ** Window management
 (use-package ace-window
-  :general ("M-o" #'ace-window)
   :config
+  (setopt aw-scope 'frame)
   (ace-window-display-mode 1)
   (ace-window-posframe-mode 1)
   (set-face-attribute 'aw-leading-char-face nil
                       :foreground (doom-color 'red)
                       :background (doom-color 'base7)
-                      :height 6.0))
+                      :height 6.0)
+  (defun my/ace-window-dispatch-always (prefix)
+    "Run `ace-window' with `aw-dispatch-always' set to `t'"
+    (interactive "p")
+    (let ((aw-dispatch-always t))
+      (ace-window prefix)))
+  :general
+  ([remap other-window] #'ace-window)
+  ("C-x O" #'my/ace-window-dispatch-always))
 
 ;; ** File Treeview
 ;; Treemacs allows management of projects/workspaces and filtering by
