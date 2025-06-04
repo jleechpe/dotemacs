@@ -227,22 +227,12 @@
       ediff-split-window-function #'split-window-horizontally)
 
 ;; ** Search info
-(use-package anzu
-  :config (global-anzu-mode 1)
-  :disabled t
-  :general
-  ([remap query-replace] #'anzu-query-replace)
-  ([remap query-replace-regexp] #'anzu-query-replace-regexp))
-
-(use-package ctrlf
-  :disabled t
-  :config (ctrlf-mode 1))
 
 (use-package visual-replace
   :defer t
   :init (visual-replace-global-mode 1)
   :general
-  (:keymaps 'ctrlf-mode-map
+  (:keymaps 'isearch-mode-map
             "C-c r" #'visual-replace-from-isearch)
   ("C-c r" #'visual-replace)
   ("C-c R" #'visual-replace-thing-at-point))
@@ -263,15 +253,6 @@
   (undo-fu-session-global-mode +1)
   :demand t)
 
-(use-package undo-tree
-  :disabled t
-  :diminish
-  :init
-  (setq undo-tree-history-directory-alist
-        `((".*" . ,(expand-file-name "undo-tree" user-cache-dir))))
-  :config
-  (global-undo-tree-mode 1))
-
 ;; ** SmartParens
 (use-package smartparens
   :config
@@ -279,11 +260,6 @@
     (require 'smartparens-config))
   :hook ((smartparens-mode . configure-smartparens)
          (prog-mode . smartparens-mode)))
-
-;; ** Dired extras
-(use-package sunrise-commander
-  :disabled t
-  :commands sunrise)
 
 ;; ** Multiple Cursors
 (use-package multiple-cursors

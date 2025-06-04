@@ -305,18 +305,6 @@
                               :weight bold))
      )
    org-todo-keyword-faces org-modern-todo-faces
-   ;; `(("TODO" . (:foreground ,(doom-color 'base1) :background ,(doom-color 'green)))
-   ;;   ("DEPR" . (:foreground  ,(doom-color 'orange) :weight bold))
-   ;;   ("PROG" . (:foreground  ,(doom-color 'dark-blue) :weight bold))
-   ;;   ("PEND" . (:foreground  ,(doom-color 'magenta) :weight bold))
-   ;;   ("BLOCK" . (:foreground  ,(doom-color 'orange) :inverse-video t))
-   ;;   ("RISK" . (:foreground  ,(doom-color 'red) :weight bold))
-   ;;   ("ISSUE" . (:foreground  ,(doom-color 'red) :inverse-video t))
-   ;;   ("AVRT" . (:foreground  ,(doom-color 'cyan) :weight bold))
-   ;;   ("DONE" . (:foreground ,(doom-color 'base5) :background ,(doom-color 'base0)))
-   ;;   ;; Org Roam faces
-   ;;   ("LOG" . (:foreground ,(doom-color 'violet) :weight bold))
-   ;;   ("FUP" . (:foreground ,(doom-color 'magenta) :weight bold)))
    )
 
   ;; Update statistics

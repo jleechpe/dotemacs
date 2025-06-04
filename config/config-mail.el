@@ -97,6 +97,7 @@
   :config
   (mu4e-alert-enable-mode-line-display)
   (mu4e-alert-enable-notifications)
+  (mu4e-alert-set-default-style 'notifications)
   (setq doom-modeline-mu4e t))
 
 ;; ** Email Contexts
